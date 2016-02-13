@@ -17,16 +17,12 @@ def make_session_permanent():
     app.permanent_session_lifetime = timedelta(minutes=45)
     session.modified = True
 
-<<<<<<< HEAD
 from flask_SQLAlchemy import SQLAlchemy
 
-=======
->>>>>>> 09150f2b66347e71f88fba68997fd43f9775f235
 @app.route('/')
 def root():
     return app.send_static_file('index.html')
 
-<<<<<<< HEAD
 #Application code starts heres
     db = SQLAlchemy(app)
 
@@ -54,12 +50,6 @@ def root():
             self.titulo = titulo
             self.contenido = contenido
             self.usuario = usuario
-        
-            
-=======
-#Application code starts here
-
->>>>>>> 09150f2b66347e71f88fba68997fd43f9775f235
 
 #Application code ends here
 
