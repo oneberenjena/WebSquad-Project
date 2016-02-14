@@ -2,44 +2,55 @@ from flask import request, session, Blueprint, json
 
 ident = Blueprint('ident', __name__)
 
+from base import db, Usuario, Pagina
+
 
 @ident.route('/ident/AIdentificar', methods=['POST'])
 def AIdentificar():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VPrincipal', 'msg':['Bienvenido usuario'], "actor":"duenoProducto"}, {'label':'/VLogin', 'msg':['Datos de identificación incorrectos']}, ]
-    res = results[0]
-    #Action code goes here, res should be a list with a label and a message
-
-
-    #Action code ends here
+    results = [
+        {
+            'label':'/VPrincipal',
+            'msg':['Bienvenido usuario'],
+            "actor":"duenoProducto"
+        },
+        {
+            'label':'/VLogin',
+            'msg': ['Datos de identificación incorrectos']
+        }]
+    user = Usuario.query.filter(Usuario.username==params['usuario'] and \
+                                Usuario.contrasena==params['clave'])
+    if user:
+        res = results[0]
+    else:
+        res = results[1]
+        
     if "actor" in res:
         if res['actor'] is None:
             session.pop("actor", None)
         else:
             session['actor'] = res['actor']
     return json.dumps(res)
-
-
 
 @ident.route('/ident/ARegistrar', methods=['POST'])
 def ARegistrar():
     #POST/PUT parameters
     params = request.get_json()
     results = [{'label':'/VLogin', 'msg':['Felicitaciones, Ya estás registrado en la aplicación']}, {'label':'/VRegistro', 'msg':['Error al tratar de registrarse']}, ]
-    res = results[0]
-    #Action code goes here, res should be a list with a label and a message
-
-
-    #Action code ends here
-    if "actor" in res:
-        if res['actor'] is None:
-            session.pop("actor", None)
-        else:
-            session['actor'] = res['actor']
+    
+    if not (params['usuario'] and params['correo'] and params['nombre'] and params['clave']):
+        res = results[1]
+    else:
+        try:
+            user = Usuario(params['nombre'], params['usuario'], params['clave'], params['correo'])
+            db.session.add(user)
+            db.session.commit()
+            res = results[0]
+        except:
+            res = results[1]
+    
     return json.dumps(res)
-
-
 
 @ident.route('/ident/VLogin')
 def VLogin():

@@ -34,14 +34,14 @@ def root():
 class Usuario(db.Model):
     id_Usuario = db.Column(db.Integer, primary_key = True)
     nombre = db.Column(db.String(20), nullable = False)
-    user_Name = db.Column(db.String(10), index = True, unique = True, nullable = False)
+    username = db.Column(db.String(10), index = True, unique = True, nullable = False)
     contrasena = db.Column(db.String(15), nullable = False)
     correo = db.Column(db.String(80), unique = True, nullable = False)
     #pagina_id = db.Column(db.Integer, db.ForeignKey('Pagina.id_Pagina'), nullable = True)
     
-    def __init__(self, nombre, user_Name, contrasena, correo):
+    def __init__(self, nombre, username, contrasena, correo):
         self.nombre = nombre
-        self.user_Name = user_Name
+        self.username = username
         self.contrasena = contrasena
         self.correo = correo
         
