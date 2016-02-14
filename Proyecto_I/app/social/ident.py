@@ -19,25 +19,31 @@ def AIdentificar():
             'label':'/VLogin',
             'msg': ['Datos de identificación incorrectos']
         }]
-    user = Usuario.query.filter(Usuario.username==params['usuario'] and \
-                                Usuario.contrasena==params['clave'])
+    user = Usuario.query.filter_by(username=params['usuario'],
+                                contrasena=params['clave']).first()
     if user:
         res = results[0]
+        session['actor'] = res['actor']
     else:
         res = results[1]
-        
-    if "actor" in res:
-        if res['actor'] is None:
-            session.pop("actor", None)
-        else:
-            session['actor'] = res['actor']
+        session.pop("actor", None)
+            
     return json.dumps(res)
 
 @ident.route('/ident/ARegistrar', methods=['POST'])
 def ARegistrar():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VLogin', 'msg':['Felicitaciones, Ya estás registrado en la aplicación']}, {'label':'/VRegistro', 'msg':['Error al tratar de registrarse']}, ]
+    results = [
+        {
+            'label':'/VLogin',
+            'msg':['Felicitaciones, Ya estás registrado en la aplicación']
+        },
+        {
+            'label':'/VRegistro',
+            'msg':['Error al tratar de registrarse']
+        }
+    ]
     
     if not (params['usuario'] and params['correo'] and params['nombre'] and params['clave']):
         res = results[1]
