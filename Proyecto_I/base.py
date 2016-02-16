@@ -32,10 +32,10 @@ def root():
 #Application code starts heres
 
 class Usuario(db.Model):
-    id_Usuario = db.Column(db.Integer, primary_key = True)
-    nombre = db.Column(db.String(20), nullable = False)
-    username = db.Column(db.String(10), index = True, unique = True, nullable = False)
-    contrasena = db.Column(db.String(15), nullable = False)
+    idUsuario = db.Column(db.Integer, primary_key = True)
+    nombre = db.Column(db.String(50), nullable = False)
+    username = db.Column(db.String(15), index = True, unique = True, nullable = False)
+    contrasena = db.Column(db.String(16), nullable = False)
     correo = db.Column(db.String(80), unique = True, nullable = False)
     #pagina_id = db.Column(db.Integer, db.ForeignKey('Pagina.id_Pagina'), nullable = True)
     
@@ -52,15 +52,10 @@ class Pagina(db.Model):
     id_Pagina = db.Column(db.Integer, primary_key = True)
     titulo = db.Column(db.String(50), nullable = True)
     contenido = db.Column(db.Text, nullable = True)
-    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id_Usuario'))
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'))
     usuario = db.relationship('Usuario', backref = db.backref('paginas', lazy = 'dynamic'))
     
     
-    def __init__(self, titulo, contenido, usuario):
-        self.titulo = titulo
-        self.contenido = contenido
-        self.usuario = usuario
-        
     def __rep__(self):
         return '<Pagina %r>' % self.titulo
 

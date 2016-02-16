@@ -69,7 +69,9 @@ socialModule.controller('VPrincipalController',
       $scope.VPagina1 = function(idUsuario) {
         $location.path('/VPagina/'+idUsuario);
       };
-
+      $scope.VPaginaDetalle1 = function(idUsuario) {
+        $location.path('/VPaginaDetalle/'+idUsuario);
+      };
     }]);
 socialModule.controller('VRegistroController', 
    ['$scope', '$location', '$route', '$timeout', 'flash', 'identService', 'paginasService',

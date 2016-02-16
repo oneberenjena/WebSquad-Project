@@ -23,9 +23,14 @@ def AIdentificar():
                                 contrasena=params['clave']).first()
     if user:
         res = results[0]
+        session['usuario'] = {
+            'idUsuario': user.idUsuario,
+            'nombre': user.nombre
+        }
         session['actor'] = res['actor']
     else:
         res = results[1]
+        session.pop("usuario", None)
         session.pop("actor", None)
             
     return json.dumps(res)
@@ -76,9 +81,11 @@ def VPrincipal():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
+    if "usuario" in session:
+        res['nombre']=session['usuario']['nombre']
+        res['idUsuario'] = session['usuario']['idUsuario']
 
-    res['idUsuario'] = 'Leo'
+    #Action code goes here, res should be a JSON structure
 
     #Action code ends here
     return json.dumps(res)
@@ -90,6 +97,7 @@ def VRegistro():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
+        
     #Action code goes here, res should be a JSON structure
 
 
