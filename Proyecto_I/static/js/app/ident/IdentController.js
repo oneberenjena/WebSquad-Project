@@ -78,8 +78,8 @@ socialModule.controller('VPrincipalController',
       $scope.VContactos2 = function(idUsuario) {
         $location.path('/VContactos/'+idUsuario);
       };
-      $scope.VPaginaDetalle1 = function(idUsuario) {
-        $location.path('/VPaginaDetalle/'+idUsuario);
+      $scope.VPagina1 = function(idUsuario) {
+        $location.path('/VPagina/'+idUsuario);
       };
     }]);
 socialModule.controller('VRegistroController', 

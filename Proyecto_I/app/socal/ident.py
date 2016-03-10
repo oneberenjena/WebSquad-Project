@@ -2,22 +2,37 @@ from flask import request, session, Blueprint, json
 
 ident = Blueprint('ident', __name__)
 
+from base import db, Usuario, Pagina
+
 
 @ident.route('/ident/AIdentificar', methods=['POST'])
 def AIdentificar():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VPrincipal', 'msg':['Bienvenido usuario'], "actor":"duenoProducto"}, {'label':'/VLogin', 'msg':['Datos de identificación incorrectos']}, ]
-    res = results[0]
-    #Action code goes here, res should be a list with a label and a message
-
-
-    #Action code ends here
-    if "actor" in res:
-        if res['actor'] is None:
-            session.pop("actor", None)
-        else:
-            session['actor'] = res['actor']
+    results = [
+        {
+            'label':'/VPrincipal',
+            'msg':['Bienvenido usuario'],
+            "actor":"duenoProducto"
+        },
+        {
+            'label':'/VLogin',
+            'msg': ['Datos de identificación incorrectos']
+        }]
+    user = Usuario.query.filter_by(username=params['usuario'],
+                                contrasena=params['clave']).first()
+    if user:
+        res = results[0]
+        session['usuario'] = {
+            'idUsuario': user.idUsuario,
+            'nombre': user.nombre
+        }
+        session['actor'] = res['actor']
+    else:
+        res = results[1]
+        session.pop("usuario", None)
+        session.pop("actor", None)
+            
     return json.dumps(res)
 
 
@@ -26,17 +41,28 @@ def AIdentificar():
 def ARegistrar():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VLogin', 'msg':['Felicitaciones, Ya estás registrado en la aplicación']}, {'label':'/VRegistro', 'msg':['Error al tratar de registrarse']}, ]
-    res = results[0]
-    #Action code goes here, res should be a list with a label and a message
-
-
-    #Action code ends here
-    if "actor" in res:
-        if res['actor'] is None:
-            session.pop("actor", None)
-        else:
-            session['actor'] = res['actor']
+    results = [
+        {
+            'label':'/VLogin',
+            'msg':['Felicitaciones, Ya estás registrado en la aplicación']
+        },
+        {
+            'label':'/VRegistro',
+            'msg':['Error al tratar de registrarse']
+        }
+    ]
+    
+    if not (params['usuario'] and params['correo'] and params['nombre'] and params['clave']):
+        res = results[1]
+    else:
+        try:
+            user = Usuario(params['nombre'], params['usuario'], params['clave'], params['correo'])
+            db.session.add(user)
+            db.session.commit()
+            res = results[0]
+        except:
+            res = results[1]
+    
     return json.dumps(res)
 
 
@@ -59,9 +85,11 @@ def VPrincipal():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
+    if "usuario" in session:
+        res['nombre']=session['usuario']['nombre']
+        res['idUsuario'] = session['usuario']['idUsuario']
 
-    res['idUsuario'] = 'Leo'
+    #Action code goes here, res should be a JSON structure
 
     #Action code ends here
     return json.dumps(res)
@@ -73,6 +101,7 @@ def VRegistro():
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
+        
     #Action code goes here, res should be a JSON structure
 
 

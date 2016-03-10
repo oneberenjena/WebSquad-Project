@@ -35,6 +35,8 @@ def AIdentificar():
             
     return json.dumps(res)
 
+
+
 @ident.route('/ident/ARegistrar', methods=['POST'])
 def ARegistrar():
     #POST/PUT parameters
@@ -63,6 +65,8 @@ def ARegistrar():
     
     return json.dumps(res)
 
+
+
 @ident.route('/ident/VLogin')
 def VLogin():
     res = {}
@@ -84,7 +88,10 @@ def VPrincipal():
     if "usuario" in session:
         res['nombre']=session['usuario']['nombre']
         res['idUsuario'] = session['usuario']['idUsuario']
-
+        pagina = Pagina.query.join(Usuario).filter(Usuario.idUsuario==session['usuario']['idUsuario']).first()
+        if pagina:
+            res['idPagina'] = pagina.idPagina
+        print(res)
     #Action code goes here, res should be a JSON structure
 
     #Action code ends here

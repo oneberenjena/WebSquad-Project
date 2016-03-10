@@ -16,6 +16,7 @@ socialModule.controller('VMiPaginaController',
    ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'identService', 'paginasService',
     function ($scope, $location, $route, $timeout, flash, $routeParams, ngDialog, identService, paginasService) {
       $scope.msg = '';
+      $scope.idUsuario = $routeParams.idUsuario;
       paginasService.VMiPagina({"idUsuario":$routeParams.idUsuario}).then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
@@ -24,7 +25,9 @@ socialModule.controller('VMiPaginaController',
         if ($scope.logout) {
             $location.path('/');
         }
-
+        if ($scope.label) {
+          $location.path($scope.label);
+        }
 
       });
       $scope.VPrincipal1 = function() {
@@ -106,13 +109,16 @@ socialModule.controller('VPaginaController',
 
       paginasService.VPagina({"idUsuario":$routeParams.idUsuario}).then(function (object) {
         $scope.res = object.data;
+        $scope.fPagina = {};
         for (var key in object.data) {
-            $scope[key] = object.data[key];
+            $scope.fPagina[key] = object.data[key];
         }
         if ($scope.logout) {
             $location.path('/');
         }
-
+        if ($scope.res.label) {
+          $location.path($scope.res.label);
+        }
 
       });
       $scope.VPrincipal1 = function() {

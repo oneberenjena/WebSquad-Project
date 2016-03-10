@@ -49,7 +49,7 @@ class Usuario(db.Model):
         return '<Usuario %r>' % self.nombre
         
 class Pagina(db.Model):
-    id_Pagina = db.Column(db.Integer, primary_key = True)
+    idPagina = db.Column(db.Integer, primary_key = True)
     titulo = db.Column(db.String(50), nullable = True)
     contenido = db.Column(db.Text, nullable = True)
     usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'))
@@ -65,7 +65,7 @@ from app.social.ident import ident
 app.register_blueprint(ident)
 from app.social.paginas import paginas
 app.register_blueprint(paginas)
-from app.socal.chat import chat
+from app.social.chat import chat
 app.register_blueprint(chat)
 
 

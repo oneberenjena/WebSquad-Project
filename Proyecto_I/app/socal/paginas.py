@@ -2,16 +2,38 @@ from flask import request, session, Blueprint, json
 
 paginas = Blueprint('paginas', __name__)
 
+from base import db, Usuario, Pagina
 
 @paginas.route('/paginas/AModificarPagina', methods=['POST'])
 def AModificarPagina():
+    print (session)
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VPagina', 'msg':['Cambios almacenados']}, ]
+    results = [
+        {
+            'label':'/VPagina',
+            'msg':['Cambios almacenados']
+        },
+        {
+            'label':'/paginas/AModificarPagina',
+            'msg':['El título debe tener más de 5 caracteres']
+        }
+    ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
-
-    res['label'] = res['label'] + '/' + 'Leo'
+    if 'usuario' in session and 'titulo' in params and len(params['titulo']) >= 5:
+        pagina = Pagina.query.join(Usuario).filter(Usuario.idUsuario==session['usuario']['idUsuario']).first()
+        if pagina:
+            pagina.titulo = params['titulo']
+            pagina.contenido = params['contenido']
+        else:
+            pagina = Pagina(titulo=params['titulo'], contenido=params['contenido'], usuario_id=session['usuario']['idUsuario'])
+            db.session.add(pagina)
+        db.session.commit()
+        res = results[0]
+        res['label'] += '/{}'.format(session['usuario']['idUsuario'])
+    else:
+        res = results[1]
 
     #Action code ends here
     if "actor" in res:
@@ -61,13 +83,20 @@ def VMiPagina():
     #Action code ends here
     return json.dumps(res)
 
-
-
-@paginas.route('/paginas/VPagina')
+@paginas.route('/paginas/VPagina', methods=['GET'])
 def VPagina():
-    #GET parameter
+    params = request.get_json()
     idUsuario = request.args['idUsuario']
-    res = {}
+    res = {
+        'titulo': '',
+        'contenido': ''
+    }
+    pagina = Pagina.query.join(Usuario).filter(Usuario.idUsuario==session['usuario']['idUsuario']).first()
+    print(pagina.__dict__)
+    if pagina:
+        res['titulo'] = pagina.titulo
+        res['contenido'] = pagina.contenido
+    
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
@@ -77,7 +106,33 @@ def VPagina():
     #Action code ends here
     return json.dumps(res)
 
+@paginas.route('/paginas/VPagina', methods=['GET'])
+def VPaginaDetalle():
+    params = request.get_json()
+    idUsuario = request.args['idUsuario']
+    results = [
+        {
+            'msg': ['Debes crear una pagina'],
+            'label': '/VPagina'
+        },
+        {
+            'label': '/VPaginaDetalle'
+        }
+    ]
+    res['label'] += '/{}'.format(session['usuario']['idUsuario'])
+    pagina = Pagina.query.join(Usuario).filter(Usuario.idUsuario==session['usuario']['idUsuario']).first()
+    
+    if pagina:
+        res['titulo'] = pagina.titulo
+        res['contenido'] = pagina.contenido
+        
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
 
+
+    #Action code ends here
+    return json.dumps(res)
 
 
 

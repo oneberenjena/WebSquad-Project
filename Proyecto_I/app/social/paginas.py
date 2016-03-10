@@ -16,7 +16,7 @@ def AModificarPagina():
         },
         {
             'label':'/paginas/AModificarPagina',
-            'msg':['El título debe tener más de 5 caracteres']
+            'msg':['Hubo en error']
         }
     ]
     res = results[0]
@@ -43,14 +43,19 @@ def AModificarPagina():
             session['actor'] = res['actor']
     return json.dumps(res)
 
+
+
 @paginas.route('/paginas/APagina')
 def APagina():
+    print(request.args)
     #GET parameter
     idPagina = request.args['idPagina']
     results = [{'label':'/VPagina', 'msg':[]}, {'label':'/VMiPagina', 'msg':[]}, ]
-    res = results[0]
+    res = results[1]
     #Action code goes here, res should be a list with a label and a message
-
+    pagina = Pagina.query.join(Usuario).filter(Usuario.idUsuario==session['usuario']['idUsuario']).first()
+    if not pagina and 'usuario' in session:
+        res = results[0]
     #Cuando la página exista, ir directamente a ella. 
     #Si no exite ir al editor de páginas.
     res['label'] = res['label'] + '/' + repr(1)
@@ -74,9 +79,17 @@ def VMiPagina():
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
 
-    res['titulo'] = "El título de mi página"
-    res['contenido'] = "<h3>¿No es bella mi página?</h3><p>Claro que <b>si</b>.</p>"
+    pagina = Pagina.query.join(Usuario).filter(Usuario.idUsuario==idUsuario).first()
+
+    if pagina is None and session['usuario']['idUsuario'] == int(idUsuario):
+        res['label'] = '/VPagina/{usuario}'.format(usuario = idUsuario)
+    else:
+        print('PAgina',pagina)
+        res['titulo'] = pagina.titulo
+        res['contenido'] = pagina.contenido
     
+    if 'usuario' in session:
+        res['idUsuario_session'] = session['usuario']['idUsuario']
 
     #Action code ends here
     return json.dumps(res)
@@ -87,50 +100,25 @@ def VPagina():
     idUsuario = request.args['idUsuario']
     res = {
         'titulo': '',
-        'contenido': ''
+        'contenido': '',
     }
-    pagina = Pagina.query.join(Usuario).filter(Usuario.idUsuario==session['usuario']['idUsuario']).first()
-    print(pagina.__dict__)
-    if pagina:
-        res['titulo'] = pagina.titulo
-        res['contenido'] = pagina.contenido
+    pagina = Pagina.query.join(Usuario).filter(Usuario.idUsuario==idUsuario).first()
     
-    if "actor" in session:
-        res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
+    if session['usuario']['idUsuario'] == int(idUsuario):
+        if pagina:
+            res['titulo'] = pagina.titulo
+            res['contenido'] = pagina.contenido
 
+        if "actor" in session:
+            res['actor']=session['actor']
+        #Action code goes here, res should be a JSON structure
+
+        res['idPagina'] = pagina.idPagina
+    else:
+        res['label'] = '/VMiPagina/{usuario}'.format(usuario=idUsuario)
 
     #Action code ends here
     return json.dumps(res)
-
-@paginas.route('/paginas/VPagina', methods=['GET'])
-def VPaginaDetalle():
-    params = request.get_json()
-    idUsuario = request.args['idUsuario']
-    results = [
-        {
-            'msg': ['Debes crear una pagina'],
-            'label': '/VPagina'
-        },
-        {
-            'label': '/VPaginaDetalle'
-        }
-    ]
-    res['label'] += '/{}'.format(session['usuario']['idUsuario'])
-    pagina = Pagina.query.join(Usuario).filter(Usuario.idUsuario==session['usuario']['idUsuario']).first()
-    
-    if pagina:
-        res['titulo'] = pagina.titulo
-        res['contenido'] = pagina.contenido
-        
-    if "actor" in session:
-        res['actor']=session['actor']
-    #Action code goes here, res should be a JSON structure
-
-
-    #Action code ends here
-    return json.dumps(res)
-
 
 
 #Use case code starts here
