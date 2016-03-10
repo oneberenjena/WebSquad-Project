@@ -13,6 +13,7 @@ socialModule.service('paginasService', ['$q', '$http', function($q, $http) {
     //    return deferred.promise;
     };
 
+<<<<<<< HEAD
     this.APagina = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({
@@ -30,31 +31,12 @@ socialModule.service('paginasService', ['$q', '$http', function($q, $http) {
         if(typeof args == 'undefined') args={};
         return $http({
           url: 'paginas/VMiPagina',
-          method: 'GET',
-          params: args
-        });
-    //    var res = {};
-    //    var deferred = $q.defer();
-    //    deferred.resolve(res);
-    //    return deferred.promise;
-    };
-	
-this.VPaginaDetalle = function(args) {
-        if(typeof args == 'undefined') args={};
-        return $http({
-          url: 'paginas/VPaginaDetalle',
-          method: 'GET',
-          params: args
-        });
-    //    var res = {};
-    //    var deferred = $q.defer();
-    //    deferred.resolve(res);
-    //    return deferred.promise;
-    };
+=======
     this.VPagina = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({
           url: 'paginas/VPagina',
+>>>>>>> master
           method: 'GET',
           params: args
         });
@@ -63,5 +45,28 @@ this.VPaginaDetalle = function(args) {
     //    deferred.resolve(res);
     //    return deferred.promise;
     };
+<<<<<<< HEAD
 
+    this.VPagina = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'paginas/VPagina',
+=======
+    this.VPaginaDetalle = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'paginas/VPaginaDetalle',
+>>>>>>> master
+          method: 'GET',
+          params: args
+        });
+    //    var res = {};
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
 }]);

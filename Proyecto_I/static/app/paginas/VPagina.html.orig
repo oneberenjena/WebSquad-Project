@@ -8,15 +8,27 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+<<<<<<< HEAD
+            <span class="navbar-brand" >Página de usuairo</span>
+=======
             <span class="navbar-brand" >Página de usuario</span>
+>>>>>>> master
         </div>
         <div class="collapse navbar-collapse" id="contenido-plegable">
             <ul class="nav navbar-nav navbar-left">
             </ul>
             <ul class="nav navbar-nav navbar-right">
+<<<<<<< HEAD
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+<li><a ng-click="__ayuda()"><span class="glyphicon glyphicon-info-sign"></span></a></li>
+<li><a ng-click="VPrincipal1()"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+    Regresar</a></li>
+=======
                 <li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
                 <li><a ng-click="__ayuda()"><span class="glyphicon glyphicon-info-sign"></span></a></li>
                 <li><a ng-click="VPrincipal1()">Regresar</a></li>
+>>>>>>> master
 
             </ul>
         </div>
@@ -34,5 +46,9 @@
 
 
 <div id="right"></div><script type="text/ng-template" id="ayuda_VPagina.html">
+<<<<<<< HEAD
+Manual...
+=======
 Vista con el editor de páginas de usuario.
+>>>>>>> master
 </script>
