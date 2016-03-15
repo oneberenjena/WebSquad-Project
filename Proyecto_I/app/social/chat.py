@@ -1,18 +1,39 @@
 from flask import request, session, Blueprint, json
+from base import *
 
+import sqlalchemy
 chat = Blueprint('chat', __name__)
 
 
+@socketio.on('message')
+def message_handler(data):
+    print(data)
 @chat.route('/chat/AElimContacto')
 def AElimContacto():
     #GET parameter
-    id = request.args['id']
-    results = [{'label':'/VAdminContactos', 'msg':['Contacto eliminado']}, {'label':'/VAdminContactos', 'msg':['No se pudo eliminar contacto']}, ]
+    idAmigo = request.args['id']
+    idUsuario = session['usuario']['idUsuario']
+    
+    results = [{
+        'label':'/VAdminContactos', 
+        'msg':['Contacto eliminado']
+        },
+        {
+        'label':'/VAdminContactos', 
+        'msg':['No se pudo eliminar contacto']
+    }]
+    
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
-
-    res['label'] = res['label'] + '/' + repr(1)
-
+    relacion = sonAmigos(idAmigo,idUsuario)
+    print("Relacion",relacion,idAmigo,idUsuario)
+    if relacion is None:
+        res = results[1]
+    else:
+        db.session.delete(relacion)
+        db.session.commit()
+    
+    res['label'] = res['label'] + '/' + str(idUsuario)
 
     #Action code ends here
     if "actor" in res:
@@ -90,12 +111,34 @@ def ASalirGrupo():
 def AgregContacto():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VAdminContactos', 'msg':['Contacto agregado']}, {'label':'/VAdminContactos', 'msg':['No se pudo agregar contacto']}, ]
+    idAmigo = params['id']
+    idUsuario = session['usuario']['idUsuario']
+    
+    results = [
+        {
+            'label':'/VAdminContactos', 
+            'msg':['Contacto agregado']
+        }, 
+        {
+            'label':'/VAdminContactos',
+            'msg':['No se pudo agregar contacto']
+        }
+    ]
+    
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
-
-    res['label'] = res['label'] + '/' + repr(1)
-
+    
+    try:
+        relacion = Contacto(usuario1=idUsuario,usuario2=idAmigo)
+        db.session.add(relacion)
+        db.session.commit()
+    except sqlalchemy.exc.IntegrityError as e:
+        db.session.rollback()
+        print("Hice rollback")
+        res = results[1]
+    
+    res['label'] = res['label'] + '/' + str(idUsuario)
+    
     #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
@@ -130,27 +173,30 @@ def AgregMiembro():
 @chat.route('/chat/VAdminContactos')
 def VAdminContactos():
     #GET parameter
-    idUsuario = request.args['idUsuario']
+    idUsuario = session['usuario']['idUsuario']
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
 
     res['idContacto'] = 1
+    contactos = obtenerAmigos(idUsuario)
     res['data1'] = [
-      {'idContacto':34, 'nombre':'ana', 'tipo':'usuario'},
-      {'idContacto':23, 'nombre':'leo', 'tipo':'usuario'},
-      {'idContacto':11, 'nombre':'distra', 'tipo':'usuario'},
-      {'idContacto':40, 'nombre':'vane', 'tipo':'usuario'},
+        {
+          'idContacto':contacto.idContacto, 
+          'nombre':contacto.nombre, 
+          'tipo':'usuario'
+        } for contacto in contactos
     ]
     res['data2'] = [
       {'idContacto':56, 'nombre':'Grupo Est. Leng.', 'tipo':'grupo'},
     ]
     res['idGrupo'] = 1
     res['fContacto_opcionesNombre'] = [
-      {'key':1, 'value':'Leo'},
-      {'key':2, 'value':'Lauri'},
-      {'key':3, 'value':'Mara'},
+        {
+          'key':usuario.idUsuario,
+          'value':usuario.nombre
+        } for usuario in Usuario.query.filter(Usuario.idUsuario != idUsuario).all()
     ]
 
     #Action code ends here
@@ -185,19 +231,21 @@ def VChat():
 @chat.route('/chat/VContactos')
 def VContactos():
     #GET parameter
-    idUsuario = request.args['idUsuario']
+    idUsuario = session['usuario']['idUsuario']
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
 
     res['idContacto'] = 1
+    contactos = obtenerAmigos(idUsuario)
+    print(contactos)
     res['data1'] = [
-      {'idContacto':34, 'nombre':'ana', 'tipo':'usuario'},
-      {'idContacto':23, 'nombre':'leo', 'tipo':'usuario'},
-      {'idContacto':11, 'nombre':'distra', 'tipo':'usuario'},
-      {'idContacto':40, 'nombre':'vane', 'tipo':'usuario'},
-      {'idContacto':56, 'nombre':'Grupo Est. Leng.', 'tipo':'grupo'},
+        {
+          'idContacto':contacto.idContacto, 
+          'nombre':contacto.nombre, 
+          'tipo':'usuario'
+        } for contacto in contactos
     ]
 
 

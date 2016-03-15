@@ -2,11 +2,14 @@ from flask import Flask, session
 from flask.ext.script import Manager, Server
 from flask_migrate import Migrate, MigrateCommand
 from flask_sqlalchemy import SQLAlchemy
+from flask_socketio import SocketIO
 from random import SystemRandom
 from datetime import timedelta
 
 app = Flask(__name__, static_url_path='')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
+
+socketio = SocketIO(app)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -47,7 +50,7 @@ class Usuario(db.Model):
         
     def __rep__(self):
         return '<Usuario %r>' % self.nombre
-        
+    
 class Pagina(db.Model):
     idPagina = db.Column(db.Integer, primary_key = True)
     titulo = db.Column(db.String(50), nullable = True)
@@ -59,6 +62,39 @@ class Pagina(db.Model):
     def __rep__(self):
         return '<Pagina %r>' % self.titulo
 
+class Contacto(db.Model):
+    __tablename__ = 'contacto'
+    idContacto = db.Column(db.Integer, primary_key=True)
+    usuario1 = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'))
+    usuario2 = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'))
+    __table_args__ = (db.UniqueConstraint('usuario1', 'usuario2', name='_amistad'),)
+    
+    def __rep__(self):
+        return '<{} y {} son amigos'.format(self.usuario1, self.usuario2)
+
+def sonAmigos(id1,id2):
+    relacion = Contacto.query.filter(
+        (Contacto.usuario1== id1 and \
+         Contacto.usuario2== id2) or \
+        (Contacto.usuario1== id2 and Contacto.usuario2==id1)
+    ).first()
+    return relacion
+
+def obtenerAmigos(idUsuario):
+    c1 = Contacto.query.join(
+        Usuario, Contacto.usuario2 == Usuario.idUsuario
+    ).add_columns(
+        Usuario.nombre,Usuario.idUsuario, Contacto.idContacto
+    ).filter(Contacto.usuario1==idUsuario).all()
+    
+    c2 = Contacto.query.join(
+        Usuario, Contacto.usuario1 == Usuario.idUsuario
+    ).add_columns(
+        Usuario.nombre,Usuario.idUsuario, Contacto.idContacto
+    ).filter(Contacto.usuario2==idUsuario).all()
+    
+    return c1 + c2
+        
 #Application code ends here
 
 from app.social.ident import ident
@@ -74,4 +110,6 @@ if __name__ == '__main__':
       SECRET_KEY = repr(SystemRandom().random())
     )
     manager.run()
+    socketio.run(app)
+
 

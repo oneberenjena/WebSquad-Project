@@ -15,11 +15,22 @@ socialModule.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 socialModule.controller('VAdminContactosController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'ngTableParams', 'chatService', 'identService',
-    function ($scope, $location, $route, $timeout, flash, $routeParams, ngDialog, ngTableParams, chatService, identService) {
+   [
+    '$scope',
+    '$location', 
+    '$route', 
+    '$timeout', 
+    'flash', 
+    '$routeParams', 
+    'ngDialog', 
+    'ngTableParams', 
+    'chatService', 
+    'identService',
+    'chatSocket',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, ngDialog, ngTableParams, chatService, identService, chatSocket) {
       $scope.msg = '';
       $scope.fContacto = {};
-
+      
       chatService.VAdminContactos({"idUsuario":$routeParams.idUsuario}).then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
@@ -97,8 +108,8 @@ ngDialog.open({ template: 'ayuda_VAdminContactos.html',
 }
     }]);
 socialModule.controller('VChatController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'chatService', 'identService',
-    function ($scope, $location, $route, $timeout, flash, $routeParams, ngDialog, chatService, identService) {
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'chatService', 'identService', 'chatSocket',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, ngDialog, chatService, identService, chatSocket) {
       $scope.msg = '';
       $scope.fChat = {};
 
@@ -122,13 +133,8 @@ socialModule.controller('VChatController',
         $scope.fChatSubmitted = true;
         if (isValid) {
           
-          chatService.AEscribir($scope.fChat).then(function (object) {
-              var msg = object.data["msg"];
-              if (msg) flash(msg);
-              var label = object.data["label"];
-              $location.path(label);
-              $route.reload();
-          });
+          chatSocket.emit('message',{});
+          
         }
       };
 

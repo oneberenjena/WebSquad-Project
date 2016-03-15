@@ -1,3 +1,10 @@
+socialModule.factory('chatSocket', ['socketFactory', function (socketFactory) {
+      var socket = socketFactory();
+      socket.forward('broadcast');
+      socket.forward('message');
+      return socket;
+}]);
+
 socialModule.service('chatService', ['$q', '$http', function($q, $http) {
 
     this.AElimContacto = function(args) {
