@@ -9,18 +9,11 @@ from datetime import timedelta
 app = Flask(__name__, static_url_path='')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 
-socketio = SocketIO(app)
+socketio = SocketIO(app, engineio_logger=True)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
-manager = Manager(app)
-manager.add_command("runserver", Server(
-    use_debugger = True,
-    use_reloader = True,
-    host = '0.0.0.0', port = 8080)
-)
-manager.add_command('db', MigrateCommand)
 
 @app.before_request
 def make_session_permanent():
@@ -104,6 +97,13 @@ app.register_blueprint(paginas)
 from app.social.chat import chat
 app.register_blueprint(chat)
 
+@socketio.on('my event')
+def message_handler():
+    print("mi evento")
+
+@socketio.on_error_default
+def chat_error_handler(e):
+    print('An error has occurred: ' + str(e))
 
 if __name__ == '__main__':
     app.config.update(
@@ -113,10 +113,3 @@ if __name__ == '__main__':
     socketio.run(app, host='0.0.0.0',port=8080)
 
 
-@socketio.on('my event', namespace="/test")
-def message_handler():
-    print("mi evento")
-
-@socketio.on_error_default
-def chat_error_handler(e):
-    print('An error has occurred: ' + str(e))
