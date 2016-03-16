@@ -182,7 +182,7 @@ def VAdminContactos():
     contactos = obtenerAmigos(idUsuario)
     res['data1'] = [
         {
-          'idContacto':contacto.idContacto, 
+          'idContacto':contacto.idUsuario, 
           'nombre':contacto.nombre, 
           'tipo':'usuario'
         } for contacto in contactos
@@ -241,7 +241,7 @@ def VContactos():
     print(contactos)
     res['data1'] = [
         {
-          'idContacto':contacto.idContacto, 
+          'idContacto':contacto.idUsuario,
           'nombre':contacto.nombre, 
           'tipo':'usuario'
         } for contacto in contactos

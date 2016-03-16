@@ -112,7 +112,18 @@ socialModule.controller('VChatController',
     function ($scope, $location, $route, $timeout, flash, $routeParams, ngDialog, chatService, identService, chatSocket) {
       $scope.msg = '';
       $scope.fChat = {};
-
+      
+      $scope.mensajes = [];
+      // Recibir mensajes
+      chatSocket.on('message', function(mensaje,data) {
+        mensaje_obj = {
+          mensaje: mensaje,
+          de: $routeParams.idChat,
+          fecha: new Date()
+        }
+        $scope.mensajes.push(mensaje_obj);
+      })
+      
       chatService.VChat({"idChat":$routeParams.idChat}).then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
@@ -130,8 +141,17 @@ socialModule.controller('VChatController',
 
       $scope.fChatSubmitted = false;
       $scope.AEscribir1 = function(isValid) {
+        if (isValid) {
+          chatSocket.emit("message",{msg:$scope.fChat.texto,idUsuario:$routeParams.idChat,tipo:'usuario'});
+          mensaje_obj = {
+            mensaje: $scope.fChat.texto,
+            de: 'Yo',
+            fecha: new Date()
+          }
+          $scope.mensajes.push(mensaje_obj);
+        }
         $scope.fChatSubmitted = true;
-        chatSocket.emit("my event");
+        
       };
 
 $scope.__ayuda = function() {

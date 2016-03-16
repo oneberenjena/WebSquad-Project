@@ -2,7 +2,7 @@ from flask import Flask, session
 from flask.ext.script import Manager, Server
 from flask_migrate import Migrate, MigrateCommand
 from flask_sqlalchemy import SQLAlchemy
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, send, join_room
 from random import SystemRandom
 from datetime import timedelta
 
@@ -10,6 +10,9 @@ app = Flask(__name__, static_url_path='')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
 
 socketio = SocketIO(app, engineio_logger=True)
+
+# Llevar seguimiento del id del socket de cada usuario
+clients = []
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -97,10 +100,21 @@ app.register_blueprint(paginas)
 from app.social.chat import chat
 app.register_blueprint(chat)
 
-@socketio.on('my event')
-def message_handler():
-    print("mi evento")
+@socketio.on('message')
+def message_handler(data):
+    send(message=data['msg'], room='{}_{}'.format(data['tipo'],data['idUsuario']))
+    print(data['msg'])
 
+@socketio.on('join')
+def join_room_handler(data):
+    room = "{}_{}".format(data['tipo'],data['room'])
+    session['room'] = room
+    join_room(room)
+
+@socketio.on('connection')
+def connection_handler(data):
+    print('Usuario',session['usuario']['idUsuario'])
+        
 @socketio.on_error_default
 def chat_error_handler(e):
     print('An error has occurred: ' + str(e))

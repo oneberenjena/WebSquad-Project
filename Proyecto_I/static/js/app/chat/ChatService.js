@@ -1,5 +1,5 @@
 socialModule.factory('chatSocket', ['socketFactory', function (socketFactory) {
-      var myIoSocket = io.connect('http://' + document.domain + ':' + location.port + "/test");
+      var myIoSocket = io.connect('http://' + document.domain + ':' + location.port );
 
       var socket = socketFactory({
         ioSocket: myIoSocket

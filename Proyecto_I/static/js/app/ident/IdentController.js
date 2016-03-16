@@ -49,14 +49,17 @@ socialModule.controller('VLoginController',
 
     }]);
 socialModule.controller('VPrincipalController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', 'chatService', 'identService', 'paginasService',
-    function ($scope, $location, $route, $timeout, flash, chatService, identService, paginasService) {
+   ['$scope', '$location', '$route', '$timeout', 'flash', 'chatService', 'identService', 'paginasService', 'chatSocket',
+    function ($scope, $location, $route, $timeout, flash, chatService, identService, paginasService, chatSocket) {
       $scope.msg = '';
       identService.VPrincipal().then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
             $scope[key] = object.data[key];
         }
+        // Unirse a su propio grupo
+        chatSocket.emit("join", {room:$scope.idUsuario, tipo: 'usuario'})
+
         if ($scope.logout) {
             $location.path('/');
         }
