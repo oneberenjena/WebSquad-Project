@@ -1,13 +1,11 @@
 from flask import request, session, Blueprint, json
 from base import *
-
 import sqlalchemy
+
 chat = Blueprint('chat', __name__)
 
 
-@socketio.on('message')
-def message_handler(data):
-    print(data)
+
 @chat.route('/chat/AElimContacto')
 def AElimContacto():
     #GET parameter
@@ -172,6 +170,7 @@ def AgregMiembro():
 
 @chat.route('/chat/VAdminContactos')
 def VAdminContactos():
+    print(socketio.emit("my event"))
     #GET parameter
     idUsuario = session['usuario']['idUsuario']
     res = {}

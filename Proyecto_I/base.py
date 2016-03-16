@@ -2,7 +2,7 @@ from flask import Flask, session
 from flask.ext.script import Manager, Server
 from flask_migrate import Migrate, MigrateCommand
 from flask_sqlalchemy import SQLAlchemy
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit
 from random import SystemRandom
 from datetime import timedelta
 
@@ -109,7 +109,14 @@ if __name__ == '__main__':
     app.config.update(
       SECRET_KEY = repr(SystemRandom().random())
     )
-    manager.run()
-    socketio.run(app)
+    #manager.run()
+    socketio.run(app, host='0.0.0.0',port=8080)
 
 
+@socketio.on('my event', namespace="/test")
+def message_handler():
+    print("mi evento")
+
+@socketio.on_error_default
+def chat_error_handler(e):
+    print('An error has occurred: ' + str(e))

@@ -131,11 +131,7 @@ socialModule.controller('VChatController',
       $scope.fChatSubmitted = false;
       $scope.AEscribir1 = function(isValid) {
         $scope.fChatSubmitted = true;
-        if (isValid) {
-          
-          chatSocket.emit('message',{});
-          
-        }
+        chatSocket.emit("my event");
       };
 
 $scope.__ayuda = function() {
