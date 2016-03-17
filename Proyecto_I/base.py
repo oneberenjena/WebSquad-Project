@@ -69,11 +69,9 @@ class Contacto(db.Model):
         return '<{} y {} son amigos'.format(self.usuario1, self.usuario2)
 
 def sonAmigos(id1,id2):
-    relacion = Contacto.query.filter(
-        (Contacto.usuario1== id1 and \
-         Contacto.usuario2== id2) or \
-        (Contacto.usuario1== id2 and Contacto.usuario2==id1)
-    ).first()
+    relacion1 = Contacto.query.filter_by(usuario1=id1,usuario2=id2).first()
+    relacion2 = Contacto.query.filter_by(usuario1=id2, usuario2=id1).first()
+    relacion = relacion1 if relacion2 is None else relacion2
     return relacion
 
 def obtenerAmigos(idUsuario):
@@ -105,19 +103,25 @@ def message_handler(data):
     send(message=data['msg'], room='{}_{}'.format(data['tipo'],data['idUsuario']))
     print(data['msg'])
 
+@socketio.on('connect')
+def connect_handler():
+    print("conectar")
+    if 'usuario' in session:
+        room = "usuario_{}".format(session['usuario']['idUsuario'])
+        join_room(room)
+        print("Conectado y en el room")
+    else:
+        print("Conectado")
+
 @socketio.on('join')
 def join_room_handler(data):
+    print("Joining")
     room = "{}_{}".format(data['tipo'],data['room'])
-    session['room'] = room
     join_room(room)
 
-@socketio.on('connection')
-def connection_handler(data):
-    print('Usuario',session['usuario']['idUsuario'])
-        
 @socketio.on_error_default
 def chat_error_handler(e):
-    print('An error has occurred: ' + str(e))
+    print('An error has occurred: ' + str(e),e)
 
 if __name__ == '__main__':
     app.config.update(
@@ -125,5 +129,3 @@ if __name__ == '__main__':
     )
     #manager.run()
     socketio.run(app, host='0.0.0.0',port=8080)
-
-

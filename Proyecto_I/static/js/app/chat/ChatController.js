@@ -108,12 +108,13 @@ ngDialog.open({ template: 'ayuda_VAdminContactos.html',
 }
     }]);
 socialModule.controller('VChatController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'chatService', 'identService', 'chatSocket',
-    function ($scope, $location, $route, $timeout, flash, $routeParams, ngDialog, chatService, identService, chatSocket) {
+   ['$scope', '$localStorage', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'chatService', 'identService', 'chatSocket',
+    function ($scope, $localStorage, $location, $route, $timeout, flash, $routeParams, ngDialog, chatService, identService, chatSocket) {
       $scope.msg = '';
       $scope.fChat = {};
       
-      $scope.mensajes = [];
+      if ($scope.$storage.mensajes === undefined)
+        $scope.$storage.mensajes = [];
       // Recibir mensajes
       chatSocket.on('message', function(mensaje,data) {
         mensaje_obj = {
@@ -121,9 +122,10 @@ socialModule.controller('VChatController',
           de: $routeParams.idChat,
           fecha: new Date()
         }
-        $scope.mensajes.push(mensaje_obj);
+        $scope.$storage.mensajes.push(mensaje_obj);
+        console.log($localStorage);
       })
-      
+
       chatService.VChat({"idChat":$routeParams.idChat}).then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
@@ -148,7 +150,7 @@ socialModule.controller('VChatController',
             de: 'Yo',
             fecha: new Date()
           }
-          $scope.mensajes.push(mensaje_obj);
+          $scope.$storage.mensajes.push(mensaje_obj);
         }
         $scope.fChatSubmitted = true;
         

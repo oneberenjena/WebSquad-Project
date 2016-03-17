@@ -49,16 +49,15 @@ def AModificarPagina():
 def APagina():
     print(request.args)
     #GET parameter
-    idPagina = request.args['idPagina']
+    idUsuario = request.args['idUsuario']
     results = [{'label':'/VPagina', 'msg':[]}, {'label':'/VMiPagina', 'msg':[]}, ]
     res = results[1]
     #Action code goes here, res should be a list with a label and a message
-    pagina = Pagina.query.join(Usuario).filter(Usuario.idUsuario==session['usuario']['idUsuario']).first()
-    if not pagina and 'usuario' in session:
+    pagina = Pagina.query.join(Usuario).filter(Usuario.idUsuario==idUsuario).first()
+    if not pagina and 'usuario' in session and session['usuario']['idUsuario'] == int(idUsuario):
         res = results[0]
-    #Cuando la página exista, ir directamente a ella. 
-    #Si no exite ir al editor de páginas.
-    res['label'] = res['label'] + '/' + repr(1)
+    
+    res['label'] = res['label'] + '/' + str(idUsuario)
 
     #Action code ends here
     if "actor" in res:

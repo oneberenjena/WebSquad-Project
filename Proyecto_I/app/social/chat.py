@@ -24,7 +24,7 @@ def AElimContacto():
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
     relacion = sonAmigos(idAmigo,idUsuario)
-    print("Relacion",relacion,idAmigo,idUsuario)
+    print("Relacion",relacion.usuario1,relacion.usuario2,idAmigo,idUsuario)
     if relacion is None:
         res = results[1]
     else:
@@ -170,7 +170,6 @@ def AgregMiembro():
 
 @chat.route('/chat/VAdminContactos')
 def VAdminContactos():
-    print(socketio.emit("my event"))
     #GET parameter
     idUsuario = session['usuario']['idUsuario']
     res = {}
