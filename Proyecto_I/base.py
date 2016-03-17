@@ -68,6 +68,18 @@ class Contacto(db.Model):
     def __rep__(self):
         return '<{} y {} son amigos'.format(self.usuario1, self.usuario2)
 
+class Grupo(db.Model):
+    idGrupo = db.Column(db.Integer, primary_key = True)
+    nombre = db.Column(db.String(50), nullable = False)
+    usuarios = db.relationship("Membresia")
+
+class Membresia(db.Model):
+    idUsuario = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'), primary_key=True)
+    idGrupo = db.Column(db.Integer, db.ForeignKey('grupo.idGrupo'), primary_key=True)
+    es_admin = db.Column(db.Boolean)
+    usuario = db.relationship("Usuario")
+
+
 def sonAmigos(id1,id2):
     relacion1 = Contacto.query.filter_by(usuario1=id1,usuario2=id2).first()
     relacion2 = Contacto.query.filter_by(usuario1=id2, usuario2=id1).first()
@@ -128,4 +140,4 @@ if __name__ == '__main__':
       SECRET_KEY = repr(SystemRandom().random())
     )
     #manager.run()
-    socketio.run(app, host='0.0.0.0',port=8080)
+    socketio.run(app, host='0.0.0.0',port=8080,debug=True)

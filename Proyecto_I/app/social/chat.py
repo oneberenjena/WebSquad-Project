@@ -145,17 +145,59 @@ def AgregContacto():
             session['actor'] = res['actor']
     return json.dumps(res)
 
+@chat.route('/chat/AgregGrupo', methods=['POST'])
+def AgregGrupo():
+    #GET parameter
+    params = request.get_json()
+    print(params)
+    nombreGrupo = params['nombre']
+    results = [{'label':'/VAdminContactos', 'msg':['Grupo agregado']}, {'label':'/VAdminContactos', 'msg':['Error al crear grupo']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
+    if 'usuario' in session:
+        grupo = Grupo(nombre=nombreGrupo)
+        db.session.add(grupo)
+        db.session.commit()
+        
+        membresia = Membresia(
+            idUsuario=session['usuario']['idUsuario'],
+            idGrupo=grupo.idGrupo,
+            es_admin=True
+        )
+        db.session.add(membresia)
+        db.session.commit()
+    else:
+        res = results[1]
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
 
 
 @chat.route('/chat/AgregMiembro', methods=['POST'])
 def AgregMiembro():
     #POST/PUT parameters
     params = request.get_json()
+    idGrupo = params['idGrupo']
+    idUsuario = params['idUsuario']
     results = [{'label':'/VGrupo', 'msg':['Nuevo miembro agregado']}, {'label':'/VGrupo', 'msg':['No se pudo agregar al nuevo miembro']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
-
-    res['label'] = res['label'] + '/' + repr(1)
+    grupo = Grupo.query.filter_by(idGrupo=idGrupo)
+    usuario = Usuario.query.filter_by(idUsuario=idUsuario)
+    
+    if grupo and usuario:
+        membresia = Membresia(idUsuario=idUsuario, idGrupo=idGrupo, es_admin=False)
+        db.session.add(membresia)
+        db.session.commit()
+    else:
+        res = results[1]
+        
+    res['label'] = res['label'] + '/' + repr(idGrupo)
 
 
     #Action code ends here
@@ -176,7 +218,6 @@ def VAdminContactos():
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
-
     res['idContacto'] = 1
     contactos = obtenerAmigos(idUsuario)
     res['data1'] = [

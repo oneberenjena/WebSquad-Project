@@ -10,7 +10,15 @@ socialModule.factory('chatSocket', ['socketFactory', function (socketFactory) {
 }]);
 
 socialModule.service('chatService', ['$q', '$http', function($q, $http) {
-
+    
+    this.AgregGrupo = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'chat/AgregGrupo',
+          method: 'POST',
+          data: args
+        });
+    };
     this.AElimContacto = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({
