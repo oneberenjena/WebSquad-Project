@@ -1,47 +1,140 @@
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" 
-                    data-toggle="collapse" 
-                    data-target="#contenido-plegable">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <span class="navbar-brand" >Miembros del gurpo</span>
-        </div>
-        <div class="collapse navbar-collapse" id="contenido-plegable">
-            <ul class="nav navbar-nav navbar-left">
-<li><a ng-click="ASalirGrupo1()">
-  Salirme del grupo</a></li>
+  <!--************************************************-->
+  <!--                                                -->
+  <!-- HEADER                                         -->
+  <!--                                                -->
+  <!--************************************************-->
+        <header>
+          <!--************************************************-->
+          <!-- BARRA DE NAVEGACION                            -->
+          <!--************************************************-->  
+            <nav class="navbar-2 navbar-default navbar-fixed-top cbp-af-header" role="navigation">
+              <div  class="container-fluid">
+                <!--************************************************-->
+                <!-- EN MOVILES                                     -->
+                <!--************************************************-->
+                  <!-- Brand and toggle get grouped for better mobile display -->
+                  <div class="navbar-header">
+                    <!--*********************-->
+                    <!-- BOTON DE MENU       -->
+                    <!--*********************-->
+                      <button 
+                      type="button" 
+                      class="navbar-toggle collapsed" 
+                      data-toggle="collapse" 
+                      data-target="#bs-example-navbar-collapse-1" 
+                      aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                      </button>
+                    <!--*********************-->
+                    <!-- ICONO SFL           -->
+                    <!--*********************-->
+                      <a ng-click="VPrincipal()">
+                        <img style="margin-top:1em;margin-bottom:0.6em;" src="img/SFL_logo-01.svg" />
+                      </a>
+                  </div>
+                <!--************************************************-->
+                <!-- EN DESKTOP                                     -->
+                <!--************************************************-->
+                  <!-- Collect the nav links, forms, and other content for toggling -->
+                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <!--*********************-->
+                    <!-- FORM DE BUSQUEDA    -->
+                    <!--*********************-->
+                      <form class="navbar-form navbar-right" role="search">
+                      <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Buscar Contacto">
+                            <span class="input-group-btn">
+                                <button class="btn  btn-perso" type="button">Ir</button>
+                            </span>
+                        </div>
 
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
-<li><a ng-click="__ayuda()"><span class="glyphicon glyphicon-info-sign"></span></a></li>
-<li><a ng-click="VAdminContactos2(idUsuario)">
-    Regresar</a></li>
+                      </div>
+                      </form>
+                      <!-- /input-group -->
+                    <!--*********************-->
+                    <!-- LINKS               -->
+                    <!--*********************-->
+                      <ul class="nav navbar-nav navbar-right">
+                      <!--*********************-->
+                      <!-- USERNAME            -->
+                      <!--*********************-->
+                      <li class="dropdown">
+                        <a ng-click="VPrincipal()" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                          {{nombre}}huhu
+                          <span class="caret "></span>
+                        </a>
+                        <!--*********************-->
+                        <!-- DROPDOWN            -->
+                        <!--*********************-->  
+                          <ul class="dropdown-menu">
+                            <li><a ng-click="VPrincipal1()">Perfil</a></li>
+                            <li><a ng-click="VPagina1(idUsuario)">Editor</a></li>
+                            <li><a ng-click="VAdminContactos2(idUsuario)"
+           ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">Contactos</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a ng-click="VLogin0()">Salir</a></li>
+                          </ul>
+                      </li>
+                    <li><a ng-click="__ayuda()"><span class="glyphicon glyphicon-info-sign"></span></a></li>
 
-            </ul>
-        </div>
-    </div>
-</nav>
-
-    <form name="fMiembroForm" ng-submit="AgregMiembro0(fMiembroForm.$valid)" novalidate>
-            <div class="form-group" ng-class="{ 'has-error' :  fMiembroSubmitted && fMiembroForm.nombre.$invalid && fMiembroForm.nombre.$pristine && fMiembroSubmitted}"><label for="fMiembro_nombre">Nombre</label>:&nbsp;<select id="fMiembro_nombre" ng-model="fMiembro.nombre" required ng-options="item.key as item.value for item in fMiembro_opcionesNombre"></select><p ng-show="fMiembroSubmitted && fMiembroForm.nombre.$invalid" class="help-block">Error en campo Nombre.</p></div>
-        <button type="submit" class="btn btn-perso btn-lg btn-block">
-            <span class="glyphicon glyphicon-flash"></span>Agregar
-        </button>
-    </form>
-    <hr />        <table ng-table="tableParams3" template-pagination="pager.html" class="table">
+                    </ul>
+                  </div> <!-- /.navbar-collapse -->  
+              </div> <!-- /.container-fluid -->
+            </nav>
+        </header>
+  <!--************************************************-->
+  <!--                                                -->
+  <!-- CUERPO                                         -->
+  <!--                                                -->
+  <!--************************************************-->
+    <div class="container-fluid container-sm-height fill-screen">
+      <div class="row row-sm-height">
+        <!--************************************************-->
+        <!-- ASIDE                                          -->
+        <!--************************************************-->
+          <aside class="col-sm-4 right-divider hidden-xs col-sm-height centrado">
+            <!--************************************************-->
+            <!-- NOMBRE DE USUARIO                              -->
+            <!--************************************************-->
+              <p>
+              <h1>Grupo</h1>
+              </p>
+              <br>
+            <!--************************************************-->
+            <!-- BOTON                                          -->
+            <!--************************************************-->
+              <p>
+                <a style="border-style:none;background:#FF5252" ng-click="ASalirGrupo1()" class="btn btn-perso">Salir del grupo</a>
+              </p>
+          </aside>
+        <!--************************************************-->
+        <!-- CONTENIDO                                      -->
+        <!--************************************************-->
+          <section class="col-sm-8 col-sm-height" id="contenido-registro">
+            <form name="fMiembroForm" ng-submit="AgregMiembro0(fMiembroForm.$valid)" novalidate>
+              <div class="form-group" ng-class="{ 'has-error' :  fMiembroSubmitted && fMiembroForm.nombre.$invalid && fMiembroForm.nombre.$pristine && fMiembroSubmitted}">
+                  <label for="fMiembro_nombre">Nombre</label>:&nbsp;
+                  <select id="fMiembro_nombre" ng-model="fMiembro.nombre" required ng-options="item.key as item.value for item in fMiembro_opcionesNombre"> 
+                  </select>
+                  <p ng-show="fMiembroSubmitted && fMiembroForm.nombre.$invalid" class="help-block">Error en campo Nombre.</p>
+              </div>
+              <button type="submit" class="btn btn-perso btn-lg btn-block">
+                <i class="fa fa-user-plus"></i>Agregar
+              </button>
+            </form>
+    <table ng-table="tableParams3" template-pagination="pager.html" class="table">
             <tr ng-repeat="row in $data">
-                <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
+                <td data-title="'Miembros '" ng-bind="row['nombre']"></td>
                 <td ng-show="row['idContacto']"><a ng-click="AElimMiembro3(row['idContacto'])">Eliminar</a></td>
             </tr>
         </table>
-
-<hr />
-
+          </section>
+      </div>
+    </div>
 
 <div id="right"></div><script type="text/ng-template" id="ayuda_VGrupo.html">
 Manual...<br>
