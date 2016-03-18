@@ -43,15 +43,24 @@ def AElimContacto():
 
 
 
-@chat.route('/chat/AElimMiembro')
+@chat.route('/chat/AElimMiembro', methods=['POST'])
 def AElimMiembro():
     #GET parameter
-    id = request.args['id']
-    results = [{'label':'/VGrupo', 'msg':['Miembro eliminado']}, ]
+    params = request.get_json()
+    idUsuario = params['idUsuario']
+    idGrupo = params['idGrupo']
+    
+    results = [{'label':'/VGrupo', 'msg':['Miembro eliminado']}, {'label':'/VGrupo', 'msg':['El miembro no pudo ser eliminado']},]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
-
-    res['label'] = res['label'] + '/' + repr(1)
+    membresia = Membresia.query.filter_by(idGrupo=idGrupo, idUsuario=idUsuario).first()
+    if membresia:
+        db.session.delete(membresia)
+        db.session.commit()
+    else:
+        res = results[1]
+    
+    res['label'] = res['label'] + '/' + idGrupo
 
     #Action code ends here
     if "actor" in res:
@@ -84,15 +93,30 @@ def AEscribir():
 
 
 
-@chat.route('/chat/ASalirGrupo')
+@chat.route('/chat/ASalirGrupo', methods=['POST'])
 def ASalirGrupo():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VAdminContactos', 'msg':['Ya no estás en ese grupo']}, {'label':'/VGrupo', 'msg':['Sigues en el grupo']}, ]
+    idGrupo = params['idGrupo']
+    idUsuario = session['usuario']['idUsuario']
+    results = [{'label':'/VAdminContactos', 'msg':['Ya no estás en ese grupo']}, {'label':'/VGrupo', 'msg':['No puedes salir del grupo']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
-
-    res['label'] = res['label'] + '/' + repr(1)
+    membresia = Membresia.query.filter_by(idUsuario=idUsuario, idGrupo=idGrupo).first()
+    if membresia:
+        db.session.delete(membresia)
+        if membresia.es_admin:
+            nuevoAdmin = Membresia.query.filter_by(idGrupo = idGrupo).first()
+            if nuevoAdmin:
+                nuevoAdmin.es_admin = True
+                db.session.add(nuevoAdmin)
+                res['label'] = res['label'] + '/' + idGrupo
+            else:
+                res = results[1]
+                res['label'] = res['label'] + '/' + idUsuario
+        else:
+            res['label'] = res['label'] + '/' + idGrupo
+        db.session.commit()
 
 
     #Action code ends here
@@ -191,13 +215,18 @@ def AgregMiembro():
     usuario = Usuario.query.filter_by(idUsuario=idUsuario)
     
     if grupo and usuario:
-        membresia = Membresia(idUsuario=idUsuario, idGrupo=idGrupo, es_admin=False)
-        db.session.add(membresia)
-        db.session.commit()
+        try:
+            membresia = Membresia(idUsuario=idUsuario, idGrupo=idGrupo, es_admin=False)
+            db.session.add(membresia)
+            db.session.commit()
+        except sqlalchemy.exc.IntegrityError as e:
+            db.session.rollback()
+            print("Hice rollback")
+            res = results[1]
     else:
         res = results[1]
         
-    res['label'] = res['label'] + '/' + repr(idGrupo)
+    res['label'] = res['label'] + '/' + idGrupo
 
 
     #Action code ends here
@@ -227,9 +256,16 @@ def VAdminContactos():
           'tipo':'usuario'
         } for contacto in contactos
     ]
+    grupos = Membresia.query.join(Grupo, Grupo.idGrupo == Membresia.idGrupo).add_columns(
+        Grupo.idGrupo, Grupo.nombre).filter(Membresia.idUsuario==idUsuario).all()
     res['data2'] = [
-      {'idContacto':56, 'nombre':'Grupo Est. Leng.', 'tipo':'grupo'},
+        {
+          'idContacto':grupo.idGrupo, 
+          'nombre':grupo.nombre, 
+          'tipo':'grupo'
+        } for grupo in grupos
     ]
+
     res['idGrupo'] = 1
     res['fContacto_opcionesNombre'] = [
         {
@@ -297,22 +333,27 @@ def VContactos():
 def VGrupo():
     #GET parameter
     idGrupo = request.args['idGrupo']
+    idUsuario = session['usuario']['idUsuario']
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
-
-    res['idGrupo'] = 1
+    
+    contactos = obtenerAmigos(idUsuario)
+   
+    res['idGrupo'] = idGrupo
     res['fMiembro_opcionesNombre'] = [
-      {'key':1, 'value':'Leo'},
-      {'key':2, 'value':'Lauri'},
-      {'key':3, 'value':'Mara'},
+        {
+          'key':contacto.idUsuario,
+          'value':contacto.nombre
+        } for contacto in contactos
     ]
     res['data3'] = [
-      {'idContacto':34, 'nombre':'ana', 'tipo':'usuario'},
-      {'idContacto':23, 'nombre':'leo', 'tipo':'usuario'},
-      {'idContacto':11, 'nombre':'distra', 'tipo':'usuario'},
-      {'idContacto':40, 'nombre':'vane', 'tipo':'usuario'},
+        {
+          'idContacto':contacto.idUsuario,
+          'nombre': Usuario.query.filter_by(idUsuario=contacto.idUsuario).first().nombre,
+          'tipo': "usuario"
+        } for contacto in Grupo.query.filter(Grupo.idGrupo == idGrupo).first().usuarios
     ]
 
     #Action code ends here

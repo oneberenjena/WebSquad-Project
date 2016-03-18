@@ -36,8 +36,8 @@ socialModule.service('chatService', ['$q', '$http', function($q, $http) {
         if(typeof args == 'undefined') args={};
         return $http({
           url: 'chat/AElimMiembro',
-          method: 'GET',
-          params: args
+          method: 'POST',
+          data: args
         });
     //    var labels = ["/VGrupo", ];
     //    var res = labels[0];
@@ -62,8 +62,8 @@ socialModule.service('chatService', ['$q', '$http', function($q, $http) {
         if(typeof args == 'undefined') args={};
         return $http({
           url: 'chat/ASalirGrupo',
-          method: 'GET',
-          params: args
+          method: 'POST',
+          data: args
         });
     //    var labels = ["/VAdminContactos", "/VGrupo", ];
     //    var res = labels[0];

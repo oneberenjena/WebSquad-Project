@@ -247,7 +247,7 @@ socialModule.controller('VGrupoController',
       });
       $scope.ASalirGrupo1 = function() {
           
-        chatService.ASalirGrupo().then(function (object) {
+        chatService.ASalirGrupo({idGrupo: $routeParams.idGrupo}).then(function (object) {
           var msg = object.data["msg"];
           if (msg) flash(msg);
           var label = object.data["label"];
@@ -263,7 +263,7 @@ socialModule.controller('VGrupoController',
         $scope.fMiembroSubmitted = true;
         if (isValid) {
           
-          chatService.AgregMiembro($scope.fMiembro).then(function (object) {
+          chatService.AgregMiembro({'idGrupo':$routeParams.idGrupo, 'idUsuario':$scope.fMiembro.idUsuario}).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];
@@ -274,10 +274,7 @@ socialModule.controller('VGrupoController',
       };
 
       $scope.AElimMiembro3 = function(id) {
-          var tableFields = [["idContacto","id"],["nombre","Nombre"]];
-          var arg = {};
-          arg[tableFields[0][1]] = ((typeof id === 'object')?JSON.stringify(id):id);
-          chatService.AElimMiembro(arg).then(function (object) {
+          chatService.AElimMiembro({idUsuario: id, idGrupo: $routeParams.idGrupo}).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];
