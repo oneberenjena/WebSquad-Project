@@ -1,25 +1,9 @@
 from flask import request, session, Blueprint, json
-<<<<<<< HEAD
-=======
 from base import *
 import sqlalchemy
->>>>>>> 4648d63f41f6fdc0c7f98730611744c0ff1a4c4c
 
 chat = Blueprint('chat', __name__)
 
-
-<<<<<<< HEAD
-@chat.route('/chat/AElimContacto')
-def AElimContacto():
-    #GET parameter
-    id = request.args['id']
-    results = [{'label':'/VAdminContactos', 'msg':['Contacto eliminado']}, {'label':'/VAdminContactos', 'msg':['No se pudo eliminar contacto']}, ]
-    res = results[0]
-    #Action code goes here, res should be a list with a label and a message
-
-    res['label'] = res['label'] + '/' + repr(1)
-
-=======
 
 @chat.route('/chat/AElimContacto')
 def AElimContacto():
@@ -47,7 +31,7 @@ def AElimContacto():
         db.session.commit()
     
     res['label'] = res['label'] + '/' + str(idUsuario)
->>>>>>> 4648d63f41f6fdc0c7f98730611744c0ff1a4c4c
+
 
     #Action code ends here
     if "actor" in res:
@@ -59,17 +43,6 @@ def AElimContacto():
 
 
 
-<<<<<<< HEAD
-@chat.route('/chat/AElimMiembro')
-def AElimMiembro():
-    #GET parameter
-    id = request.args['id']
-    results = [{'label':'/VGrupo', 'msg':['Miembro eliminado']}, ]
-    res = results[0]
-    #Action code goes here, res should be a list with a label and a message
-
-    res['label'] = res['label'] + '/' + repr(1)
-=======
 @chat.route('/chat/AElimMiembro', methods=['POST'])
 def AElimMiembro():
     #GET parameter
@@ -88,7 +61,6 @@ def AElimMiembro():
         res = results[1]
     
     res['label'] = res['label'] + '/' + idGrupo
->>>>>>> 4648d63f41f6fdc0c7f98730611744c0ff1a4c4c
 
     #Action code ends here
     if "actor" in res:
@@ -121,17 +93,6 @@ def AEscribir():
 
 
 
-<<<<<<< HEAD
-@chat.route('/chat/ASalirGrupo')
-def ASalirGrupo():
-    #POST/PUT parameters
-    params = request.get_json()
-    results = [{'label':'/VAdminContactos', 'msg':['Ya no estás en ese grupo']}, {'label':'/VGrupo', 'msg':['Sigues en el grupo']}, ]
-    res = results[0]
-    #Action code goes here, res should be a list with a label and a message
-
-    res['label'] = res['label'] + '/' + repr(1)
-=======
 @chat.route('/chat/ASalirGrupo', methods=['POST'])
 def ASalirGrupo():
     #POST/PUT parameters
@@ -156,7 +117,6 @@ def ASalirGrupo():
         else:
             res['label'] = res['label'] + '/' + idGrupo
         db.session.commit()
->>>>>>> 4648d63f41f6fdc0c7f98730611744c0ff1a4c4c
 
 
     #Action code ends here
@@ -173,13 +133,7 @@ def ASalirGrupo():
 def AgregContacto():
     #POST/PUT parameters
     params = request.get_json()
-<<<<<<< HEAD
-    results = [{'label':'/VAdminContactos', 'msg':['Contacto agregado']}, {'label':'/VAdminContactos', 'msg':['No se pudo agregar contacto']}, ]
-    res = results[0]
-    #Action code goes here, res should be a list with a label and a message
 
-    res['label'] = res['label'] + '/' + repr(1)
-=======
     idAmigo = params['id']
     idUsuario = session['usuario']['idUsuario']
     
@@ -239,7 +193,6 @@ def AgregGrupo():
         db.session.commit()
     else:
         res = results[1]
->>>>>>> 4648d63f41f6fdc0c7f98730611744c0ff1a4c4c
 
     #Action code ends here
     if "actor" in res:
@@ -250,21 +203,10 @@ def AgregGrupo():
     return json.dumps(res)
 
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 4648d63f41f6fdc0c7f98730611744c0ff1a4c4c
 @chat.route('/chat/AgregMiembro', methods=['POST'])
 def AgregMiembro():
     #POST/PUT parameters
     params = request.get_json()
-<<<<<<< HEAD
-    results = [{'label':'/VGrupo', 'msg':['Nuevo miembro agregado']}, {'label':'/VGrupo', 'msg':['No se pudo agregar al nuevo miembro']}, ]
-    res = results[0]
-    #Action code goes here, res should be a list with a label and a message
-
-    res['label'] = res['label'] + '/' + repr(1)
-=======
     idGrupo = params['idGrupo']
     idUsuario = params['idUsuario']
     results = [{'label':'/VGrupo', 'msg':['Nuevo miembro agregado']}, {'label':'/VGrupo', 'msg':['No se pudo agregar al nuevo miembro']}, ]
@@ -286,7 +228,6 @@ def AgregMiembro():
         res = results[1]
         
     res['label'] = res['label'] + '/' + idGrupo
->>>>>>> 4648d63f41f6fdc0c7f98730611744c0ff1a4c4c
 
 
     #Action code ends here
@@ -302,33 +243,12 @@ def AgregMiembro():
 @chat.route('/chat/VAdminContactos')
 def VAdminContactos():
     #GET parameter
-<<<<<<< HEAD
-    idUsuario = request.args['idUsuario']
-=======
+
     idUsuario = session['usuario']['idUsuario']
->>>>>>> 4648d63f41f6fdc0c7f98730611744c0ff1a4c4c
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
-<<<<<<< HEAD
-
-    res['idContacto'] = 1
-    res['data1'] = [
-      {'idContacto':34, 'nombre':'ana', 'tipo':'usuario'},
-      {'idContacto':23, 'nombre':'leo', 'tipo':'usuario'},
-      {'idContacto':11, 'nombre':'distra', 'tipo':'usuario'},
-      {'idContacto':40, 'nombre':'vane', 'tipo':'usuario'},
-    ]
-    res['data2'] = [
-      {'idContacto':56, 'nombre':'Grupo Est. Leng.', 'tipo':'grupo'},
-    ]
-    res['idGrupo'] = 1
-    res['fContacto_opcionesNombre'] = [
-      {'key':1, 'value':'Leo'},
-      {'key':2, 'value':'Lauri'},
-      {'key':3, 'value':'Mara'},
-=======
     res['idContacto'] = 1
     contactos = obtenerAmigos(idUsuario)
     res['data1'] = [
@@ -354,7 +274,6 @@ def VAdminContactos():
           'key':usuario.idUsuario,
           'value':usuario.nombre
         } for usuario in Usuario.query.filter(Usuario.idUsuario != idUsuario).all()
->>>>>>> 4648d63f41f6fdc0c7f98730611744c0ff1a4c4c
     ]
 
     #Action code ends here
@@ -389,25 +308,15 @@ def VChat():
 @chat.route('/chat/VContactos')
 def VContactos():
     #GET parameter
-<<<<<<< HEAD
-    idUsuario = request.args['idUsuario']
-=======
+
     idUsuario = session['usuario']['idUsuario']
->>>>>>> 4648d63f41f6fdc0c7f98730611744c0ff1a4c4c
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
 
     res['idContacto'] = 1
-<<<<<<< HEAD
-    res['data1'] = [
-      {'idContacto':34, 'nombre':'ana', 'tipo':'usuario'},
-      {'idContacto':23, 'nombre':'leo', 'tipo':'usuario'},
-      {'idContacto':11, 'nombre':'distra', 'tipo':'usuario'},
-      {'idContacto':40, 'nombre':'vane', 'tipo':'usuario'},
-      {'idContacto':56, 'nombre':'Grupo Est. Leng.', 'tipo':'grupo'},
-=======
+
     contactos = obtenerAmigos(idUsuario)
     print(contactos)
     res['data1'] = [
@@ -416,7 +325,6 @@ def VContactos():
           'nombre':contacto.nombre, 
           'tipo':'usuario'
         } for contacto in contactos
->>>>>>> 4648d63f41f6fdc0c7f98730611744c0ff1a4c4c
     ]
 
 
@@ -429,28 +337,12 @@ def VContactos():
 def VGrupo():
     #GET parameter
     idGrupo = request.args['idGrupo']
-<<<<<<< HEAD
-=======
+
     idUsuario = session['usuario']['idUsuario']
->>>>>>> 4648d63f41f6fdc0c7f98730611744c0ff1a4c4c
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
-<<<<<<< HEAD
-
-    res['idGrupo'] = 1
-    res['fMiembro_opcionesNombre'] = [
-      {'key':1, 'value':'Leo'},
-      {'key':2, 'value':'Lauri'},
-      {'key':3, 'value':'Mara'},
-    ]
-    res['data3'] = [
-      {'idContacto':34, 'nombre':'ana', 'tipo':'usuario'},
-      {'idContacto':23, 'nombre':'leo', 'tipo':'usuario'},
-      {'idContacto':11, 'nombre':'distra', 'tipo':'usuario'},
-      {'idContacto':40, 'nombre':'vane', 'tipo':'usuario'},
-=======
     
     contactos = obtenerAmigos(idUsuario)
    
@@ -467,7 +359,6 @@ def VGrupo():
           'nombre': Usuario.query.filter_by(idUsuario=contacto.idUsuario).first().nombre,
           'tipo': "usuario"
         } for contacto in Grupo.query.filter(Grupo.idGrupo == idGrupo).first().usuarios
->>>>>>> 4648d63f41f6fdc0c7f98730611744c0ff1a4c4c
     ]
 
     #Action code ends here
