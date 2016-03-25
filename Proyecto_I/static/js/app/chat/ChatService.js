@@ -83,6 +83,24 @@ socialModule.service('chatService', ['$q', '$http', function($q, $http) {
     //    deferred.resolve(res);
     //    return deferred.promise;
     };
+    
+    /* A PARTIR DE AQUI COLOCO LO QUE TENIA ASCANDER
+    
+    this.AgregGrupo = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'chat/AgregGrupo',
+          method: 'GET',
+          params: args
+        });
+    //    var labels = ["/VAdminContactos", "/VAdminContactos", ];
+    //    var res = labels[0];
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+    
+    ASTA AQUI LLEGA LO QUE TENIA ASCANDER */
 
     this.AgregMiembro = function(fMiembro) {
         return  $http({
