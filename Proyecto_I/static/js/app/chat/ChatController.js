@@ -15,11 +15,22 @@ socialModule.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 socialModule.controller('VAdminContactosController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'ngTableParams', 'chatService', 'identService',
-    function ($scope, $location, $route, $timeout, flash, $routeParams, ngDialog, ngTableParams, chatService, identService) {
+   [
+    '$scope',
+    '$location', 
+    '$route', 
+    '$timeout', 
+    'flash', 
+    '$routeParams', 
+    'ngDialog', 
+    'ngTableParams', 
+    'chatService', 
+    'identService',
+    'chatSocket',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, ngDialog, ngTableParams, chatService, identService, chatSocket) {
       $scope.msg = '';
       $scope.fContacto = {};
-
+      
       chatService.VAdminContactos({"idUsuario":$routeParams.idUsuario}).then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
@@ -60,6 +71,16 @@ socialModule.controller('VAdminContactosController',
         $location.path('/VPrincipal');
       };
 
+      $scope.AgregGrupo4 = function(idUsuario) {
+          
+        chatService.AgregGrupo({nombre:"grupo_"+ Math.floor(Math.random() * 600000) + 1  }).then(function (object) {
+          var msg = object.data["msg"];
+          if (msg) flash(msg);
+          var label = object.data["label"];
+          $location.path(label);
+          $route.reload();
+        });};
+
       $scope.fContactoSubmitted = false;
       $scope.AgregContacto3 = function(isValid) {
         $scope.fContactoSubmitted = true;
@@ -97,10 +118,23 @@ ngDialog.open({ template: 'ayuda_VAdminContactos.html',
 }
     }]);
 socialModule.controller('VChatController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'chatService', 'identService',
-    function ($scope, $location, $route, $timeout, flash, $routeParams, ngDialog, chatService, identService) {
+   ['$scope', '$localStorage', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'chatService', 'identService', 'chatSocket',
+    function ($scope, $localStorage, $location, $route, $timeout, flash, $routeParams, ngDialog, chatService, identService, chatSocket) {
       $scope.msg = '';
       $scope.fChat = {};
+      
+      if ($scope.$storage.mensajes === undefined)
+        $scope.$storage.mensajes = [];
+      // Recibir mensajes
+      chatSocket.on('message', function(mensaje,data) {
+        mensaje_obj = {
+          mensaje: mensaje,
+          de: $routeParams.idChat,
+          fecha: new Date()
+        }
+        $scope.$storage.mensajes.push(mensaje_obj);
+        console.log($localStorage);
+      })
 
       chatService.VChat({"idChat":$routeParams.idChat}).then(function (object) {
         $scope.res = object.data;
@@ -119,17 +153,17 @@ socialModule.controller('VChatController',
 
       $scope.fChatSubmitted = false;
       $scope.AEscribir1 = function(isValid) {
-        $scope.fChatSubmitted = true;
         if (isValid) {
-          
-          chatService.AEscribir($scope.fChat).then(function (object) {
-              var msg = object.data["msg"];
-              if (msg) flash(msg);
-              var label = object.data["label"];
-              $location.path(label);
-              $route.reload();
-          });
+          chatSocket.emit("message",{msg:$scope.fChat.texto,idUsuario:$routeParams.idChat,tipo:'usuario'});
+          mensaje_obj = {
+            mensaje: $scope.fChat.texto,
+            de: 'Yo',
+            fecha: new Date()
+          }
+          $scope.$storage.mensajes.push(mensaje_obj);
         }
+        $scope.fChatSubmitted = true;
+        
       };
 
 $scope.__ayuda = function() {
@@ -213,7 +247,7 @@ socialModule.controller('VGrupoController',
       });
       $scope.ASalirGrupo1 = function() {
           
-        chatService.ASalirGrupo().then(function (object) {
+        chatService.ASalirGrupo({idGrupo: $routeParams.idGrupo}).then(function (object) {
           var msg = object.data["msg"];
           if (msg) flash(msg);
           var label = object.data["label"];
@@ -229,7 +263,7 @@ socialModule.controller('VGrupoController',
         $scope.fMiembroSubmitted = true;
         if (isValid) {
           
-          chatService.AgregMiembro($scope.fMiembro).then(function (object) {
+          chatService.AgregMiembro({'idGrupo':$routeParams.idGrupo, 'idUsuario':$scope.fMiembro.idUsuario}).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];
@@ -240,10 +274,7 @@ socialModule.controller('VGrupoController',
       };
 
       $scope.AElimMiembro3 = function(id) {
-          var tableFields = [["idContacto","id"],["nombre","Nombre"]];
-          var arg = {};
-          arg[tableFields[0][1]] = ((typeof id === 'object')?JSON.stringify(id):id);
-          chatService.AElimMiembro(arg).then(function (object) {
+          chatService.AElimMiembro({idUsuario: id, idGrupo: $routeParams.idGrupo}).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];

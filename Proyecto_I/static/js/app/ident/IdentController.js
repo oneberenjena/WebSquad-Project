@@ -12,11 +12,13 @@ socialModule.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 socialModule.controller('VLoginController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', 'chatService', 'identService', 'paginasService',
-    function ($scope, $location, $route, $timeout, flash, chatService, identService, paginasService) {
+   ['$scope', '$localStorage', '$location', '$route', '$timeout', 'flash', 'chatService', 'identService', 'paginasService',
+    function ($scope, $localStorage, $location, $route, $timeout, flash, chatService, identService, paginasService) {
+      // Limpiar localStorage
+      $localStorage.$reset();
+      
       $scope.msg = '';
       $scope.fLogin = {};
-
       identService.VLogin().then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
@@ -41,6 +43,13 @@ socialModule.controller('VLoginController',
               var msg = object.data["msg"];
               if (msg) flash(msg);
               var label = object.data["label"];
+              
+              // Avisar que estamos iniciando sesión
+              console.log("Login",object);
+              for (var key in object.data) {
+                  $scope[key] = object.data[key];
+              }
+              $scope.$storage.idUsuario = $scope.idUsuario;
               $location.path(label);
               $route.reload();
           });
@@ -49,14 +58,15 @@ socialModule.controller('VLoginController',
 
     }]);
 socialModule.controller('VPrincipalController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', 'chatService', 'identService', 'paginasService',
-    function ($scope, $location, $route, $timeout, flash, chatService, identService, paginasService) {
+   ['$scope', '$location', '$route', '$timeout', 'flash', 'chatService', 'chatSocket', 'identService', 'paginasService', 'chatSocket',
+    function ($scope, $location, $route, $timeout, flash, chatService, chatSocket, identService, paginasService, chatSocket) {
       $scope.msg = '';
       identService.VPrincipal().then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
             $scope[key] = object.data[key];
         }
+
         if ($scope.logout) {
             $location.path('/');
         }
@@ -68,7 +78,7 @@ socialModule.controller('VPrincipalController',
       };
       $scope.APagina1 = function(idPagina) {
           
-        paginasService.APagina({"idPagina":((typeof idPagina === 'object')?JSON.stringify(idPagina):idPagina)}).then(function (object) {
+        paginasService.APagina({"idUsuario":$scope.idUsuario}).then(function (object) {
           var msg = object.data["msg"];
           if (msg) flash(msg);
           var label = object.data["label"];

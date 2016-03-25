@@ -14,21 +14,16 @@
             <ul class="nav navbar-nav navbar-left">
 <li><a ng-click="APagina1(idPagina)">
   Página de usuario</a></li>
-<li>
-                    <a ng-click="VPagina1(idUsuario)">
-                      Editor de pagina
-                     </a>
-                </li>
 
             </ul>
             <ul class="nav navbar-nav navbar-right">
 <li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
-<li><a ng-click="VLogin0()">
-    Salir</a></li>
+
 <li><a ng-click="VContactos2(idUsuario)"
        ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
     Contactos</a></li>
-
+<li><a ng-click="VLogin0()">
+    Salir</a></li>
             </ul>
         </div>
     </div>

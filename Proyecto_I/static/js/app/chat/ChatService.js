@@ -1,5 +1,24 @@
-socialModule.service('chatService', ['$q', '$http', function($q, $http) {
+socialModule.factory('chatSocket', ['socketFactory', function (socketFactory) {
+      var myIoSocket = io.connect('http://' + document.domain + ':' + location.port );
 
+      var socket = socketFactory({
+        ioSocket: myIoSocket
+      });
+      socket.forward('broadcast');
+      socket.forward('message');
+      return socket;
+}]);
+
+socialModule.service('chatService', ['$q', '$http', function($q, $http) {
+    
+    this.AgregGrupo = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'chat/AgregGrupo',
+          method: 'POST',
+          data: args
+        });
+    };
     this.AElimContacto = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({
@@ -17,8 +36,8 @@ socialModule.service('chatService', ['$q', '$http', function($q, $http) {
         if(typeof args == 'undefined') args={};
         return $http({
           url: 'chat/AElimMiembro',
-          method: 'GET',
-          params: args
+          method: 'POST',
+          data: args
         });
     //    var labels = ["/VGrupo", ];
     //    var res = labels[0];
@@ -43,8 +62,8 @@ socialModule.service('chatService', ['$q', '$http', function($q, $http) {
         if(typeof args == 'undefined') args={};
         return $http({
           url: 'chat/ASalirGrupo',
-          method: 'GET',
-          params: args
+          method: 'POST',
+          data: args
         });
     //    var labels = ["/VAdminContactos", "/VGrupo", ];
     //    var res = labels[0];

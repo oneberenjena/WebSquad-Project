@@ -1,5 +1,5 @@
 // Creación del módulo de la aplicación
-var socialModule = angular.module('social', ['ngRoute', 'ngAnimate', 'ngTable', 'textAngular', 'ngDialog', 'ngSanitize', 'flash']);
+var socialModule = angular.module('social', ['ngRoute', 'ngStorage', 'ngAnimate', 'ngTable', 'textAngular', 'ngDialog', 'ngSanitize', 'flash','btford.socket-io']);
 socialModule.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
         .when('/', {
@@ -7,9 +7,11 @@ socialModule.config(['$routeProvider', function ($routeProvider) {
                 templateUrl: 'app/ident/VLogin.html'
             });
 }]);
-socialModule.controller('socialController_',  ['$scope', '$http', '$location',
-function($scope) {
+socialModule.controller('socialController_',  ['$scope', '$localStorage', '$http', '$location',
+function($scope, $localStorage, $http, $location) {
     $scope.title = "Social";
+    $scope.$storage = $localStorage;
+    
 }]);
 socialModule.directive('sameAs', [function () {
     return {
