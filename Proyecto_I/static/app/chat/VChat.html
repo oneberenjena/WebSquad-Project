@@ -26,7 +26,7 @@
 </nav>
 
 <ul>
-  <li ng-repeat="msg in $storage.mensajes">De {{msg.de}}, el {{msg.fecha | date: 'HH:mm' }}: {{msg.mensaje}}</li>
+  <li ng-repeat="msg in $storage.mensajes[idChat]">De {{msg.de}}, el {{msg.fecha | date: 'HH:mm' }}: {{msg.mensaje}}</li>
 </ul>    
 <form name="fChatForm" ng-submit="AEscribir1(fChatForm.$valid)" novalidate>
             <div class="form-group" ng-class="{ 'has-error' :  fChatSubmitted && fChatForm.texto.$invalid && fChatForm.texto.$pristine && fChatSubmitted}"><label for="fChat_texto">Texto</label><textarea id="fChat_texto" name="texto" class="form-control" ng-model="fChat.texto" placeholder="Texto" required></textarea><p ng-show="fChatSubmitted && fChatForm.texto.$invalid" class="help-block">Error en campo Texto.</p></div>
