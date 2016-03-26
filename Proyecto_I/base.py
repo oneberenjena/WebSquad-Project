@@ -100,7 +100,10 @@ def obtenerAmigos(idUsuario):
     ).filter(Contacto.usuario2==idUsuario).all()
     
     return c1 + c2
-        
+
+def obtenerGrupos(idUsuario):
+    return Membresia.query.join(Grupo, Grupo.idGrupo == Membresia.idGrupo).add_columns(
+        Grupo.idGrupo, Grupo.nombre).filter(Membresia.idUsuario==idUsuario).all()
 #Application code ends here
 
 from app.social.ident import ident
@@ -112,8 +115,14 @@ app.register_blueprint(chat)
 
 @socketio.on('message')
 def message_handler(data):
-    send(message=data['msg'], room='{}_{}'.format(data['tipo'],data['idUsuario']))
+    message = {
+        'msg':data['msg'], 
+        'room': data['idChat'],
+        'idUsuario': session['usuario']['idUsuario'] if 'usuario' in session else 0
+    }
+    send(message=message, room=data['idChat'])
     print(data['msg'])
+    return room
 
 @socketio.on('connect')
 def connect_handler():
@@ -121,7 +130,10 @@ def connect_handler():
     if 'usuario' in session:
         room = "usuario_{}".format(session['usuario']['idUsuario'])
         join_room(room)
-        print("Conectado y en el room")
+        for grupo in obtenerGrupos(session['usuario']['idUsuario']):
+            join_room("grupo_" + str(grupo.idGrupo))
+            
+        print("Conectado y en el room " + room)
     else:
         print("Conectado")
 

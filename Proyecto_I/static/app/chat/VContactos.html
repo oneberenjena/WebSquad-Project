@@ -12,7 +12,7 @@
         </div>
         <div class="collapse navbar-collapse" id="contenido-plegable">
             <ul class="nav navbar-nav navbar-left">
-<li><a ng-click="VAdminContactos2(idUsuario)">
+<li><a ng-click="VAdminContactos2()">
   Administrar contactos</a></li>
 
             </ul>
@@ -32,7 +32,7 @@
             <tr ng-repeat="row in $data">
                 <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
                 <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
-                <td ng-show="row['idContacto']"><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VChat1(row['idContacto'])">chat</a></td>
+                <td ng-show="row['idContacto']"><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VChat1(row)">chat</a></td>
             </tr>
         </table>
 
