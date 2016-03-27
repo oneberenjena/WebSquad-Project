@@ -1,33 +1,91 @@
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" 
-                    data-toggle="collapse" 
-                    data-target="#contenido-plegable">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <span class="navbar-brand" >{{titulo}}</span>
-        </div>
-        <div class="collapse navbar-collapse" id="contenido-plegable">
-            <ul class="nav navbar-nav navbar-left">
-<li><a ng-click="VPagina2(idUsuario)"
-       ng-show="idUsuario_session == idUsuario && (actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum')">
-  Modificar</a></li>
+  <!--************************************************-->
+  <!--                                                -->
+  <!-- HEADER                                         -->
+  <!--                                                -->
+  <!--************************************************-->
+        <header>
+          <!--************************************************-->
+          <!-- BARRA DE NAVEGACION                            -->
+          <!--************************************************-->  
+            <nav class="navbar-2 navbar-default navbar-fixed-top cbp-af-header" role="navigation">
+              <div  class="container-fluid">
+                <!--************************************************-->
+                <!-- EN MOVILES                                     -->
+                <!--************************************************-->
+                  <!-- Brand and toggle get grouped for better mobile display -->
+                  <div class="navbar-header">
+                    <!--*********************-->
+                    <!-- BOTON DE MENU       -->
+                    <!--*********************-->
+                      <button 
+                      type="button" 
+                      class="navbar-toggle collapsed" 
+                      data-toggle="collapse" 
+                      data-target="#bs-example-navbar-collapse-1" 
+                      aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                      </button>
+                    <!--*********************-->
+                    <!-- ICONO SFL           -->
+                    <!--*********************-->
+                      <a ng-click="VPrincipal()">
+                        <img style="margin-top:1em;margin-bottom:0.6em;" src="img/SFL_logo-01.svg" />
+                      </a>
+                  </div>
+                <!--************************************************-->
+                <!-- EN DESKTOP                                     -->
+                <!--************************************************-->
+                  <!-- Collect the nav links, forms, and other content for toggling -->
+                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <!--*********************-->
+                    <!-- FORM DE BUSQUEDA    -->
+                    <!--*********************-->
+                      <form class="navbar-form navbar-right" role="search">
+                      <div class="form-group">
+                        <div class="input-group">
+                            <input type="text" class="form-control" placeholder="Buscar Contacto">
+                            <span class="input-group-btn">
+                                <button class="btn  btn-perso" type="button">Ir</button>
+                            </span>
+                        </div>
 
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
-<li><a ng-click="__ayuda()"><span class="glyphicon glyphicon-info-sign"></span></a></li>
-<li><a ng-click="VPrincipal1()"
-       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum'">
-    Regresar</a></li>
+                      </div>
+                      </form>
+                      <!-- /input-group -->
+                    <!--*********************-->
+                    <!-- LINKS               -->
+                    <!--*********************-->
+                      <ul class="nav navbar-nav navbar-right">
+                      <!--*********************-->
+                      <!-- USERNAME            -->
+                      <!--*********************-->
+                      <li class="dropdown">
+                        <a ng-click="VPrincipal()" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                          {{nombre}}Sergio T
+                          <span class="caret "></span>
+                        </a>
+                        <!--*********************-->
+                        <!-- DROPDOWN            -->
+                        <!--*********************-->  
+                          <ul class="dropdown-menu">
+                            <li><a ng-click="VPrincipal1()">Perfil</a></li>
+                            <li><a ng-click="VPagina1(idUsuario)">Editor</a></li>
+                            <li><a ng-click="VContactos2(idUsuario)"
+           ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">Contactos</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a ng-click="VLogin0()">Salir</a></li>
+                          </ul>
+                      </li>
+                    <li><a ng-click="__ayuda()"><span class="glyphicon glyphicon-info-sign"></span></a></li>
 
-            </ul>
-        </div>
-    </div>
-</nav>
+                    </ul>
+                  </div> <!-- /.navbar-collapse -->  
+              </div> <!-- /.container-fluid -->
+            </nav>
+        </header>
 
 <div ng-bind-html="contenido"></div>
 
