@@ -64,14 +64,14 @@
                       <!--*********************-->
                       <li class="dropdown">
                         <a ng-click="VPrincipal()" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                          {{nombre}}Sergio T
+                          {{nombre}}
                           <span class="caret "></span>
                         </a>
                         <!--*********************-->
                         <!-- DROPDOWN            -->
                         <!--*********************-->  
                           <ul class="dropdown-menu">
-                            <li><a ng-click="VPrincipal1()">Perfil</a></li>
+                            <li><a ng-click="VMiPagina(idUsuario)">Pagina</a></li>
                             <li><a ng-click="VPagina1(idUsuario)">Editor</a></li>
                             <li><a ng-click="VContactos2(idUsuario)"
            ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">Contactos</a></li>

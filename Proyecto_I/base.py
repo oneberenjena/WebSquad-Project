@@ -68,12 +68,22 @@ class Contacto(db.Model):
     def __rep__(self):
         return '<{} y {} son amigos'.format(self.usuario1, self.usuario2)
 
+class Grupo(db.Model):
+    idGrupo = db.Column(db.Integer, primary_key = True)
+    nombre = db.Column(db.String(50), nullable = False)
+    usuarios = db.relationship("Membresia")
+
+class Membresia(db.Model):
+    idUsuario = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'), primary_key=True)
+    idGrupo = db.Column(db.Integer, db.ForeignKey('grupo.idGrupo'), primary_key=True)
+    es_admin = db.Column(db.Boolean)
+    usuario = db.relationship("Usuario")
+
+
 def sonAmigos(id1,id2):
-    relacion = Contacto.query.filter(
-        (Contacto.usuario1== id1 and \
-         Contacto.usuario2== id2) or \
-        (Contacto.usuario1== id2 and Contacto.usuario2==id1)
-    ).first()
+    relacion1 = Contacto.query.filter_by(usuario1=id1,usuario2=id2).first()
+    relacion2 = Contacto.query.filter_by(usuario1=id2, usuario2=id1).first()
+    relacion = relacion1 if relacion2 is None else relacion2
     return relacion
 
 def obtenerAmigos(idUsuario):
@@ -90,7 +100,10 @@ def obtenerAmigos(idUsuario):
     ).filter(Contacto.usuario2==idUsuario).all()
     
     return c1 + c2
-        
+
+def obtenerGrupos(idUsuario):
+    return Membresia.query.join(Grupo, Grupo.idGrupo == Membresia.idGrupo).add_columns(
+        Grupo.idGrupo, Grupo.nombre).filter(Membresia.idUsuario==idUsuario).all()
 #Application code ends here
 
 from app.social.ident import ident
@@ -102,28 +115,41 @@ app.register_blueprint(chat)
 
 @socketio.on('message')
 def message_handler(data):
-    send(message=data['msg'], room='{}_{}'.format(data['tipo'],data['idUsuario']))
+    message = {
+        'msg':data['msg'], 
+        'room': data['idChat'],
+        'idUsuario': session['usuario']['idUsuario'] if 'usuario' in session else 0
+    }
+    send(message=message, room=data['idChat'])
     print(data['msg'])
+    return room
+
+@socketio.on('connect')
+def connect_handler():
+    print("conectar")
+    if 'usuario' in session:
+        room = "usuario_{}".format(session['usuario']['idUsuario'])
+        join_room(room)
+        for grupo in obtenerGrupos(session['usuario']['idUsuario']):
+            join_room("grupo_" + str(grupo.idGrupo))
+            
+        print("Conectado y en el room " + room)
+    else:
+        print("Conectado")
 
 @socketio.on('join')
 def join_room_handler(data):
+    print("Joining")
     room = "{}_{}".format(data['tipo'],data['room'])
-    session['room'] = room
     join_room(room)
 
-@socketio.on('connection')
-def connection_handler(data):
-    print('Usuario',session['usuario']['idUsuario'])
-        
 @socketio.on_error_default
 def chat_error_handler(e):
-    print('An error has occurred: ' + str(e))
+    print('An error has occurred: ' + str(e),e)
 
 if __name__ == '__main__':
     app.config.update(
       SECRET_KEY = repr(SystemRandom().random())
     )
     #manager.run()
-    socketio.run(app, host='0.0.0.0',port=8080)
-
-
+    socketio.run(app, host='0.0.0.0',port=8080,debug=True)

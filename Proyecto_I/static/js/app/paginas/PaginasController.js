@@ -39,6 +39,17 @@ socialModule.controller('VMiPaginaController',
         $location.path('/VPagina/'+idUsuario);
       };
 
+      $scope.VPagina1 = function(idUsuario) {
+        $location.path('/VPagina/'+idUsuario);
+      };
+
+      $scope.VContactos2 = function(idUsuario) {
+        $location.path('/VContactos/'+idUsuario);
+      };
+      $scope.VLogin0 = function() {
+        $location.path('/VLogin');
+      };
+
       $scope.fPaginaSubmitted = false;
       $scope.AModificarPagina0 = function(isValid) {
         $scope.fPaginaSubmitted = true;
@@ -76,6 +87,7 @@ socialModule.controller('VPaginaDetalleController',
 
 
       });
+
       $scope.VPrincipal1 = function() {
         $location.path('/VPrincipal');
       };
@@ -121,6 +133,20 @@ socialModule.controller('VPaginaController',
         }
 
       });
+      $scope.VMiPagina = function(idUsuario) {
+        $location.path('/VMiPagina/'+idUsuario);
+      };
+      $scope.VLogin0 = function() {
+        $location.path('/VLogin');
+      };
+
+      $scope.VPagina1 = function(idUsuario) {
+        $location.path('/VPagina/'+idUsuario);
+      };
+
+      $scope.VContactos2 = function(idUsuario) {
+        $location.path('/VContactos/'+idUsuario);
+      };
       $scope.VPrincipal1 = function() {
         $location.path('/VPrincipal');
       };

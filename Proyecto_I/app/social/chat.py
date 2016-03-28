@@ -24,15 +24,13 @@ def AElimContacto():
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
     relacion = sonAmigos(idAmigo,idUsuario)
-    print("Relacion",relacion,idAmigo,idUsuario)
+    print("Relacion",relacion.usuario1,relacion.usuario2,idAmigo,idUsuario)
     if relacion is None:
         res = results[1]
     else:
         db.session.delete(relacion)
         db.session.commit()
-    
-    res['label'] = res['label'] + '/' + str(idUsuario)
-
+        
     #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
@@ -43,15 +41,24 @@ def AElimContacto():
 
 
 
-@chat.route('/chat/AElimMiembro')
+@chat.route('/chat/AElimMiembro', methods=['POST'])
 def AElimMiembro():
     #GET parameter
-    id = request.args['id']
-    results = [{'label':'/VGrupo', 'msg':['Miembro eliminado']}, ]
+    params = request.get_json()
+    idUsuario = params['idUsuario']
+    idGrupo = params['idGrupo']
+    
+    results = [{'label':'/VGrupo', 'msg':['Miembro eliminado']}, {'label':'/VGrupo', 'msg':['El miembro no pudo ser eliminado']},]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
-
-    res['label'] = res['label'] + '/' + repr(1)
+    membresia = Membresia.query.filter_by(idGrupo=idGrupo, idUsuario=idUsuario).first()
+    if membresia:
+        db.session.delete(membresia)
+        db.session.commit()
+    else:
+        res = results[1]
+    
+    res['label'] = res['label'] + '/' + idGrupo
 
     #Action code ends here
     if "actor" in res:
@@ -84,15 +91,29 @@ def AEscribir():
 
 
 
-@chat.route('/chat/ASalirGrupo')
+@chat.route('/chat/ASalirGrupo', methods=['POST'])
 def ASalirGrupo():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VAdminContactos', 'msg':['Ya no estás en ese grupo']}, {'label':'/VGrupo', 'msg':['Sigues en el grupo']}, ]
+    idGrupo = params['idGrupo']
+    idUsuario = session['usuario']['idUsuario']
+    results = [{'label':'/VAdminContactos', 'msg':['Ya no estás en ese grupo']}, {'label':'/VGrupo', 'msg':['No puedes salir del grupo']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
-
-    res['label'] = res['label'] + '/' + repr(1)
+    membresia = Membresia.query.filter_by(idUsuario=idUsuario, idGrupo=idGrupo).first()
+    if membresia:
+        db.session.delete(membresia)
+        if membresia.es_admin:
+            nuevoAdmin = Membresia.query.filter_by(idGrupo = idGrupo).first()
+            if nuevoAdmin:
+                nuevoAdmin.es_admin = True
+                db.session.add(nuevoAdmin)
+                res['label'] = res['label'] + '/' + idGrupo
+            else:
+                res = results[1]
+        else:
+            res['label'] = res['label'] + '/' + idGrupo
+        db.session.commit()
 
 
     #Action code ends here
@@ -135,8 +156,39 @@ def AgregContacto():
         print("Hice rollback")
         res = results[1]
     
-    res['label'] = res['label'] + '/' + str(idUsuario)
-    
+
+    #Action code ends here
+    if "actor" in res:
+        if res['actor'] is None:
+            session.pop("actor", None)
+        else:
+            session['actor'] = res['actor']
+    return json.dumps(res)
+
+@chat.route('/chat/AgregGrupo', methods=['POST'])
+def AgregGrupo():
+    #GET parameter
+    params = request.get_json()
+    print(params)
+    nombreGrupo = params['nombre']
+    results = [{'label':'/VAdminContactos', 'msg':['Grupo agregado']}, {'label':'/VAdminContactos', 'msg':['Error al crear grupo']}, ]
+    res = results[0]
+    #Action code goes here, res should be a list with a label and a message
+    if 'usuario' in session:
+        grupo = Grupo(nombre=nombreGrupo)
+        db.session.add(grupo)
+        db.session.commit()
+        
+        membresia = Membresia(
+            idUsuario=session['usuario']['idUsuario'],
+            idGrupo=grupo.idGrupo,
+            es_admin=True
+        )
+        db.session.add(membresia)
+        db.session.commit()
+    else:
+        res = results[1]
+
     #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
@@ -146,16 +198,31 @@ def AgregContacto():
     return json.dumps(res)
 
 
-
 @chat.route('/chat/AgregMiembro', methods=['POST'])
 def AgregMiembro():
     #POST/PUT parameters
     params = request.get_json()
+    idGrupo = params['idGrupo']
+    idUsuario = params['idUsuario']
     results = [{'label':'/VGrupo', 'msg':['Nuevo miembro agregado']}, {'label':'/VGrupo', 'msg':['No se pudo agregar al nuevo miembro']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
-
-    res['label'] = res['label'] + '/' + repr(1)
+    grupo = Grupo.query.filter_by(idGrupo=idGrupo)
+    usuario = Usuario.query.filter_by(idUsuario=idUsuario)
+    
+    if grupo and usuario:
+        try:
+            membresia = Membresia(idUsuario=idUsuario, idGrupo=idGrupo, es_admin=False)
+            db.session.add(membresia)
+            db.session.commit()
+        except sqlalchemy.exc.IntegrityError as e:
+            db.session.rollback()
+            print("Hice rollback")
+            res = results[1]
+    else:
+        res = results[1]
+        
+    res['label'] = res['label'] + '/' + idGrupo
 
 
     #Action code ends here
@@ -170,15 +237,12 @@ def AgregMiembro():
 
 @chat.route('/chat/VAdminContactos')
 def VAdminContactos():
-    print(socketio.emit("my event"))
     #GET parameter
     idUsuario = session['usuario']['idUsuario']
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
-
-    res['idContacto'] = 1
     contactos = obtenerAmigos(idUsuario)
     res['data1'] = [
         {
@@ -187,9 +251,15 @@ def VAdminContactos():
           'tipo':'usuario'
         } for contacto in contactos
     ]
+    grupos = obtenerGrupos(idUsuario)
     res['data2'] = [
-      {'idContacto':56, 'nombre':'Grupo Est. Leng.', 'tipo':'grupo'},
+        {
+          'idContacto':grupo.idGrupo, 
+          'nombre':grupo.nombre, 
+          'tipo':'grupo'
+        } for grupo in grupos
     ]
+
     res['idGrupo'] = 1
     res['fContacto_opcionesNombre'] = [
         {
@@ -212,15 +282,7 @@ def VChat():
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
 
-    res['idChat'] = 1
-    res['idUsuario'] = 1
-    res['mensajesAnt'] = [
-      {'texto': '¿Me traes mi gato por la tarde?', 'usuario':'ana', 'fecha':'lun feb 29 09:08:17 VET 2016'},
-      {'texto': '¡Hay! no lo encuentro, debió escaparse. Ahora salgo a buscarlo', 'usuario':'distra', 'fecha':'lun feb 29 09:09:17 VET 2016'},
-      {'texto': 'Hola vane, ayer al pasar por tu casa dejé a naco mi anacondita..', 'usuario':'uri', 'fecha':'lun feb 29 09:09:17 VET 2016'},
-      {'texto': 'La dejasete fue en mi casa. No la había visto porque está en un rincon, no se mueve y ... pareceira que tiene algo atragantado.', 'usuario':'distra', 'fecha':'lun feb 29 09:10:17 VET 2016'},
-      {'texto': '¿Qué?', 'usuario':'ana', 'fecha':'lun feb 29 09:12:17 VET 2016'},
-    ]
+
 
     #Action code ends here
     return json.dumps(res)
@@ -236,17 +298,20 @@ def VContactos():
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
 
-    res['idContacto'] = 1
-    contactos = obtenerAmigos(idUsuario)
-    print(contactos)
     res['data1'] = [
         {
           'idContacto':contacto.idUsuario,
           'nombre':contacto.nombre, 
           'tipo':'usuario'
-        } for contacto in contactos
+        } for contacto in obtenerAmigos(idUsuario)
     ]
-
+    res['data1'] += [
+        {
+            'idContacto': grupo.idGrupo,
+            'nombre': grupo.nombre,
+            'tipo': 'grupo'
+        } for grupo in obtenerGrupos(idUsuario)
+    ]
 
     #Action code ends here
     return json.dumps(res)
@@ -257,22 +322,27 @@ def VContactos():
 def VGrupo():
     #GET parameter
     idGrupo = request.args['idGrupo']
+    idUsuario = session['usuario']['idUsuario']
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
-
-    res['idGrupo'] = 1
+    
+    contactos = obtenerAmigos(idUsuario)
+   
+    res['idGrupo'] = idGrupo
     res['fMiembro_opcionesNombre'] = [
-      {'key':1, 'value':'Leo'},
-      {'key':2, 'value':'Lauri'},
-      {'key':3, 'value':'Mara'},
+        {
+          'key':contacto.idUsuario,
+          'value':contacto.nombre
+        } for contacto in contactos
     ]
     res['data3'] = [
-      {'idContacto':34, 'nombre':'ana', 'tipo':'usuario'},
-      {'idContacto':23, 'nombre':'leo', 'tipo':'usuario'},
-      {'idContacto':11, 'nombre':'distra', 'tipo':'usuario'},
-      {'idContacto':40, 'nombre':'vane', 'tipo':'usuario'},
+        {
+          'idContacto':contacto.idUsuario,
+          'nombre': Usuario.query.filter_by(idUsuario=contacto.idUsuario).first().nombre,
+          'tipo': "usuario"
+        } for contacto in Grupo.query.filter(Grupo.idGrupo == idGrupo).first().usuarios
     ]
 
     #Action code ends here

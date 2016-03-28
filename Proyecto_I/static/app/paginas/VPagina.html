@@ -64,17 +64,23 @@
                       <!--*********************-->
                       <li class="dropdown">
                         <a ng-click="VPrincipal()" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                          {{nombre}}Sergio T
+                          <--{{nombre}}-->
                           <span class="caret "></span>
                         </a>
                         <!--*********************-->
                         <!-- DROPDOWN            -->
                         <!--*********************-->  
                           <ul class="dropdown-menu">
-                            <li><a ng-click="VPrincipal1()">Perfil</a></li>
+                          <!-- ESTOS LINKS NO SIRVEN POR QUE NO SABE QUIEN ES idUsuario (FIX 2) -->
+                            <li><a ng-click="VMiPagina(idUsuario)">Pagina</a></li>
                             <li><a ng-click="VPagina1(idUsuario)">Editor</a></li>
-                            <li><a ng-click="VContactos2(idUsuario)"
-           ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">Contactos</a></li>
+                            <li>
+                            <!-- ESTO ESTA COMENTANDO MIENTRAS SE RESUELVE FIX 2 -->
+<!--                        <a ng-click="VContactos2(idUsuario)" ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false"> -->
+                              <a ng-click="VContactos2(idUsuario)">
+                                  Contactos
+                              </a>
+                            </li>
                             <li role="separator" class="divider"></li>
                             <li><a ng-click="VLogin0()">Salir</a></li>
                           </ul>
@@ -108,7 +114,7 @@
             <!-- NOMBRE DE USUARIO                              -->
             <!--************************************************-->
               <p>
-              <h1>{{nombre}}huhu</h1>
+              <h1><--{{nombre}}--></h1>
               </p>
               <br>
             <!--************************************************-->

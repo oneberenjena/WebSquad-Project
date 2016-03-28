@@ -2,7 +2,8 @@ from flask import request, session, Blueprint, json
 
 ident = Blueprint('ident', __name__)
 
-from base import db, Usuario, Pagina
+from base import db, Usuario, Pagina, socketio
+from flask_socketio import SocketIO, emit, send, join_room
 
 
 @ident.route('/ident/AIdentificar', methods=['POST'])
@@ -22,7 +23,13 @@ def AIdentificar():
     user = Usuario.query.filter_by(username=params['usuario'],
                                 contrasena=params['clave']).first()
     if user:
+        # Si inicié sesión correctamente, se crea la sesion y se une al room
         res = results[0]
+        res['idUsuario'] = user.idUsuario
+        
+        #socketio.emit("join", {tipo: "usuario", room: user.idUsuario})
+        # TODO: que se una a todos los grupos de los que es miembro
+        
         session['usuario'] = {
             'idUsuario': user.idUsuario,
             'nombre': user.nombre

@@ -51,6 +51,22 @@
                                 <button class="btn  btn-perso" type="button">Ir</button>
                             </span>
                         </div>
+<!-- <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Mis contactos y grupos</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+<li><a ng-click="VAdminContactos2()">
+  Administrar contactos</a></li> -->
 
                       </div>
                       </form>
@@ -64,14 +80,14 @@
                       <!--*********************-->
                       <li class="dropdown">
                         <a ng-click="VPrincipal()" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                          {{nombre}}huhu
+                          <--{{nombre}}-->
                           <span class="caret "></span>
                         </a>
                         <!--*********************-->
                         <!-- DROPDOWN            -->
                         <!--*********************-->  
                           <ul class="dropdown-menu">
-                            <li><a ng-click="VPrincipal1()">Perfil</a></li>
+                            <li><a ng-click="VMiPagina(idUsuario)">Pagina</a></li>
                             <li><a ng-click="VPagina1(idUsuario)">Editor</a></li>
                             <li><a ng-click="VContactos2(idUsuario)"
            ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">Contactos</a></li>
@@ -119,21 +135,24 @@
             <!--************************************************-->
             <!-- LISTA CONTACTOS                                -->
             <!--************************************************-->
-              <div class="list-group scroll">
-                  
-                <table ng-table="tableParams1" template-pagination="pager.html" class="table">
-                    <tr ng-repeat="row in $data">
-                        <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
-                        <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
-                        <td ng-show="row['idContacto']">
-                            <a style="border-style:none" ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VChat1(row['idContacto'])" class="btn btn-perso">
+            <div class="list-group scroll">
+                
+              <table ng-table="tableParams1" template-pagination="pager.html" class="table">
+                  <tr ng-repeat="row in $data">
+                      <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
+                      <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
+                      <td ng-show="row['idContacto']">
+                          <a  style="border-style:none" 
+                              ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" 
+                              ng-click="VChat1(row['idContacto'])" 
+                              class="btn btn-perso">
                                 charlar
-                            </a>
-                        </td>
-                    </tr>
-                </table>
-                <div class="panel-footer"></div>
-              </div> 
+                          </a>
+                      </td>
+                  </tr>
+              </table>
+              <div class="panel-footer"></div>
+            </div>
             <a style="border-style:none" ng-click="VAdminContactos2(idUsuario)" class="btn btn-perso btn-lg btn-block hidden-lg hidden-md hidden-sm">Administrar contactos</a>
 
           </section>

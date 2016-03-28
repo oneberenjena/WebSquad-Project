@@ -51,7 +51,6 @@
                                 <button class="btn  btn-perso" type="button">Ir</button>
                             </span>
                         </div>
-
                       </div>
                       </form>
                       <!-- /input-group -->
@@ -64,22 +63,22 @@
                       <!--*********************-->
                       <li class="dropdown">
                         <a ng-click="VPrincipal()" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                          {{nombre}}huhu
+                          <--{{nombre}}-->
                           <span class="caret "></span>
                         </a>
                         <!--*********************-->
                         <!-- DROPDOWN            -->
                         <!--*********************-->  
                           <ul class="dropdown-menu">
-                            <li><a ng-click="VPrincipal1()">Perfil</a></li>
+                            <li><a ng-click="VMiPagina()">Pagina</a></li>
                             <li><a ng-click="VPagina1(idUsuario)">Editor</a></li>
-                            <li><a ng-click="VAdminContactos2(idUsuario)"
-           ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">Contactos</a></li>
+                            <li><a  ng-click="VAdminContactos2(idUsuario)"
+                                    ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">Contactos</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a ng-click="VLogin0()">Salir</a></li>
                           </ul>
                       </li>
-                    <li><a ng-click="__ayuda()"><span class="glyphicon glyphicon-info-sign"></span></a></li>
+                      <li><a ng-click="__ayuda()"><span class="glyphicon glyphicon-info-sign"></span></a></li>
 
                     </ul>
                   </div> <!-- /.navbar-collapse -->  
@@ -87,7 +86,7 @@
             </nav>
         </header>
        
- <!--************************************************-->
+  <!--************************************************-->
   <!--                                                -->
   <!-- CUERPO                                         -->
   <!--                                                -->
@@ -116,37 +115,37 @@
         <!-- CONTENIDO                                      -->
         <!--************************************************-->
           <section class="col-sm-8 col-sm-height" id="contenido-registro">
-        <table ng-table="tableParams1" template-pagination="pager.html" class="table">
-            <tr ng-repeat="row in $data">
-                <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
-                <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
-                <td ng-show="row['idContacto']"><a ng-click="AElimContacto1(row['idContacto'])">Eliminar</a></td>
-            </tr>
-        </table>
-        <hr /> 
-        <table ng-table="tableParams2" template-pagination="pager.html" class="table">
-            <tr ng-repeat="row in $data">
-                <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
-                <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
-                <td ng-show="row['idContacto']">
-                    <a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VGrupo2(row['idContacto'])">
-                        Modificar grupo
-                    </a>
-                </td>
-            </tr>
-        </table>
-        <hr />   
-        <form name="fContactoForm" ng-submit="AgregContacto3(fContactoForm.$valid)" novalidate>
-            <div class="form-group" ng-class="{ 'has-error' :  fContactoSubmitted && fContactoForm.nombre.$invalid && fContactoForm.nombre.$pristine && fContactoSubmitted}">
-            <label for="fContacto_nombre">Nombre</label>:&nbsp;
-            <select id="fContacto_nombre" ng-model="fContacto.id" required ng-options="item.key as item.value for item in fContacto_opcionesNombre">
-            </select>
-            <p ng-show="fContactoSubmitted && fContactoForm.nombre.$invalid" class="help-block">Error en campo Nombre.</p>
-            </div>
-            <button type="submit" class="btn btn-perso btn-lg btn-block">
-                Agregar contacto
-            </button>
-        </form>
+            <table ng-table="tableParams1" template-pagination="pager.html" class="table">
+                  <tr ng-repeat="row in $data">
+                      <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
+                      <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
+                      <td ng-show="row['idContacto']"><a ng-click="AElimContacto1(row['idContacto'])">Eliminar</a></td>
+                  </tr>
+              </table>
+
+
+              <table ng-table="tableParams2" template-pagination="pager.html" class="table">
+                  <tr ng-repeat="row in $data">
+                      <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
+                      <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
+                      <td ng-show="row['idContacto']"><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VGrupo2(row['idContacto'])">Modificar grupo</a></td>
+                  </tr>
+              </table>
+
+              <form name="fContactoForm" ng-submit="AgregContacto3(fContactoForm.$valid)" novalidate>
+                    <div class="form-group" ng-class="{ 'has-error' :  fContactoSubmitted && fContactoForm.nombre.$invalid && fContactoForm.nombre.$pristine && fContactoSubmitted}">
+                      <label for="fContacto_nombre">
+                        Nombre
+                      </label>:&nbsp;
+                      <select id="fContacto_nombre" ng-model="fContacto.id" required ng-options="item.key as item.value for item in fContacto_opcionesNombre">
+                      
+                      </select>
+                      <p ng-show="fContactoSubmitted && fContactoForm.nombre.$invalid" class="help-block">Error en campo Nombre.</p>
+                    </div>
+                <button type="submit" class="btn btn-perso btn-lg btn-block">
+                    <span class="glyphicon glyphicon-flash"></span>Agregar contacto
+                </button>
+            </form>
           </section>
       </div>
     </div>

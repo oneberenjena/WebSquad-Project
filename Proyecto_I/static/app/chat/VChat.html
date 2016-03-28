@@ -64,14 +64,14 @@
                       <!--*********************-->
                       <li class="dropdown">
                         <a ng-click="VPrincipal()" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                          {{nombre}}huhu
+                          <--{{nombre}}-->
                           <span class="caret "></span>
                         </a>
                         <!--*********************-->
                         <!-- DROPDOWN            -->
                         <!--*********************-->  
                           <ul class="dropdown-menu">
-                            <li><a ng-click="VPrincipal1()">Perfil</a></li>
+                            <li><a ng-click="VMiPagina(idUsuario)">Pagina</a></li>
                             <li><a ng-click="VPagina1(idUsuario)">Editor</a></li>
                             <li><a ng-click="VContactos2(idUsuario)"
            ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">Contactos</a></li>
@@ -86,17 +86,12 @@
               </div> <!-- /.container-fluid -->
             </nav>
         </header>
-
       <div class="list-group scroll">
 
-        <ul>
-
-          <li ng-repeat="msg in mensajes" >
-            De {{msg.de}}, el {{msg.fecha | date: 'HH:mm' }}: {{msg.mensaje}}
-          </li>
-        </ul>   
-
-    </div> 
+<ul>
+  <li ng-repeat="msg in $storage.mensajes[idChat]">De {{msg.de}}, el {{msg.fecha | date: 'HH:mm' }}: {{msg.mensaje}}</li>
+</ul>    
+</div>
 <form name="fChatForm" ng-submit="AEscribir1(fChatForm.$valid)" novalidate>
             <div class="form-group" ng-class="{ 'has-error' :  fChatSubmitted && fChatForm.texto.$invalid && fChatForm.texto.$pristine && fChatSubmitted}">
             <label for="fChat_texto">Mensaje</label>
@@ -104,15 +99,13 @@
             </textarea><p ng-show="fChatSubmitted && fChatForm.texto.$invalid" class="help-block">Error en campo Texto.</p>
             </div>
         <button type="submit" class="btn btn-perso btn-lg btn-block">
-            <i class="fa fa-user-plus"></i>
             <span class="glyphicon glyphicon-send"></span> Enviar
         </button>
     </form>
     <hr />
 
 
-<div id="right"></div><script type="text/ng-template" id="ayuda_VChat.html">
-Manual...<ul>
-  <li ng-repeat="msg in mensajesAnt">De {{msg.usuario}}, el {{msg.fecha}}: {{msg.texto}}</li>
-</ul>
+<div id="right"></div>
+<script type="text/ng-template" id="ayuda_VChat.html">
+    Manual...
 </script>
