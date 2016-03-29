@@ -12,8 +12,8 @@ socialModule.config(['$routeProvider', function ($routeProvider) {
 }]);
 
 socialModule.controller('VLoginController', 
-   ['$scope', '$localStorage', '$location', '$route', '$timeout', 'flash', 'chatService', 'identService', 'paginasService',
-    function ($scope, $localStorage, $location, $route, $timeout, flash, chatService, identService, paginasService) {
+   ['$scope', '$localStorage', '$location', '$route', '$timeout', 'flash', 'chatService', 'foroService', 'identService', 'paginasService',
+    function ($scope, $localStorage, $location, $route, $timeout, flash, chatService, foroService, identService, paginasService) {
       // Limpiar localStorage
       $localStorage.$reset();
       
@@ -58,8 +58,8 @@ socialModule.controller('VLoginController',
 
     }]);
 socialModule.controller('VPrincipalController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', 'chatService', 'chatSocket', 'identService', 'paginasService', 'chatSocket',
-    function ($scope, $location, $route, $timeout, flash, chatService, chatSocket, identService, paginasService, chatSocket) {
+   ['$scope', '$location', '$route', '$timeout', 'flash', 'chatService', 'chatSocket','foroService', 'identService', 'paginasService', 'chatSocket',
+    function ($scope, $location, $route, $timeout, flash, chatService, chatSocket, foroService, identService, paginasService, chatSocket) {
       $scope.msg = '';
       identService.VPrincipal().then(function (object) {
         $scope.res = object.data;
@@ -77,7 +77,11 @@ socialModule.controller('VPrincipalController',
         $location.path('/VLogin');
       };
       $scope.APagina1 = function(idPagina) {
-          
+        
+        //  
+        // LA LINEA DE ASCANDER ERA
+        //paginasService.APagina({"idPagina":((typeof idPagina === 'object')?JSON.stringify(idPagina):idPagina)}).then(function (object)
+        //
         paginasService.APagina({"idUsuario":$scope.idUsuario}).then(function (object) {
           var msg = object.data["msg"];
           if (msg) flash(msg);
@@ -88,13 +92,25 @@ socialModule.controller('VPrincipalController',
       $scope.VContactos2 = function(idUsuario) {
         $location.path('/VContactos/'+idUsuario);
       };
+      //
+      // ASCANDER NO TENIA ESTE NO SE POR QUE
+      //
       $scope.VPagina1 = function(idUsuario) {
         $location.path('/VPagina/'+idUsuario);
       };
+      
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
+      
+      $scope.VComentariosPagina4 = function(idPaginaSitio) {
+        $location.path('/VComentariosPagina/'+idPaginaSitio);
+      };
+      
     }]);
 socialModule.controller('VRegistroController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', 'chatService', 'identService', 'paginasService',
-    function ($scope, $location, $route, $timeout, flash, chatService, identService, paginasService) {
+   ['$scope', '$location', '$route', '$timeout', 'flash', 'chatService', 'foroService', 'identService', 'paginasService',
+    function ($scope, $location, $route, $timeout, flash, chatService, foroService, identService, paginasService) {
       $scope.msg = '';
       $scope.fUsuario = {};
 

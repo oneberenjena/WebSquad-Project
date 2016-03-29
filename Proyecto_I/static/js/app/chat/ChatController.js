@@ -31,6 +31,10 @@ socialModule.controller('VAdminContactosController',
       $scope.msg = '';
       $scope.fContacto = {};
       
+      //ESTA ERA LA LINEA DE ASCANDER
+      //
+      //chatService.VAdminContactos({"idUsuario":$routeParams.idUsuario}).then(function (object) {
+      //
       chatService.VAdminContactos().then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
@@ -72,7 +76,11 @@ socialModule.controller('VAdminContactosController',
       };
 
       $scope.AgregGrupo4 = function(idUsuario) {
-          
+
+        //ESTO ERA LO QUE TENIA ASCANDER
+        // 
+        // chatService.AgregGrupo({"idUsuario":((typeof idUsuario === 'object')?JSON.stringify(idUsuario):idUsuario)}).then(function (object) {
+        //
         chatService.AgregGrupo({nombre:"grupo_"+ Math.floor(Math.random() * 600000) + 1  }).then(function (object) {
           var msg = object.data["msg"];
           if (msg) flash(msg);
@@ -220,6 +228,14 @@ socialModule.controller('VContactosController',
       $scope.VPrincipal0 = function() {
         $location.path('/VPrincipal');
       };
+      
+      // ESTA ERA LA FUUNCION DE ASCANDER
+      //
+      // $scope.VAdminContactos2 = function(idUsuario) {
+      //   $location.path('/VAdminContactos/'+idUsuario);
+      // };
+      //
+      
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
       };
@@ -274,6 +290,13 @@ socialModule.controller('VGrupoController',
           $location.path(label);
           $route.reload();
         });};
+      
+      // ESTO ERA LO QUE TENIA ASCANDER
+      //
+      // $scope.VAdminContactos2 = function(idUsuario) {
+      //   $location.path('/VAdminContactos/'+idUsuario);
+      // };
+      //
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
       };
@@ -294,6 +317,13 @@ socialModule.controller('VGrupoController',
       };
 
       $scope.AElimMiembro3 = function(id) {
+          // LA DE ASCANDER ES
+          //
+          //var tableFields = [["idContacto","id"],["nombre","Nombre"]];
+          //var arg = {};
+          //arg[tableFields[0][1]] = ((typeof id === 'object')?JSON.stringify(id):id);
+          //chatService.AElimMiembro(arg).then(function (object) {
+          //
           chatService.AElimMiembro({idUsuario: id, idGrupo: $routeParams.idGrupo}).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);
