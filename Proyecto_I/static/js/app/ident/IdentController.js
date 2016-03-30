@@ -58,8 +58,8 @@ socialModule.controller('VLoginController',
 
     }]);
 socialModule.controller('VPrincipalController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', 'chatService', 'chatSocket','foroService', 'identService', 'paginasService', 'chatSocket',
-    function ($scope, $location, $route, $timeout, flash, chatService, chatSocket, foroService, identService, paginasService, chatSocket) {
+   ['$scope', '$location', '$route', '$timeout', 'flash', 'chatService', 'chatSocket','foroService', 'identService', 'paginasService',
+    function ($scope, $location, $route, $timeout, flash, chatService, chatSocket, foroService, identService, paginasService) {
       $scope.msg = '';
       identService.VPrincipal().then(function (object) {
         $scope.res = object.data;
