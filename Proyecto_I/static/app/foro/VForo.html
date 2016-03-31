@@ -12,7 +12,7 @@
         </div>
         <div class="collapse navbar-collapse" id="contenido-plegable">
             <ul class="nav navbar-nav navbar-left">
-<li><a ng-click="VPublicacion1(idMensaje)">
+<li><a ng-click="VPublicacion1('foro')">
   Nueva publicación</a></li>
 <li><a ng-click="AElimForo3(idForo)">
   Eliminar foro</a></li>
@@ -31,9 +31,9 @@
 </nav>
 
         <table ng-table="tableParams0" template-pagination="pager.html" class="table">
-            <tr ng-repeat="row in $data">
+            <tr ng-repeat="row in data0">
                 <td data-title="'Título'" ng-bind="row['titulo']"></td>
-                <td ng-show="row['idMensaje']"><a ng-click="VPublicacion0(row['idMensaje'])">Responder</a></td>
+                <td ng-show="row['idPublicacion']"><a ng-click="VPublicacion0('foro',row['idPublicacion'])">Responder</a></td>
             </tr>
         </table>
 

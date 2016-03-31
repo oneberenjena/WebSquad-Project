@@ -37,7 +37,9 @@ class Usuario(db.Model):
     username = db.Column(db.String(15), index = True, unique = True, nullable = False)
     contrasena = db.Column(db.String(16), nullable = False)
     correo = db.Column(db.String(80), unique = True, nullable = False)
-    #pagina_id = db.Column(db.Integer, db.ForeignKey('Pagina.id_Pagina'), nullable = True)
+
+    #Relacionando con las publicaciones
+    publicaciones = db.relationship('Publicacion', backref="usuario", cascade="all, delete-orphan" , lazy='dynamic')
     
     def __init__(self, nombre, username, contrasena, correo):
         self.nombre = nombre
@@ -79,18 +81,29 @@ class Membresia(db.Model):
     idGrupo = db.Column(db.Integer, db.ForeignKey('grupo.idGrupo'), primary_key=True)
     es_admin = db.Column(db.Boolean)
     usuario = db.relationship("Usuario")
-'''
+
+
+# para la relacion recursiva
+# http://stackoverflow.com/questions/20830147/unable-to-create-self-referencing-foreign-key-in-flask-sqlalchemy
 class Publicacion(db.Model):
+    __tablename__ = 'publicacion'
     idPublicacion = db.Column(db.Integer, primary_key = True)
-    titulo = nombre = db.Column(db.String(50), nullable = False)
+    titulo = db.Column(db.String(50), nullable = False)
     contenido = db.Column(db.Text, nullable = False)
     fecha = db.Column(db.DateTime, nullable = False)
-    autor_id = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'), nullable = False)
-    autor = db.relationship('Usuario', backref = db.backref('publicacion', lazy = 'dynamic'))
-    padre_id = db.Column(db.Integer, db.ForeignKey('Publicacion.idPublicacion'), nullable=True)
-    # SIENTO QUE FALTA ALGO AQUI PARA LA RELACION RECURSIVA
     
-    def __init__(self, titulo, contenido, autor, fecha = None):
+    # Relacion con el usuario
+    autor_id = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'), nullable = False)
+    # autor = db.relationship('Usuario', backref = db.backref('publicacion', lazy = 'dynamic'))
+    
+    # Relacion recursiva publicacion raiz
+    padre_id = db.Column(db.Integer, db.ForeignKey('publicacion.idPublicacion'), nullable=True)
+    
+    hilo_id = db.Column(db.Integer, db.ForeignKey('hilo.idHilo'), nullable=True)
+    
+    # SIENTO QUE FALTA ALGO AQUI PARA LA RELACION RECURSIVA
+
+    def __init__(self, titulo, contenido, autor_id, tipo, padre_id = None, foro_id = None, pag_id = None, fecha = None):
         self.titulo = titulo
         self.contenido = contenido
         
@@ -98,40 +111,49 @@ class Publicacion(db.Model):
             fecha = datetime.utcnow()
         self.fecha = fecha
         
-        self.autor = autor
-        
+        self.autor_id = autor_id
+        self.padre_id = padre_id
+
+
     def __rep__(self):
         return '<titulo de la publicacion: {} \ncontenido: {} son amigos'.format(self.titulo, self.contenido)
         
         
 #http://stackoverflow.com/questions/22976445/flask-sqlalchemy-how-do-i-declare-a-base-class
-class Comentable (db.Model):
-    __abstract__ = True
-    idComentable = db.Column(db.Integer, primary_key = True)
-    hilos = db.relationship('Hilo', backref='comentable', lazy='dynamic')
-
+#http://techarena51.com/index.php/one-to-many-relationships-with-flask-sqlalchemy/
 class Hilo(db.Model):
+    __tablename__ = 'hilo'
+    idHilo = db.Column(db.Integer, primary_key = True)
     titulo = db.Column(db.String(50), nullable = False)
-    pubRaiz_id = db.Column(db.Integer, db.ForeignKey('publicacion.idPublicacion'), nullable = False)
-    pubRaiz = db.relationship('Publicacion', backref = db.backref('publicacion_Raiz', lazy = 'dynamic'))
-    comentable_id = db.Column(db.Integer, db.ForeignKey('comentable.idComentable'))
     
-    def __init__(self, titulo, publicacion, comentable_id):
-        self.titulo  = titulo
-        self.pubRaiz = publicacion
-        self.comentable_id = comentable_id
+    # Relacion con la publicacion raiz
+    pubRaiz_id = db.Column(db.Integer, db.ForeignKey('publicacion.idPublicacion'), nullable = False)
+    pubRaiz = db.relationship('Publicacion', backref = db.backref('publicacion_Raiz', uselist=False), foreign_keys = [pubRaiz_id])
+    
+    publicaciones = db.relationship('Publicacion', backref=db.backref('hilo'), foreign_keys=[Publicacion.hilo_id])
+    # Para identificar si es un hilo de foro o uno de una pagina comentable si es 1 es de foro y 0 de pag
+    tipo = db.Column(db.Integer, nullable = False)
+    foro_id = db.Column(db.Integer, db.ForeignKey('foro.idForo'), nullable=True)
+    pag_id = db.Column(db.Integer, db.ForeignKey('paginaSitio.idPagSitio'), nullable = True)
+    
+    
+    
         
-        
-class Foro (Comentable):
-    __tablename__ = 'foro'
+class Foro (db.Model):
+    idForo = db.Column(db.Integer, primary_key = True)
     titulo = db.Column(db.String(50), nullable = False, unique = True)
-    fecha_creacion = db.Column(db.DataTime, nullable = False)
+    fecha_creacion = db.Column(db.DateTime, nullable = False)
+    
+    # relacion con el usuario
     autor_id = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'), nullable = False)
     autor = db.relationship('Usuario', backref = db.backref('foro', lazy = 'dynamic'))
     
+    # Relacion con los hilos
+    hilos = db.relationship('Hilo', backref='foro', cascade="all, delete-orphan")
+    
     def __init__(self, titulo, autor, fecha = None):
         self.titulo = titulo
-        self.autor = autor
+        self.autor_id = autor
         if fecha is None:
             fecha = datetime.utcnow()
         self.fecha_creacion = fecha
@@ -139,11 +161,14 @@ class Foro (Comentable):
     def __rep__(self):
         return '<Foro %r>' % self.titulo
         
-class PaginaSitio(Comentable):
+class PaginaSitio(db.Model):
     __tablename__ = 'paginaSitio'
+    idPagSitio = db.Column(db.Integer, primary_key = True)
     url = db.Column(db.String(80), unique = True, nullable = False)
     
-'''
+    # Relacion con hilos
+    hilos = db.relationship('Hilo', backref='pagSitio', cascade="all, delete-orphan", lazy='dynamic')
+    
 
 def sonAmigos(id1,id2):
     relacion1 = Contacto.query.filter_by(usuario1=id1,usuario2=id2).first()

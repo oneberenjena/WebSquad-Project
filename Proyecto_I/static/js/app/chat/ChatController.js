@@ -31,10 +31,7 @@ socialModule.controller('VAdminContactosController',
       $scope.msg = '';
       $scope.fContacto = {};
       
-      //ESTA ERA LA LINEA DE ASCANDER
-      //
-      //chatService.VAdminContactos({"idUsuario":$routeParams.idUsuario}).then(function (object) {
-      //
+   
       chatService.VAdminContactos().then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
@@ -228,13 +225,7 @@ socialModule.controller('VContactosController',
       $scope.VPrincipal0 = function() {
         $location.path('/VPrincipal');
       };
-      
-      // ESTA ERA LA FUUNCION DE ASCANDER
-      //
-      // $scope.VAdminContactos2 = function(idUsuario) {
-      //   $location.path('/VAdminContactos/'+idUsuario);
-      // };
-      //
+
       
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
@@ -290,13 +281,7 @@ socialModule.controller('VGrupoController',
           $location.path(label);
           $route.reload();
         });};
-      
-      // ESTO ERA LO QUE TENIA ASCANDER
-      //
-      // $scope.VAdminContactos2 = function(idUsuario) {
-      //   $location.path('/VAdminContactos/'+idUsuario);
-      // };
-      //
+
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
       };
