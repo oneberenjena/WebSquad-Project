@@ -17,8 +17,8 @@ socialModule.service('foroService', ['$q', '$http', function($q, $http) {
         if(typeof args == 'undefined') args={};
         return $http({
           url: 'foro/AElimForo',
-          method: 'GET',
-          params: args
+          method: 'POST',
+          data: args
         });
     //    var labels = ["/VForos", "/VForo", ];
     //    var res = labels[0];

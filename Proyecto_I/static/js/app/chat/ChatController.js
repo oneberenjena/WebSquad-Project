@@ -31,10 +31,7 @@ socialModule.controller('VAdminContactosController',
       $scope.msg = '';
       $scope.fContacto = {};
       
-      //ESTA ERA LA LINEA DE ASCANDER
-      //
-      //chatService.VAdminContactos({"idUsuario":$routeParams.idUsuario}).then(function (object) {
-      //
+   
       chatService.VAdminContactos().then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
@@ -83,8 +80,12 @@ socialModule.controller('VAdminContactosController',
       $scope.VMiPagina = function(idUsuario) {
         $location.path('/VMiPagina/'+idUsuario);
       };
-      $scope.VContactos2 = function(idUsuario) {
+/*      $scope.VContactos2 = function(idUsuario) {
         $location.path('/VContactos/'+idUsuario);
+      };*/
+
+      $scope.VAdminContactos2 = function() {
+        $location.path('/VAdminContactos/');
       };
       $scope.AgregGrupo4 = function(idUsuario) {
 
@@ -182,7 +183,10 @@ socialModule.controller('VChatController',
 
       });
       $scope.VContactos2 = function(idUsuario) {
-        $location.path('/VContactos/'+idUsuario);
+        $location.path('/VContactos/');
+      };
+      $scope.VPrincipal0 = function() {
+        $location.path('/VPrincipal');
       };
       $scope.VMiPagina = function(idUsuario) {
         $location.path('/VMiPagina/'+idUsuario);
@@ -249,7 +253,7 @@ socialModule.controller('VContactosController',
       $scope.VPrincipal0 = function() {
         $location.path('/VPrincipal');
       };
-/*<<<<<<< HEAD*/
+
       $scope.VMiPagina = function(idUsuario) {
         $location.path('/VMiPagina/'+idUsuario);
       };
@@ -260,8 +264,7 @@ socialModule.controller('VContactosController',
       $scope.VPagina1 = function(idUsuario) {
         $location.path('/VPagina/'+idUsuario);
       };
-/*||||||| merged common ancestors
-=======
+
       
       // ESTA ERA LA FUUNCION DE ASCANDER
       //
@@ -269,8 +272,7 @@ socialModule.controller('VContactosController',
       //   $location.path('/VAdminContactos/'+idUsuario);
       // };
       //
-      
->>>>>>> entrega3*/
+
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
       };
@@ -325,13 +327,7 @@ socialModule.controller('VGrupoController',
           $location.path(label);
           $route.reload();
         });};
-      
-      // ESTO ERA LO QUE TENIA ASCANDER
-      //
-      // $scope.VAdminContactos2 = function(idUsuario) {
-      //   $location.path('/VAdminContactos/'+idUsuario);
-      // };
-      //
+
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
       };

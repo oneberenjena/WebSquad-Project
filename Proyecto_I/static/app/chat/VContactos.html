@@ -31,7 +31,7 @@
                     <!--*********************-->
                     <!-- ICONO SFL           -->
                     <!--*********************-->
-                      <a ng-click="VPrincipal()">
+                      <a ng-click="VPrincipal0()">
                         <img style="margin-top:1em;margin-bottom:0.6em;" src="img/SFL_logo-01.svg" />
                       </a>
                   </div>
@@ -87,7 +87,7 @@
                         <!-- DROPDOWN            -->
                         <!--*********************-->  
                           <ul class="dropdown-menu">
-                            <li><a ng-click="VMiPagina(idUsuario)">Pagina</a></li>
+                            <li><a ng-click="VMiPagina(idUsuario)">-{{idUsuario}}-Pagina</a></li>
                             <li><a ng-click="VPagina1(idUsuario)">Editor</a></li>
                             <li><a ng-click="VContactos2(idUsuario)"
            ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">Contactos</a></li>
@@ -144,7 +144,7 @@
                       <td ng-show="row['idContacto']">
                           <a  style="border-style:none" 
                               ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" 
-                              ng-click="VChat1(row['idContacto'])" 
+                              ng-click="VChat1(row)" 
                               class="btn btn-perso">
                                 charlar
                           </a>
@@ -153,7 +153,7 @@
               </table>
               <div class="panel-footer"></div>
             </div>
-            <a style="border-style:none" ng-click="VAdminContactos2(idUsuario)" class="btn btn-perso btn-lg btn-block hidden-lg hidden-md hidden-sm">Administrar contactos</a>
+            <a style="border-style:none" ng-click="VAdminContactos2()" class="btn btn-perso btn-lg btn-block hidden-lg hidden-md hidden-sm">Administrar contactos</a>
 
           </section>
       </div>

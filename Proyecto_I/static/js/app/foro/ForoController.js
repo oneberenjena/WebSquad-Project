@@ -8,7 +8,7 @@ socialModule.config(['$routeProvider', function ($routeProvider) {
             }).when('/VForos/:idUsuario', {
                 controller: 'VForosController',
                 templateUrl: 'app/foro/VForos.html'
-            }).when('/VPublicacion/:idMensaje', {
+            }).when('/VPublicacion/:tipo/:id/:idPadre?', {
                 controller: 'VPublicacionController',
                 templateUrl: 'app/foro/VPublicacion.html'
             });
@@ -70,24 +70,12 @@ socialModule.controller('VForoController',
         if ($scope.logout) {
             $location.path('/');
         }
-
-
-              var VPublicacion0Data = $scope.res.data0;
-              if(typeof VPublicacion0Data === 'undefined') VPublicacion0Data=[];
-              $scope.tableParams0 = new ngTableParams({
-                  page: 1,            // show first page
-                  count: 10           // count per page
-              }, {
-                  total: VPublicacion0Data.length, // length of data
-                  getData: function($defer, params) {
-                      $defer.resolve(VPublicacion0Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                  }
-              });            
+        
 
 
       });
-      $scope.VPublicacion1 = function(idMensaje) {
-        $location.path('/VPublicacion/'+idMensaje);
+      $scope.VPublicacion1 = function(tipo) {
+        $location.path('/VPublicacion/'+tipo+"/"+$routeParams.idForo);
       };
       $scope.VForos2 = function(idUsuario) {
         $location.path('/VForos/'+idUsuario);
@@ -102,8 +90,8 @@ socialModule.controller('VForoController',
           $route.reload();
         });};
 
-      $scope.VPublicacion0 = function(idMensaje) {
-        $location.path('/VPublicacion/'+((typeof idMensaje === 'object')?JSON.stringify(idMensaje):idMensaje));
+      $scope.VPublicacion0 = function(tipo,idPublicacion) {
+        $location.path('/VPublicacion/'+tipo+"/"+$routeParams.idForo+"/"+idPublicacion);
       };
 
 $scope.__ayuda = function() {
@@ -144,7 +132,15 @@ socialModule.controller('VForosController',
       $scope.VPrincipal1 = function() {
         $location.path('/VPrincipal');
       };
-
+      $scope.eliminarForo = function(idForo) {
+        foroService.AElimForo({idForo: idForo}).then(function(object) {
+          var msg = object.data["msg"];
+          if (msg) flash(msg);
+          var label = object.data["label"];
+          $location.path(label);
+          $route.reload();
+        })
+      }
       $scope.fForoSubmitted = false;
       $scope.AgregForo2 = function(isValid) {
         $scope.fForoSubmitted = true;
@@ -197,6 +193,10 @@ socialModule.controller('VPublicacionController',
       $scope.APublicar0 = function(isValid) {
         $scope.fPublicacionSubmitted = true;
         if (isValid) {
+          $scope.fPublicacion.tipo = $routeParams.tipo;
+          $scope.fPublicacion.foro_id = $routeParams.tipo == 'foro' ? $routeParams.id : null;
+          $scope.fPublicacion.pag_id = $routeParams.tipo == 'pagina' ? $routeParams.id : null;
+          $scope.fPublicacion.padre_id = $routeParams.idPadre ? $routeParams.idPadre : null;
           
           foroService.APublicar($scope.fPublicacion).then(function (object) {
               var msg = object.data["msg"];
