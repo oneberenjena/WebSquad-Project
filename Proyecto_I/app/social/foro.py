@@ -95,7 +95,7 @@ def APublicar():
     else:
         res = results[1]
     
-    res['label'] = res['label'] + '/' + str(session['usuario']['idUsuario'])
+    res['label'] = res['label'] + '/' + str(params['foro_id'] if params['tipo'] == 'foro' else params['pag_id'])
 
     #Action code ends here
     if "actor" in res:
@@ -172,18 +172,30 @@ def VForo():
     # ASCANDER LO PUSO
     #res['idMensaje'] = 0 #Nueva publicación
     def parsearPublicaciones(hilo):
-        publicaciones = OrderedDict()
-        publicaciones_raw = {}
+        publicacion = hilo.publicaciones[0]
+        print(publicacion)
+        pubRaiz = {
+            'idPublicacion': publicacion.idPublicacion,
+            'titulo': publicacion.titulo,
+            'contenido': publicacion.contenido,
+            'fecha': publicacion.fecha,
+            'padre_id': publicacion.padre_id,
+            'autor_id': publicacion.autor_id,
+            'respuestas': []
+        }
+        publicaciones = pubRaiz
+        publicaciones_raw = {pubRaiz['idPublicacion']: pubRaiz}
         # Toda publicación hija está hecha despúes que su padre, luego, si ordenamos por fecha
         # las publicaciones padre siempre van a estar agregadas antes que las hijas
-        for publicacion in hilo.publicaciones:
+        for publicacion in hilo.publicaciones[1:]:
             publicacion = {
                 'idPublicacion': publicacion.idPublicacion,
                 'titulo': publicacion.titulo,
                 'contenido': publicacion.contenido,
                 'fecha': publicacion.fecha,
                 'padre_id': publicacion.padre_id,
-                'autor_id': publicacion.autor_id
+                'autor_id': publicacion.autor_id,
+                'respuestas': []
             }
             if publicacion['padre_id'] is None:
                 publicaciones[publicacion['idPublicacion']] = publicacion
@@ -192,13 +204,14 @@ def VForo():
                 if 'respuestas' in publicaciones_raw[publicacion['padre_id']]:
                     publicaciones_raw[publicacion['padre_id']]['respuestas'] += [publicacion]
                 else:
+                    print(publicaciones_raw, )
                     publicacions_raw[publicacion['padre_id']]['respuestas'] = [publicacion]
 
             publicaciones_raw[publicacion['idPublicacion']] = publicacion
         return publicaciones
     
-    hilo = Hilo.query.filter(Hilo.foro_id==idForo).first()
-    res['data0'] = parsearPublicaciones(hilo)
+    hilos = Hilo.query.filter(Hilo.foro_id==idForo).all()
+    res['hilos'] = [parsearPublicaciones(hilo) for hilo in hilos]
 
     #Action code ends here
     return json.dumps(res)

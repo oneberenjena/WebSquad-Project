@@ -30,16 +30,24 @@
     </div>
 </nav>
 
-        <table ng-table="tableParams0" template-pagination="pager.html" class="table">
-            <tr ng-repeat="row in data0">
-                <td data-title="'Título'" ng-bind="row['titulo']"></td>
-                <td ng-show="row['idPublicacion']"><a ng-click="VPublicacion0('foro',row['idPublicacion'])">Responder</a></td>
-            </tr>
-        </table>
+<div class="hilos">
+    <div class="hilo" ng-repeat="hilo in hilos">
+        <h3 ng-bind="hilo['titulo']"></h3>
+        <p ng-bind="hilo['contenido']"></p>
+        <div class="respuesta" ng-repeat="publicacion in hilo.respuestas" ng-include="'field_renderer.html'"></div>
+    </div>
+</div>
 
 <hr />
 
 
 <div id="right"></div><script type="text/ng-template" id="ayuda_VForo.html">
 Doc de foro
+</script>
+
+<script type="text/ng-template" id="field_renderer.html">
+    <h4>{{publicacion.titulo}}</h4>
+    <p>{{publicacion.contenido}}</p>
+    <a ng-click="VPublicacion0('foro',publicacion['idPublicacion'])">Responder</a>
+    <div class="respuesta" ng-repeat="publicacion in publicacion.respuestas" ng-include="'field_renderer.html'"></div>
 </script>

@@ -61,6 +61,7 @@ class Pagina(db.Model):
     def __rep__(self):
         return '<Pagina %r>' % self.titulo
 
+
 class Contacto(db.Model):
     __tablename__ = 'contacto'
     idContacto = db.Column(db.Integer, primary_key=True)
@@ -169,6 +170,7 @@ class PaginaSitio(db.Model):
     # Relacion con hilos
     hilos = db.relationship('Hilo', backref='pagSitio', cascade="all, delete-orphan", lazy='dynamic')
     
+
 
 def sonAmigos(id1,id2):
     relacion1 = Contacto.query.filter_by(usuario1=id1,usuario2=id2).first()
