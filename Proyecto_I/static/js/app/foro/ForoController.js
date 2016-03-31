@@ -141,6 +141,11 @@ socialModule.controller('VForosController',
           $route.reload();
         })
       }
+  
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
+
       $scope.fForoSubmitted = false;
       $scope.AgregForo2 = function(isValid) {
         $scope.fForoSubmitted = true;
@@ -185,6 +190,11 @@ socialModule.controller('VPublicacionController',
         }
 
       });
+  
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
+
       $scope.VForo1 = function(idForo) {
         $location.path('/VForo/'+idForo);
       };

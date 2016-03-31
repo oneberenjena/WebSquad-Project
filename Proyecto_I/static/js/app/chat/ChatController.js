@@ -83,6 +83,9 @@ socialModule.controller('VAdminContactosController',
 /*      $scope.VContactos2 = function(idUsuario) {
         $location.path('/VContactos/'+idUsuario);
       };*/
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
 
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
@@ -183,7 +186,7 @@ socialModule.controller('VChatController',
 
       });
       $scope.VContactos2 = function(idUsuario) {
-        $location.path('/VContactos/');
+        $location.path('/VContactos/'+idUsuario);
       };
       $scope.VPrincipal0 = function() {
         $location.path('/VPrincipal');
@@ -197,6 +200,10 @@ socialModule.controller('VChatController',
 
       $scope.VPagina1 = function(idUsuario) {
         $location.path('/VPagina/'+idUsuario);
+      };
+
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
       };
 
       $scope.fChatSubmitted = false;
@@ -265,6 +272,9 @@ socialModule.controller('VContactosController',
         $location.path('/VPagina/'+idUsuario);
       };
 
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
       
       // ESTA ERA LA FUUNCION DE ASCANDER
       //
@@ -345,6 +355,10 @@ socialModule.controller('VGrupoController',
               $route.reload();
           });
         }
+      };
+
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
       };
 
       $scope.AElimMiembro3 = function(id) {
