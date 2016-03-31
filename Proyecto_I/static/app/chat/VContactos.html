@@ -102,57 +102,37 @@
   <!-- CUERPO                                         -->
   <!--                                                -->
   <!--************************************************-->
-    <div class="container-fluid container-sm-height fill-screen">
-      <div class="row row-sm-height">
-        <!--************************************************-->
-        <!-- ASIDE                                          -->
-        <!--************************************************-->
-          <aside class="col-sm-4 right-divider hidden-xs col-sm-height centrado">
-            <!--************************************************-->
-            <!-- NOMBRE DE USUARIO                              -->
-            <!--************************************************-->
-              <p>
-              <h1>Mis contactos y grupos</h1>
-              </p>
-              <br>
-            <!--************************************************-->
-            <!-- BOTON                                          -->
-            <!--************************************************-->
-              <p>
-                <a style="border-style:none" ng-click="VAdminContactos2(idUsuario)" class="btn btn-perso btn-lg btn-block">Administrar contactos</a>
-              </p>
-          </aside>
-        <!--************************************************-->
-        <!-- CONTENIDO                                      -->
-        <!--************************************************-->
-          <section class="col-sm-8 col-sm-height" id="contenido-registro">
-
-            <!--************************************************-->
-            <!-- LISTA CONTACTOS                                -->
-            <!--************************************************-->
-            <div class="list-group scroll">
-                
-              <table ng-table="tableParams1" template-pagination="pager.html" class="table">
-                  <tr ng-repeat="row in $data">
-                      <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
-                      <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
-                      <td ng-show="row['idContacto']">
-                          <a  style="border-style:none" 
-                              ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" 
-                              ng-click="VChat1(row)" 
-                              class="btn btn-perso">
-                                charlar
-                          </a>
-                      </td>
-                  </tr>
-              </table>
-              <div class="panel-footer"></div>
-            </div>
-            <a style="border-style:none" ng-click="VAdminContactos2()" class="btn btn-perso btn-lg btn-block hidden-lg hidden-md hidden-sm">Administrar contactos</a>
-
-          </section>
+    <div layout="column">
+      <div flex="25" layout="row"  layout-align="center center">
+        <div flex>
+          <p>
+            <h1>Mis contactos y grupos</h1>
+          </p>
+        </div>
+        <div  flex="30">
+          <md-button ng-click="VAdminContactos2(idUsuario)" layout="column" layout-align="center center" style="border-style:none" class="btn btn-perso btn-lg btn-block">
+            Administrar
+          </md-button>
+        </div>
+      </div>
+      <div flex>
+        <table ng-table="tableParams1" template-pagination="pager.html" class="table">
+          <tr ng-repeat="row in $data">
+            <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
+            <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
+            <td ng-show="row['idContacto']">
+              <a  style="border-style:none"
+                  ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false"
+                  ng-click="VChat1(row['idContacto'])"
+                  class="btn btn-perso">
+                charlar
+              </a>
+            </td>
+          </tr>
+        </table>
       </div>
     </div>
+
 
 
 <div id="right"></div><script type="text/ng-template" id="ayuda_VContactos.html">

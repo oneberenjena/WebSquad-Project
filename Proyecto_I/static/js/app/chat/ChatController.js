@@ -86,7 +86,9 @@ socialModule.controller('VAdminContactosController',
       $scope.VForos3 = function(idUsuario) {
         $location.path('/VForos/'+idUsuario);
       };
-
+      $scope.VContactos2 = function(idUsuario) {
+        $location.path('/VContactos/'+idUsuario);
+      };
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
       };
@@ -186,7 +188,7 @@ socialModule.controller('VChatController',
 
       });
       $scope.VContactos2 = function(idUsuario) {
-        $location.path('/VContactos/'+idUsuario);
+        $location.path('/VContactos/');
       };
       $scope.VPrincipal0 = function() {
         $location.path('/VPrincipal');

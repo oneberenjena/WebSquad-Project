@@ -103,64 +103,54 @@
   <!-- CUERPO                                         -->
   <!--                                                -->
   <!--************************************************-->
-    <div class="container-fluid container-sm-height fill-screen">
-      <div class="row row-sm-height">
-        <!--************************************************-->
-        <!-- ASIDE                                          -->
-        <!--************************************************-->
-          <aside class="col-sm-4 right-divider hidden-xs col-sm-height centrado">
-            <!--************************************************-->
-            <!-- NOMBRE DE USUARIO                              -->
-            <!--************************************************-->
-              <p>
-              <h1>Administración de  contactos y grupos</h1>
-              </p>
-              <br>
-            <!--************************************************-->
-            <!-- BOTON                                          -->
-            <!--************************************************-->
-              <p>
-                <a style="border-style:none" ng-click="VContactos2(idUsuario)" class="btn btn-perso btn-lg btn-block">Chat</a>
-              </p>
-          </aside>
-        <!--************************************************-->
-        <!-- CONTENIDO                                      -->
-        <!--************************************************-->
-          <section class="col-sm-8 col-sm-height" id="contenido-registro">
-            <table ng-table="tableParams1" template-pagination="pager.html" class="table">
-                  <tr ng-repeat="row in $data">
-                      <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
-                      <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
-                      <td ng-show="row['idContacto']"><a ng-click="AElimContacto1(row['idContacto'])">Eliminar</a></td>
-                  </tr>
-              </table>
-
-
-              <table ng-table="tableParams2" template-pagination="pager.html" class="table">
-                  <tr ng-repeat="row in $data">
-                      <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
-                      <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
-                      <td ng-show="row['idContacto']"><a ng-click="VGrupo2(row['idContacto'])">Modificar grupo</a></td>
-                  </tr>
-              </table>
-
-              <form name="fContactoForm" ng-submit="AgregContacto3(fContactoForm.$valid)" novalidate>
-                    <div class="form-group" ng-class="{ 'has-error' :  fContactoSubmitted && fContactoForm.nombre.$invalid && fContactoForm.nombre.$pristine && fContactoSubmitted}">
-                      <label for="fContacto_nombre">
-                        Nombre
-                      </label>:&nbsp;
-                      <select id="fContacto_nombre" ng-model="fContacto.id" required ng-options="item.key as item.value for item in fContacto_opcionesNombre">
-                      
-                      </select>
-                      <p ng-show="fContactoSubmitted && fContactoForm.nombre.$invalid" class="help-block">Error en campo Nombre.</p>
-                    </div>
-                <button type="submit" class="btn btn-perso btn-lg btn-block">
-                    <span class="glyphicon glyphicon-flash"></span>Agregar contacto
-                </button>
-            </form>
-          </section>
+    
+    <div layout="column">
+    <div flex="25" layout="row"  layout-align="center center">
+      <div flex>
+        <p>
+        <h1>Administracion de contactos</h1>
+        </p>
+      </div>
+      <div  flex="30">
+        <md-button ng-click="VContactos2($storage.idUsuario)" layout="column" layout-align="center center" style="border-style:none" class="btn btn-perso btn-lg btn-block">
+          Chat
+        </md-button>
       </div>
     </div>
+    <div flex>
+      <table ng-table="tableParams1" template-pagination="pager.html" class="table">
+        <tr ng-repeat="row in $data">
+          <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
+          <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
+          <td ng-show="row['idContacto']"><a ng-click="AElimContacto1(row['idContacto'])">Eliminar</a></td>
+        </tr>
+      </table>
+
+
+      <table ng-table="tableParams2" template-pagination="pager.html" class="table">
+        <tr ng-repeat="row in $data">
+          <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
+          <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
+          <td ng-show="row['idContacto']"><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VGrupo2(row['idContacto'])">Modificar grupo</a></td>
+        </tr>
+      </table>
+
+      <form name="fContactoForm" ng-submit="AgregContacto3(fContactoForm.$valid)" novalidate>
+        <div class="form-group" ng-class="{ 'has-error' :  fContactoSubmitted && fContactoForm.nombre.$invalid && fContactoForm.nombre.$pristine && fContactoSubmitted}">
+          <label for="fContacto_nombre">
+            Nombre
+          </label>:&nbsp;
+          <select id="fContacto_nombre" ng-model="fContacto.id" required ng-options="item.key as item.value for item in fContacto_opcionesNombre">
+
+          </select>
+          <p ng-show="fContactoSubmitted && fContactoForm.nombre.$invalid" class="help-block">Error en campo Nombre.</p>
+        </div>
+        <button type="submit" class="btn btn-perso btn-lg btn-block">
+          <span class="glyphicon glyphicon-flash"></span>Agregar contacto
+        </button>
+      </form>
+    </div>
+  </div>
 
 <div id="right"></div><script type="text/ng-template" id="ayuda_VAdminContactos.html">
 Manual...
