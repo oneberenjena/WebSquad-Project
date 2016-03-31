@@ -5,6 +5,7 @@ import sqlalchemy
 chat = Blueprint('chat', __name__)
 
 
+
 @chat.route('/chat/AElimContacto')
 def AElimContacto():
     #GET parameter
@@ -29,10 +30,7 @@ def AElimContacto():
     else:
         db.session.delete(relacion)
         db.session.commit()
-    
-    res['label'] = res['label'] + '/' + str(idUsuario)
-
-
+        
     #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
@@ -113,7 +111,6 @@ def ASalirGrupo():
                 res['label'] = res['label'] + '/' + idGrupo
             else:
                 res = results[1]
-                res['label'] = res['label'] + '/' + idUsuario
         else:
             res['label'] = res['label'] + '/' + idGrupo
         db.session.commit()
@@ -160,8 +157,7 @@ def AgregContacto():
         print("Hice rollback")
         res = results[1]
     
-    res['label'] = res['label'] + '/' + str(idUsuario)
-    
+
     #Action code ends here
     if "actor" in res:
         if res['actor'] is None:
@@ -249,7 +245,6 @@ def VAdminContactos():
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
-    res['idContacto'] = 1
     contactos = obtenerAmigos(idUsuario)
     res['data1'] = [
         {
@@ -258,8 +253,7 @@ def VAdminContactos():
           'tipo':'usuario'
         } for contacto in contactos
     ]
-    grupos = Membresia.query.join(Grupo, Grupo.idGrupo == Membresia.idGrupo).add_columns(
-        Grupo.idGrupo, Grupo.nombre).filter(Membresia.idUsuario==idUsuario).all()
+    grupos = obtenerGrupos(idUsuario)
     res['data2'] = [
         {
           'idContacto':grupo.idGrupo, 
@@ -290,15 +284,7 @@ def VChat():
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
 
-    res['idChat'] = 1
-    res['idUsuario'] = 1
-    res['mensajesAnt'] = [
-      {'texto': '¿Me traes mi gato por la tarde?', 'usuario':'ana', 'fecha':'lun feb 29 09:08:17 VET 2016'},
-      {'texto': '¡Hay! no lo encuentro, debió escaparse. Ahora salgo a buscarlo', 'usuario':'distra', 'fecha':'lun feb 29 09:09:17 VET 2016'},
-      {'texto': 'Hola vane, ayer al pasar por tu casa dejé a naco mi anacondita..', 'usuario':'uri', 'fecha':'lun feb 29 09:09:17 VET 2016'},
-      {'texto': 'La dejasete fue en mi casa. No la había visto porque está en un rincon, no se mueve y ... pareceira que tiene algo atragantado.', 'usuario':'distra', 'fecha':'lun feb 29 09:10:17 VET 2016'},
-      {'texto': '¿Qué?', 'usuario':'ana', 'fecha':'lun feb 29 09:12:17 VET 2016'},
-    ]
+
 
     #Action code ends here
     return json.dumps(res)
@@ -315,18 +301,20 @@ def VContactos():
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
 
-    res['idContacto'] = 1
-
-    contactos = obtenerAmigos(idUsuario)
-    print(contactos)
     res['data1'] = [
         {
           'idContacto':contacto.idUsuario,
           'nombre':contacto.nombre, 
           'tipo':'usuario'
-        } for contacto in contactos
+        } for contacto in obtenerAmigos(idUsuario)
     ]
-
+    res['data1'] += [
+        {
+            'idContacto': grupo.idGrupo,
+            'nombre': grupo.nombre,
+            'tipo': 'grupo'
+        } for grupo in obtenerGrupos(idUsuario)
+    ]
 
     #Action code ends here
     return json.dumps(res)
