@@ -5,17 +5,55 @@ import sqlalchemy
 
 foro = Blueprint('foro', __name__)
 
+def parsearPublicaciones(hilo):
+    publicacion = hilo.publicaciones[0]
+    print(publicacion)
+    pubRaiz = {
+        'idPublicacion': publicacion.idPublicacion,
+        'titulo': publicacion.titulo,
+        'contenido': publicacion.contenido,
+        'fecha': publicacion.fecha,
+        'padre_id': publicacion.padre_id,
+        'autor_id': publicacion.autor_id,
+        'respuestas': []
+    }
+    publicaciones = pubRaiz
+    publicaciones_raw = {pubRaiz['idPublicacion']: pubRaiz}
+    # Toda publicación hija está hecha despúes que su padre, luego, si ordenamos por fecha
+    # las publicaciones padre siempre van a estar agregadas antes que las hijas
+    for publicacion in hilo.publicaciones[1:]:
+        publicacion = {
+            'idPublicacion': publicacion.idPublicacion,
+            'titulo': publicacion.titulo,
+            'contenido': publicacion.contenido,
+            'fecha': publicacion.fecha,
+            'padre_id': publicacion.padre_id,
+            'autor_id': publicacion.autor_id,
+            'respuestas': []
+        }
+        if publicacion['padre_id'] is None:
+            publicaciones[publicacion['idPublicacion']] = publicacion
+            publicacion['respuestas'] = []
+        else:
+            if 'respuestas' in publicaciones_raw[publicacion['padre_id']]:
+                publicaciones_raw[publicacion['padre_id']]['respuestas'] += [publicacion]
+            else:
+                print(publicaciones_raw, )
+                publicacions_raw[publicacion['padre_id']]['respuestas'] = [publicacion]
 
+        publicaciones_raw[publicacion['idPublicacion']] = publicacion
+    return publicaciones
+        
 @foro.route('/foro/AComentar', methods=['POST'])
 def AComentar():
     #POST/PUT parameters
     params = request.get_json()
-    results = [{'label':'/VPrincipal', 'msg':['Comentario realizado']}, {'label':'/VComentariosPagina', 'msg':['Error al realizar comentario']}, ]
+    results = [{'label':'/p', 'msg':['Comentario realizado']}, {'label':'/VPublicacion/pagina', 'msg':['Error al realizar comentario']}, ]
     res = results[0]
     #Action code goes here, res should be a list with a label and a message
 
     #En caso de error
-    #res['label'] = res['label'] + '/' + repr(1)
+    res['label'] = res['label'] + '/' + str(params['url'])
 
     #Action code ends here
     if "actor" in res:
@@ -26,7 +64,19 @@ def AComentar():
     return json.dumps(res)
 
 
-
+@foro.route('/foro/AObtenerComentarios')
+def AObtenerComentarios():
+    #GET parameter
+    url = request.args['url']
+    res = {}
+    if "actor" in session:
+        res['actor']=session['actor']
+    #Action code goes here, res should be a JSON structure
+    hilos = Hilo.query.filter_by(pag_id=url).all()
+    res['comentarios'] = [parsearPublicaciones(hilo) for hilo in hilos]
+    #Action code ends here
+    return json.dumps(res)
+    
 @foro.route('/foro/AElimForo', methods=['POST'])
 def AElimForo():
     #GET parameter
@@ -80,7 +130,7 @@ def APublicar():
         if params['padre_id'] is None:
             if params['tipo'] == 'foro':
                 hilo = Hilo(titulo=params['titulo'], pubRaiz=publicacion, tipo=1, foro_id = params['foro_id'], pag_id=None)
-            elif tipo == 'pagina':
+            elif params['tipo'] == 'pagina':
                 hilo = Hilo(titulo=params['titulo'], pubRaiz=publicacion, tipo=0, foro_id = None, pag_id=params['pag_id'])
             db.session.add(hilo)
             db.session.commit()
@@ -94,8 +144,10 @@ def APublicar():
         
     else:
         res = results[1]
+        
     
-    res['label'] = res['label'] + '/' + str(params['foro_id'] if params['tipo'] == 'foro' else params['pag_id'])
+        
+    res['label'] = (res['label'] + '/' + str(params['foro_id']) if params['tipo'] == 'foro' else "/p/" + params['pag_id'])
 
     #Action code ends here
     if "actor" in res:
@@ -171,44 +223,6 @@ def VForo():
     
     # ASCANDER LO PUSO
     #res['idMensaje'] = 0 #Nueva publicación
-    def parsearPublicaciones(hilo):
-        publicacion = hilo.publicaciones[0]
-        print(publicacion)
-        pubRaiz = {
-            'idPublicacion': publicacion.idPublicacion,
-            'titulo': publicacion.titulo,
-            'contenido': publicacion.contenido,
-            'fecha': publicacion.fecha,
-            'padre_id': publicacion.padre_id,
-            'autor_id': publicacion.autor_id,
-            'respuestas': []
-        }
-        publicaciones = pubRaiz
-        publicaciones_raw = {pubRaiz['idPublicacion']: pubRaiz}
-        # Toda publicación hija está hecha despúes que su padre, luego, si ordenamos por fecha
-        # las publicaciones padre siempre van a estar agregadas antes que las hijas
-        for publicacion in hilo.publicaciones[1:]:
-            publicacion = {
-                'idPublicacion': publicacion.idPublicacion,
-                'titulo': publicacion.titulo,
-                'contenido': publicacion.contenido,
-                'fecha': publicacion.fecha,
-                'padre_id': publicacion.padre_id,
-                'autor_id': publicacion.autor_id,
-                'respuestas': []
-            }
-            if publicacion['padre_id'] is None:
-                publicaciones[publicacion['idPublicacion']] = publicacion
-                publicacion['respuestas'] = []
-            else:
-                if 'respuestas' in publicaciones_raw[publicacion['padre_id']]:
-                    publicaciones_raw[publicacion['padre_id']]['respuestas'] += [publicacion]
-                else:
-                    print(publicaciones_raw, )
-                    publicacions_raw[publicacion['padre_id']]['respuestas'] = [publicacion]
-
-            publicaciones_raw[publicacion['idPublicacion']] = publicacion
-        return publicaciones
     
     hilos = Hilo.query.filter(Hilo.foro_id==idForo).all()
     res['hilos'] = [parsearPublicaciones(hilo) for hilo in hilos]
@@ -243,13 +257,13 @@ def VForos():
 @foro.route('/foro/VPublicacion')
 def VPublicacion():
     #GET parameter
-    idMensaje = request.args['idMensaje']
+    #idMensaje = request.args['idMensaje']
     res = {}
     if "actor" in session:
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
 
-    res['idForo'] = 1
+    #res['idForo'] = 1
 
     #Action code ends here
     return json.dumps(res)

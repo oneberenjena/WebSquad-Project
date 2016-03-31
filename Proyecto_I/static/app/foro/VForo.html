@@ -34,6 +34,7 @@
     <div class="hilo" ng-repeat="hilo in hilos">
         <h3 ng-bind="hilo['titulo']"></h3>
         <p ng-bind="hilo['contenido']"></p>
+        <a ng-click="VPublicacion0('foro',hilo['idPublicacion'])">Responder</a>
         <div class="respuesta" ng-repeat="publicacion in hilo.respuestas" ng-include="'field_renderer.html'"></div>
     </div>
 </div>
