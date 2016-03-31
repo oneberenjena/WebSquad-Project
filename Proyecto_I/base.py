@@ -112,6 +112,8 @@ from app.social.paginas import paginas
 app.register_blueprint(paginas)
 from app.social.chat import chat
 app.register_blueprint(chat)
+from app.social.foro import foro
+app.register_blueprint(foro)
 
 @socketio.on('message')
 def message_handler(data):
