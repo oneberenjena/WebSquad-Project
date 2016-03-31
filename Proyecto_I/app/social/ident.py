@@ -26,6 +26,7 @@ def AIdentificar():
         # Si inicié sesión correctamente, se crea la sesion y se une al room
         res = results[0]
         res['idUsuario'] = user.idUsuario
+        res['nombre'] = user.nombre
         
         #socketio.emit("join", {tipo: "usuario", room: user.idUsuario})
         # TODO: que se una a todos los grupos de los que es miembro

@@ -50,6 +50,7 @@ socialModule.controller('VLoginController',
                   $scope[key] = object.data[key];
               }
               $scope.$storage.idUsuario = $scope.idUsuario;
+              $scope.$storage.nombre = $scope.nombre;
               $location.path(label);
               $route.reload();
           });
