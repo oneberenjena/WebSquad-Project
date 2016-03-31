@@ -152,7 +152,7 @@ Opcional.
    <li>URL: '/paginas/APagina'</li>
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idPagina
-   <li>Roles: Sin restricción de rol
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
    <li>Requisitos: No disponible
    <li>
     <p><strong>Cursos posibles</strong></p>
@@ -326,6 +326,8 @@ Requerido.
 Requerido. 
      </li>     <li>nombre -  
 Requerido. 
+     </li>     <li>idUsuario -  
+Opcional. 
      </li>
     </ul>
    </li>
@@ -353,6 +355,35 @@ Requerido.
    </li>
   </ul>
  </li> <li>
+  <p>Agrega un grupo de contacto que sólo incluye al usuario y tiene un nombre único creado por defecto. Por ejemplo: grupo 1<br></p>
+  <ul>
+   <li>URL: '/chat/AgregGrupo'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idUsuario
+   <li>Roles: Sin restricción de rol
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VAdminContactos',</li>
+       <li> msg:"Grupo agregado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VAdminContactos',</li>
+       <li> msg:"Error al crear grupo".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
   <p></p>
   <ul>
    <li>URL: '/chat/AgregMiembro'</li>
@@ -362,6 +393,8 @@ Requerido.
 Requerido. 
      </li>     <li>nombre -  
 Requerido. 
+     </li>     <li>idGrupo -  
+Opcional. 
      </li>
     </ul>
    </li>
@@ -419,6 +452,186 @@ Parámetros GET: idUsuario
    <li>Método: GET</li><li>Formato de salida: JSON</li>
 Parámetros GET: idGrupo
    <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li>
+</ol>
+<h2>foros</h2>
+<p></p>
+<ol>
+ <li>
+  <p></p>
+  <ul>
+   <li>URL: '/foro/AComentar'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idForo -  
+Opcional. 
+     </li>     <li>fecha -  
+Requerido. 
+     </li>     <li>titulo -  
+Requerido. 
+     </li>     <li>contenido -  
+Opcional. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: Sin restricción de rol
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VPrincipal',</li>
+       <li> msg:"Comentario realizado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VComentariosPagina',</li>
+       <li> msg:"Error al realizar comentario".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/foro/AElimForo'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idForo
+   <li>Roles: Sin restricción de rol
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VForos',</li>
+       <li> msg:"Foro eliminado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VForo',</li>
+       <li> msg:"No se pudo eliminar el foro".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/foro/APublicar'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>idForo -  
+Opcional. 
+     </li>     <li>fecha -  
+Requerido. 
+     </li>     <li>titulo -  
+Requerido. 
+     </li>     <li>contenido -  
+Opcional. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: Sin restricción de rol
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VForo',</li>
+       <li> msg:"Publicación realizada".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VPublicacion',</li>
+       <li> msg:"Error al realizar publicación".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/foro/AgregForo'</li>
+   <li>Método: POST</li><li>Formato de entrada y salida: JSON</li>
+<li>Parámetros POST:
+    <ul>     <li>titulo -  
+Opcional. 
+     </li>
+    </ul>
+   </li>
+   <li>Roles: Sin restricción de rol
+   <li>Requisitos: No disponible
+   <li>
+    <p><strong>Cursos posibles</strong></p>
+    <ol>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VForos',</li>
+       <li> msg:"Foro creado".</li>
+      </ul>
+     </li>
+     <li>
+      <p>resultado:</p>
+      <ul>
+       <li>label:'/VForos',</li>
+       <li> msg:"No se pudo crear el foro".</li>
+      </ul>
+     </li>
+
+    </ol>
+   </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/foro/VComentariosPagina'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idPaginaSitio
+   <li>Roles: Sin restricción de rol
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/foro/VForo'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idForo
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/foro/VForos'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idUsuario
+   <li>Roles: desarrollador duenoProducto maestroScrum </li>
+  </ul>
+ </li> <li>
+  <p></p>
+  <ul>
+   <li>URL: '/foro/VPublicacion'</li>
+   <li>Método: GET</li><li>Formato de salida: JSON</li>
+Parámetros GET: idMensaje
+   <li>Roles: Sin restricción de rol
   </ul>
  </li>
 </ol>
