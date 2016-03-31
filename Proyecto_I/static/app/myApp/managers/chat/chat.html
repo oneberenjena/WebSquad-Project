@@ -1,0 +1,17 @@
+<div layout="row" flex ng-cloak>
+	<md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
+				md-component-id="chats"
+				ng-click="vm.toggleList()" aria-label="Mostrar lista de chats"
+				md-is-locked-open="$mdMedia('gt-sm')"
+				ui-view="sidebar">
+	</md-sidenav>
+
+	 <md-sidenav class="site-sidenav md-sidenav-left md-whiteframe-z2"
+				md-component-id="contacts"
+				ng-click="vm.toggleList()" aria-label="Mostrar lista de chats"
+				md-is-locked-open="false"
+				ui-view="contactbar">
+	</md-sidenav>
+
+	<div flex layout="column" tabIndex="-1" role="main" class="md-whiteframe-z2" ui-view="board"></div>
+</div>

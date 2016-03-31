@@ -18,6 +18,7 @@ clients = []
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 @app.before_request
 def make_session_permanent():
@@ -75,75 +76,78 @@ class Grupo(db.Model):
     usuarios = db.relationship("Membresia")
 
 class Membresia(db.Model):
-    idUsuario = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'), primary_key=True)
-    idGrupo = db.Column(db.Integer, db.ForeignKey('grupo.idGrupo'), primary_key=True)
+    idMembresia = db.Column(db.Integer, primary_key=True)
+    idUsuario = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'))
+    idGrupo = db.Column(db.Integer, db.ForeignKey('grupo.idGrupo'))
     es_admin = db.Column(db.Boolean)
+    test = db.Column(db.String(50))
     usuario = db.relationship("Usuario")
-'''
-class Publicacion(db.Model):
-    idPublicacion = db.Column(db.Integer, primary_key = True)
-    titulo = nombre = db.Column(db.String(50), nullable = False)
-    contenido = db.Column(db.Text, nullable = False)
-    fecha = db.Column(db.DateTime, nullable = False)
-    autor_id = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'), nullable = False)
-    autor = db.relationship('Usuario', backref = db.backref('publicacion', lazy = 'dynamic'))
-    padre_id = db.Column(db.Integer, db.ForeignKey('Publicacion.idPublicacion'), nullable=True)
-    # SIENTO QUE FALTA ALGO AQUI PARA LA RELACION RECURSIVA
     
-    def __init__(self, titulo, contenido, autor, fecha = None):
-        self.titulo = titulo
-        self.contenido = contenido
-        
-        if fecha is None:
-            fecha = datetime.utcnow()
-        self.fecha = fecha
-        
-        self.autor = autor
-        
-    def __rep__(self):
-        return '<titulo de la publicacion: {} \ncontenido: {} son amigos'.format(self.titulo, self.contenido)
-        
-        
-#http://stackoverflow.com/questions/22976445/flask-sqlalchemy-how-do-i-declare-a-base-class
-class Comentable (db.Model):
-    __abstract__ = True
-    idComentable = db.Column(db.Integer, primary_key = True)
-    hilos = db.relationship('Hilo', backref='comentable', lazy='dynamic')
 
-class Hilo(db.Model):
-    titulo = db.Column(db.String(50), nullable = False)
-    pubRaiz_id = db.Column(db.Integer, db.ForeignKey('publicacion.idPublicacion'), nullable = False)
-    pubRaiz = db.relationship('Publicacion', backref = db.backref('publicacion_Raiz', lazy = 'dynamic'))
-    comentable_id = db.Column(db.Integer, db.ForeignKey('comentable.idComentable'))
+# class Publicacion(db.Model):
+#     idPublicacion = db.Column(db.Integer, primary_key = True)
+#     titulo = nombre = db.Column(db.String(50), nullable = False)
+#     contenido = db.Column(db.Text, nullable = False)
+#     fecha = db.Column(db.DateTime, nullable = False)
+#     autor_id = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'), nullable = False)
+#     autor = db.relationship('Usuario', backref = db.backref('publicacion', lazy = 'dynamic'))
+#     padre_id = db.Column(db.Integer, db.ForeignKey('Publicacion.idPublicacion'), nullable=True)
+#     # SIENTO QUE FALTA ALGO AQUI PARA LA RELACION RECURSIVA
     
-    def __init__(self, titulo, publicacion, comentable_id):
-        self.titulo  = titulo
-        self.pubRaiz = publicacion
-        self.comentable_id = comentable_id
+#     def __init__(self, titulo, contenido, autor, fecha = None):
+#         self.titulo = titulo
+#         self.contenido = contenido
+        
+#         if fecha is None:
+#             fecha = datetime.utcnow()
+#         self.fecha = fecha
+        
+#         self.autor = autor
+        
+#     def __rep__(self):
+#         return '<titulo de la publicacion: {} \ncontenido: {} son amigos'.format(self.titulo, self.contenido)
         
         
-class Foro (Comentable):
-    __tablename__ = 'foro'
-    titulo = db.Column(db.String(50), nullable = False, unique = True)
-    fecha_creacion = db.Column(db.DataTime, nullable = False)
-    autor_id = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'), nullable = False)
-    autor = db.relationship('Usuario', backref = db.backref('foro', lazy = 'dynamic'))
+# #http://stackoverflow.com/questions/22976445/flask-sqlalchemy-how-do-i-declare-a-base-class
+# class Comentable (db.Model):
+#     __abstract__ = True
+#     idComentable = db.Column(db.Integer, primary_key = True)
+#     hilos = db.relationship('Hilo', backref='comentable', lazy='dynamic')
+
+# class Hilo(db.Model):
+#     titulo = db.Column(db.String(50), nullable = False)
+#     pubRaiz_id = db.Column(db.Integer, db.ForeignKey('publicacion.idPublicacion'), nullable = False)
+#     pubRaiz = db.relationship('Publicacion', backref = db.backref('publicacion_Raiz', lazy = 'dynamic'))
+#     comentable_id = db.Column(db.Integer, db.ForeignKey('comentable.idComentable'))
     
-    def __init__(self, titulo, autor, fecha = None):
-        self.titulo = titulo
-        self.autor = autor
-        if fecha is None:
-            fecha = datetime.utcnow()
-        self.fecha_creacion = fecha
+#     def __init__(self, titulo, publicacion, comentable_id):
+#         self.titulo  = titulo
+#         self.pubRaiz = publicacion
+#         self.comentable_id = comentable_id
         
-    def __rep__(self):
-        return '<Foro %r>' % self.titulo
         
-class PaginaSitio(Comentable):
-    __tablename__ = 'paginaSitio'
-    url = db.Column(db.String(80), unique = True, nullable = False)
+# class Foro (Comentable):
+#     __tablename__ = 'foro'
+#     titulo = db.Column(db.String(50), nullable = False, unique = True)
+#     fecha_creacion = db.Column(db.DataTime, nullable = False)
+#     autor_id = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'), nullable = False)
+#     autor = db.relationship('Usuario', backref = db.backref('foro', lazy = 'dynamic'))
     
-'''
+#     def __init__(self, titulo, autor, fecha = None):
+#         self.titulo = titulo
+#         self.autor = autor
+#         if fecha is None:
+#             fecha = datetime.utcnow()
+#         self.fecha_creacion = fecha
+        
+#     def __rep__(self):
+#         return '<Foro %r>' % self.titulo
+        
+# class PaginaSitio(Comentable):
+#     __tablename__ = 'paginaSitio'
+#     url = db.Column(db.String(80), unique = True, nullable = False)
+    
+
 
 def sonAmigos(id1,id2):
     relacion1 = Contacto.query.filter_by(usuario1=id1,usuario2=id2).first()
@@ -155,13 +159,13 @@ def obtenerAmigos(idUsuario):
     c1 = Contacto.query.join(
         Usuario, Contacto.usuario2 == Usuario.idUsuario
     ).add_columns(
-        Usuario.nombre,Usuario.idUsuario, Contacto.idContacto
+        Usuario.nombre, Usuario.idUsuario, Contacto.idContacto
     ).filter(Contacto.usuario1==idUsuario).all()
     
     c2 = Contacto.query.join(
         Usuario, Contacto.usuario1 == Usuario.idUsuario
     ).add_columns(
-        Usuario.nombre,Usuario.idUsuario, Contacto.idContacto
+        Usuario.nombre, Usuario.idUsuario, Contacto.idContacto
     ).filter(Contacto.usuario2==idUsuario).all()
     
     return c1 + c2

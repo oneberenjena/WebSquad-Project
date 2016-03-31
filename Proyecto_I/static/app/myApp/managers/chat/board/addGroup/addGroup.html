@@ -1,0 +1,31 @@
+<div layout="column" flex>
+    <!--<md-toolbar layout="row" class="md-whiteframe-z1" flex>
+        <md-button id="main" class="menu" hide-gt-sm ng-click="vm.toggleList()" aria-label="Show User List">
+            <md-icon md-svg-icon="menu" ></md-icon>
+        </md-button>
+        <h3>
+            Crear Grupo
+        </h3>
+    </md-toolbar>-->
+
+    <md-content id="content" class="md-no-momentum">
+        <form name="addContactForm">
+            <md-input-container class="md-icon-float md-block">
+                <!-- Use floating label instead of placeholder -->
+                <label>Name</label>
+                <md-icon md-svg-src="../img/svg/ic_person_black_24px.svg" class="name"></md-icon>
+                <input ng-model="vm.group.nombre" type="text">
+            </md-input-container>
+
+            <md-subheader class="md-no-sticky">Miembros</md-subheader>
+            <md-list-item ng-repeat="contact in vm.contacts">
+                <p>
+                    <md-icon md-svg-icon="{{contact.avatar}}" class="avatar"></md-icon>
+                    {{contact.idUsuario}},{{ contact.nombre }}
+                </p>
+                <md-checkbox class="md-secondary" ng-model="contact.wanted"></md-checkbox>
+            </md-list-item>
+            <md-button type="submit" class="md-raised md-primary" ng-click="vm.addGroup()">Agregar</md-button>
+        </form>
+    </md-content>
+</div>

@@ -1,0 +1,30 @@
+<md-content layout="column">
+    <!--<md-toolbar layout="row" class="md-whiteframe-z1" flex>
+        <md-button id="main" class="menu" hide-gt-sm ng-click="vm.toggleList()" aria-label="Show User List">
+            <md-icon md-svg-icon="menu" ></md-icon>
+        </md-button>
+        <h3 ng-click="vm.checkProfile()" ng-if="vm.selected.info">
+            <md-icon md-svg-icon="{{vm.selected.info.avatar}}" class="avatar"></md-icon>
+		<span>
+			{{vm.selected.info.name}}
+		</span>
+        </h3>
+    </md-toolbar>-->
+    <md-content id="content" flex="70" layout="column" layout-align="center">
+        <md-list>
+            <md-list-item class="md-3-line" ng-repeat="message in vm.messages">
+                <div class="md-list-item-text" class="md-item-text md-whiteframe-z1" flex layout="column" layout-align="space-between end">
+                    <h3>{{ message.content }}</h3>
+                    <h4>{{ message.author }}</h4>
+                </div>
+            </md-list-item>
+        </md-list>
+
+    </md-content>
+    <div style="background-color:#EDEDED" flex="30">
+        <md-input-container class="md-block">
+            <label>Escribir mensaje</label>
+            <input ng-model="vm.message.content">
+        </md-input-container>
+    </div>
+</md-content>

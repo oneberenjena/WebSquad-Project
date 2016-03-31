@@ -122,6 +122,90 @@ def VRegistro():
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+# MI PARTE
+
+
+
+
+@ident.route('/auth/register', methods=['POST'])
+def register():
+    #POST/PUT parameters
+    params = request.get_json()
+    results = [
+        {
+            'label':'/VLogin',
+            'msg':['Felicitaciones, Ya estás registrado en la aplicación']
+        },
+        {
+            'label':'/VRegistro',
+            'msg':['Error al tratar de registrarse']
+        }
+    ]
+    
+    if not (params['usuario'] and params['correo'] and params['nombre'] and params['clave']):
+        res = results[1]
+    else:
+        try:
+            user = Usuario(params['nombre'], params['usuario'], params['clave'], params['correo'])
+            db.session.add(user)
+            db.session.commit()
+            res = results[0]
+        except:
+            res = results[1]
+    
+
+    return json.dumps(res)
+
+@ident.route('/auth/login', methods=['POST'])
+def login():
+    #POST/PUT parameters
+    params = request.get_json()
+
+    results = [
+        {
+            'label':'/VPrincipal',
+            'msg':['Bienvenido usuario'],
+            "actor":"duenoProducto"
+        },
+        {
+            'label':'/VLogin',
+            'msg': ['Datos de identificación incorrectos']
+        }]
+
+    user = Usuario.query.filter_by(username=params['usuario'],
+                               contrasena=params['clave']).first()
+    
+    if user:
+        # Si inicié sesión correctamente, se crea la sesion y se une al room
+        res = results[0]
+        res['idUsuario'] = user.idUsuario
+        
+        #socketio.emit("join", {tipo: "usuario", room: user.idUsuario})
+        # TODO: que se una a todos los grupos de los que es miembro
+        
+        session['usuario'] = {
+            'idUsuario': user.idUsuario,
+            'nombre': user.nombre
+        }
+        session['actor'] = res['actor']
+    else:
+        res = results[1]
+        session.pop("usuario", None)
+        session.pop("actor", None)
+            
+    return json.dumps(res)
 #Use case code starts here
 
 

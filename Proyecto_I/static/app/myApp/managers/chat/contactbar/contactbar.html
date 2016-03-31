@@ -1,0 +1,22 @@
+<md-toolbar class="md-whiteframe-z1 md-tall" layout="row">
+
+
+	<div flex="20" layout="row" layout-align="center center">
+		<md-button class="md-icon-button" ng-click="vm.toggleMenu()">
+			<md-icon md-svg-src="../img/svg/ic_keyboard_backspace_white_24px.svg" md-menu-align-target></md-icon>
+		</md-button>
+	</div>
+
+	<div flex="80" layout="row" layout-align="center center">
+		<h3 >Nuevo Chat</h3>
+	</div>
+</md-toolbar>
+
+<md-list>
+	<md-list-item ng-repeat="contact in vm.contacts">
+		<md-button ng-click="vm.selectContact(chat)">
+			<md-icon md-svg-icon="svg-{{($index%16) + 1}}" class="avatar"></md-icon>
+			{{contact.nombre}}
+		</md-button>
+	</md-list-item>
+</md-list>

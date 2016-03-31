@@ -1,0 +1,24 @@
+<h3>Nombre</h3>
+{{vm.selected.info.name}}
+
+<h3>Descripcion</h3>
+{{vm.selected.info.description}}
+
+<div ng-if="vm.selected.type === 'chat'">
+    <h3>Telefono</h3>
+    {{vm.selected.info.phone}}
+
+    <h3>Email</h3>
+    {{vm.selected.info.email}}
+</div>
+
+<div ng-if="vm.selected.type === 'group'">
+    <h3>Miembros</h3>
+    <ul>
+        <li ng-repeat="member in vm.selected.info.members">
+            {{member.name}}
+        </li>
+    </ul>
+    <md-button class="md-warn md-raised md-hue-2">Salir</md-button>
+</div>
+

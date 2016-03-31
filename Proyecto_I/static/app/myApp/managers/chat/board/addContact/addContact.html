@@ -1,0 +1,22 @@
+<div layout="column" flex>
+    <!--<md-toolbar layout="row" class="md-whiteframe-z1" flex>
+        <md-button id="main" class="menu" hide-gt-sm ng-click="vm.toggleList()" aria-label="Show User List">
+            <md-icon md-svg-icon="menu" ></md-icon>
+        </md-button>
+        <h3>
+            Agregar Contacto
+        </h3>
+    </md-toolbar>-->
+
+    <md-content id="content" class="md-no-momentum">
+        <form name="addContactForm">
+            <md-input-container class="md-block">
+                <!-- Use floating placeholder instead of label -->
+                <md-icon md-svg-src="../img/svg/ic_email_black_24px.svg" class="email"></md-icon>
+                <input ng-model="vm.contact.correo" type="email" placeholder="Email (required)" ng-required="true">
+            </md-input-container>
+
+            <md-button type="submit" class="md-raised md-primary" ng-click="vm.addContact()">Agregar</md-button>
+        </form>
+    </md-content>
+</div>

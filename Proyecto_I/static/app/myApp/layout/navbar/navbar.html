@@ -1,0 +1,28 @@
+<div class="navbar" ng-controller="Navbar as vm">
+	<div class="logo">
+		<h1>Dashboard</h1>
+	</div>
+
+	<div class="searchBar">
+		<div class="inputContent">
+			<div>
+				<img ng-src="../../assets/images/icons/search.png">
+			</div>
+			<input type="search">
+		</div>
+	</div>
+
+	<div class="options">
+		<div class="tool unselectable" ng-click="vm.showMenu = !vm.showMenu">
+			<h2>Tool</h2><i class="fa fa-caret-down"></i>
+			<div class="dropDownMenu" ng-if="vm.showMenu" ng-mouseleave="vm.showMenu = false">
+				<h2 ng-repeat="view in vm.views" ui-sref="{{view.name}}" ui-sref-active="purpleColor">{{view.title}}</h2>
+			</div>
+		</div>
+		
+		<div class="userInfo">
+			<label><p>Andres</p><p>andresmgsl@gmail.com</p></label>
+			<i class="fa fa-cogs"></i>
+		</div>
+	</div>
+</div>

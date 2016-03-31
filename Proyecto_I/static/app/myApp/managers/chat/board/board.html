@@ -1,0 +1,15 @@
+<md-content layout="column" flex>
+	<md-toolbar layout="row" class="md-whiteframe-z1">
+		<md-button id="main" class="menu" hide-gt-sm ng-click="vm.toggleList()" aria-label="Show User List">
+			<md-icon md-svg-src="../img/svg/ic_menu_white_24px.svg" class="chat" ng-click="vm.toggleMenu()"></md-icon>
+		</md-button>
+		<h3>
+			<!--
+			<md-icon md-svg-icon="{{vm.selected.info.avatar}}" class="avatar"></md-icon>
+		<span>
+			{{vm.selected.info.name}}
+		</span>-->
+		</h3>
+	</md-toolbar>
+	<div ui-view="" layout="column"></div>
+</md-content>

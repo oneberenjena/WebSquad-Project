@@ -1,0 +1,55 @@
+<md-toolbar class="md-whiteframe-z1" layout="row" layout-align="space-around">
+	<div layout="row" layout-align="start center" flex="60">
+		<h3>Chats</h3>
+	</div>
+
+	<div layout="row" layout-align="center center" flex="18">
+		<md-button class="md-icon-button  chat" ng-click="vm.toggleMenu()" >
+			<md-icon style="outline: none !important;" md-svg-src="../img/svg/ic_chat_white_24px.svg"></md-icon>
+		</md-button>
+	</div>
+	<div layout="row" layout-align="center center" flex>
+		<md-menu>
+			<md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="vm.openMenu($mdOpenMenu, $event)">
+				<md-icon md-menu-origin md-svg-src="../img/svg/ic_more_vert_white_24px.svg"></md-icon>
+			</md-button>
+			<md-menu-content width="4">
+				<md-menu-item>
+					<md-button ui-sref="dashboard.chat.board.addContact">
+						<md-icon md-svg-src="../img/svg/ic_account_circle_black_24px.svg" md-menu-align-target></md-icon>
+						Agregar contacto
+					</md-button>
+				</md-menu-item>
+				<md-menu-item>
+					<md-button ui-sref="dashboard.chat.board.addGroup">
+						<md-icon md-svg-src="../img/svg/ic_group_black_24px.svg"></md-icon>
+						Nuevo grupo
+					</md-button>
+				</md-menu-item>
+				<md-menu-item>
+					<md-button disabled="disabled" ng-click="vm.checkVoicemail()">
+						<md-icon md-svg-src="../img/svg/ic_home_black_24px.svg"></md-icon>
+						Mi pagina
+					</md-button>
+				</md-menu-item>
+				<md-menu-divider></md-menu-divider>
+				<md-menu-item>
+					<md-button ng-click="vm.toggleNotifications()">
+						<md-icon md-svg-icon="social:notifications-{{vm.notificationsEnabled ? 'off' : 'on'}}"></md-icon>
+						Tienes 2 notificaciones
+					</md-button>
+				</md-menu-item>
+			</md-menu-content>
+		</md-menu>
+	</div>
+</md-toolbar>
+
+<md-list>
+	<md-list-item ng-repeat="chat in vm.chats">
+		<md-button ng-click="vm.selectChat(chat)">
+			<md-icon md-svg-icon="{{chat.info.avatar}}" class="avatar"></md-icon>
+			{{chat.info.name}} [{{chat.type}}]
+		</md-button>
+	</md-list-item>
+</md-list>
+

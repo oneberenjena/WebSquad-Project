@@ -1,0 +1,49 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Login</h1>
+    </div>
+    <div ng-if="vm.isLoggedIn()">
+      <button ng-click="vm.logout()">Logout</button>
+    </div>
+    <div class="col-sm-12">
+      <form class="form" name="form" ng-submit="vm.login(form)" novalidate>
+
+        <div class="form-group">
+          <label>Usuario</label>
+
+          <input type="text" name="usuario" class="form-control" ng-model="vm.user.username" required>
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+
+          <input type="password" name="password" class="form-control" ng-model="vm.user.password" required>
+        </div>
+
+        <div>
+          <button class="btn btn-inverse btn-lg btn-login" type="submit">
+            Login
+          </button>
+          <a class="btn btn-default btn-lg btn-register" ui-sref='signup'>
+            Register
+          </a>
+        </div>
+
+        <hr>
+        <div>
+          <a class="btn btn-facebook" href="" ng-click="vm.loginOauth('facebook')">
+            <i class="fa fa-facebook"></i> Connect with Facebook
+          </a>
+          <a class="btn btn-google-plus" href="" ng-click="vm.loginOauth('google')">
+            <i class="fa fa-google-plus"></i> Connect with Google+
+          </a>
+          <a class="btn btn-twitter" href="" ng-click="vm.loginOauth('twitter')">
+            <i class="fa fa-twitter"></i> Connect with Twitter
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+  <hr>
+</div>

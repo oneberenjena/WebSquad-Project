@@ -1,93 +1,166 @@
-<!DOCTYPE html>
-<html ng-app="social">
-    <head><title>social</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="css/bsPerso.css">
-        <link rel="stylesheet" href="css/angular/ngDialog.min.css">
-        <link rel="stylesheet" href="css/angular/ngDialog-theme-default.min.css">
-        <link rel="stylesheet" href="css/angular/ng-table.min.css">
-        <link rel="stylesheet" href="css/app/style.css">
-        <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css">
-        <link rel="shortcut icon" href="img/favicon.ico">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        
-        <!--[if lt IE 9]>
-        <script src="js/html5shiv.js"></script>
-        <script src="js/respond.min.js"></script>
-        <![endif]-->
-    </head>
-<body ng-controller="socialController_">
-    <div class="container">
-        <flash:messages class="alert-perso"></flash:messages>
-        <div ng-view class="fade"></div>
-    </div>
-    <footer class="footer">
-      <div class="container">
-          <div class="row">
-              <div class="col-xs-12" style="background-color: #333333; height: 2px;"></div>
-          </div>
-          <div class="row">
-              <div class="col-xs-10 text-inverse" ng-bind="title"></div>
-              <!--<div class="col-xs-2" style="text-align: right"><img alt="Logo" src="img/logo.png" height="30" /></div>!-->
-          </div>
-      </div>
-    </footer>
-    <!-- LOAD JQUERY -->
-    <script src="js/jquery-1.11.2.min.js"></script>
-    <script src="js/d3.v3.min.js"></script>
-
-    <!-- LOAD ANGULAR -->
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/angular/angular.min.js"></script>
-    <script src="js/angular/angular-animate.min.js"></script>
-    <script src="js/angular/angular-resource.min.js"></script>
-    <script src="js/angular/angular-route.min.js"></script>
-    <script src="js/angular/angular-sanitize.js"></script>
-    <script src="js/angular/textAngular-sanitize.min.js"></script>
-    <script src="js/angular/textAngular.min.js"></script>
-    <script src="js/angular/ngDialog.min.js"></script>
-    <script src="js/jquery.layout-latest.min.js"></script>
-    <script src="js/jquery-ui.min.js"></script>
-    <script src="js/angular/ng-flash.js"></script>
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <base href="/">
+    <title>KRATOS ALPHA 0.1</title>
+    <meta name="description" content="">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">-->
     
-    
-        <script type="text/javascript" src="js/socket.io.min.js"></script>
-        <script type="text/javascript" src="bower_components/angular-socket-io/socket.min.js"></script>
-        <script type="text/javascript" src="bower_components/ngstorage/ngStorage.min.js"></script>
-        
-    <!-- LOAD APP -->
-    <script src="js/app/app.js"></script>
-    <script src="js/app/ident/IdentService.js"></script>
-    <script src="js/app/ident/IdentController.js"></script>
-    <script src="js/app/paginas/PaginasService.js"></script>
-    <script src="js/app/paginas/PaginasController.js"></script>
-    <script src="js/app/chat/ChatService.js"></script>
-    <script src="js/app/chat/ChatController.js"></script>
-    <script src="js/app/foro/ForoService.js"></script>
-    <script src="js/app/foro/ForoController.js"></script>
+    <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
-    <!-- LOAD NGTABLE -->
-    <script src="js/angular/ng-table.min.js"></script>
-<script type="text/ng-template" id="pager.html">
-<ul class="pager ng-cloak" ng-show="pages.length>1">
-    <li ng-repeat="page in pages"
-          ng-class="{'disabled': !page.active, 'previous': page.type == 'prev', 'next': page.type == 'next'}"
-          ng-show="page.type == 'prev' || page.type == 'next'" ng-switch="page.type">
-      <a ng-switch-when="prev" ng-click="params.page(page.number)" href="">&laquo; Previous</a>
-      <a ng-switch-when="next" ng-click="params.page(page.number)" href="">Next &raquo;</a>
-    </li>
-      <li> 
-      <div class="btn-group">
-          <button type="button" ng-class="{'active':params.count() == 10}" ng-click="params.count(10)" class="btn btn-default">10</button>
-          <button type="button" ng-class="{'active':params.count() == 25}" ng-click="params.count(25)" class="btn btn-default">25</button>
-          <button type="button" ng-class="{'active':params.count() == 50}" ng-click="params.count(50)" class="btn btn-default">50</button>
-          <button type="button" ng-class="{'active':params.count() == 100}" ng-click="params.count(100)" class="btn btn-default">100</button>
-      </div>
-      </li>
-  </ul>
-</script>
+    <!-- build:css css/lib.css -->
+        <!-- bower:css -->
+        <link rel="stylesheet" href="/app/myApp/bower_components/animate.css/animate.css" />
+        <link rel="stylesheet" href="/app/myApp/bower_components/textAngular/dist/textAngular.css" />
+        <link rel="stylesheet" href="/app/myApp/bower_components/angular-material/angular-material.css" />
+        <!-- endbower -->
+    <!-- endbuild -->
 
+    <!-- build:css css/app.css -->
+        <!-- inject:css -->
+        <link rel="stylesheet" href="/app/myApp/aphrodite/app.css">
+        <!-- endinject -->
+    <!-- endbuild -->
+      <style type="text/css">
+          /**
+           * Hide when Angular is not yet loaded and initialized
+           */
+          [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+              display: none !important;
+          }
+      </style>
+  </head>
+  <body ng-app="hiraApp">
+    <!--[if lt IE 7]>
+      <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <!-- Add your site or application content here -->
+    <div layout="row" id="wrapper" ng-include="'app/myApp/layout/shell.html'"></div>
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID 
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-XXXXX-X');
+      ga('send', 'pageview');
+    </script>-->
+
+    <!--[if lt IE 9]>
+    <script src="bower_components/es5-shim/es5-shim.js"></script>
+    <script src="bower_components/json3/lib/json3.min.js"></script>
+    <![endif]-->
+
+    <!-- build:js js/lib.js -->
+        <!-- bower:js -->
+        <script src="/app/myApp/bower_components/jquery/dist/jquery.js"></script>
+        <script src="/app/myApp/bower_components/angular/angular.js"></script>
+        <script src="/app/myApp/bower_components/json3/lib/json3.js"></script>
+        <script src="/app/myApp/bower_components/angular-resource/angular-resource.js"></script>
+        <script src="/app/myApp/bower_components/angular-cookies/angular-cookies.js"></script>
+        <script src="/app/myApp/bower_components/angular-sanitize/angular-sanitize.js"></script>
+        <script src="/app/myApp/bower_components/lodash/dist/lodash.compat.js"></script>
+        <script src="/app/myApp/bower_components/angular-socket-io/socket.js"></script>
+        <script src="/app/myApp/bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="/app/myApp/bower_components/angular-scroll/angular-scroll.js"></script>
+        <script src="/app/myApp/bower_components/ng-parallax/angular-parallax.min.js"></script>
+        <script src="/app/myApp/bower_components/angular-animate/angular-animate.js"></script>
+        <script src="/app/myApp/bower_components/ngSmoothScroll/lib/angular-smooth-scroll.js"></script>
+        <script src="/app/myApp/bower_components/rangy/rangy-core.js"></script>
+        <script src="/app/myApp/bower_components/rangy/rangy-classapplier.js"></script>
+        <script src="/app/myApp/bower_components/rangy/rangy-highlighter.js"></script>
+        <script src="/app/myApp/bower_components/rangy/rangy-selectionsaverestore.js"></script>
+        <script src="/app/myApp/bower_components/rangy/rangy-serializer.js"></script>
+        <script src="/app/myApp/bower_components/rangy/rangy-textrange.js"></script>
+        <script src="/app/myApp/bower_components/textAngular/dist/textAngular.js"></script>
+        <script src="/app/myApp/bower_components/textAngular/dist/textAngular-sanitize.js"></script>
+        <script src="/app/myApp/bower_components/textAngular/dist/textAngularSetup.js"></script>
+        <script src="/app/myApp/bower_components/angular-local-storage/dist/angular-local-storage.js"></script>
+        <script src="/app/myApp/bower_components/angular-aria/angular-aria.js"></script>
+        <script src="/app/myApp/bower_components/angular-messages/angular-messages.js"></script>
+        <script src="/app/myApp/bower_components/angular-material/angular-material.js"></script>
+        <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js js/app.js -->
+        <!-- inject:js -->
+        <script src="/app/myApp/auth/auth.module.js"></script>
+        <script src="/app/myApp/core/core.module.js"></script>
+        <script src="/app/myApp/dashboard/dashboard.module.js"></script>
+        <script src="/app/myApp/data/data.module.js"></script>
+        <script src="/app/myApp/layout/layout.module.js"></script>
+        <script src="/app/myApp/auth/login/login.module.js"></script>
+        <script src="/app/myApp/auth/settings/settings.module.js"></script>
+        <script src="/app/myApp/auth/signup/signup.module.js"></script>
+        <script src="/app/myApp/blocks/stateManager/state.module.js"></script>
+        <script src="/app/myApp/layout/footer/footer.module.js"></script>
+        <script src="/app/myApp/layout/navbar/navbar.module.js"></script>
+        <script src="/app/myApp/managers/chat/chat.module.js"></script>
+        <script src="/app/myApp/managers/chat/board/board.module.js"></script>
+        <script src="/app/myApp/managers/chat/contactbar/contactbar.module.js"></script>
+        <script src="/app/myApp/managers/chat/sidebar/sidebar.module.js"></script>
+        <script src="/app/myApp/managers/chat/board/addContact/addContact.module.js"></script>
+        <script src="/app/myApp/managers/chat/board/addGroup/addGroup.module.js"></script>
+        <script src="/app/myApp/managers/chat/board/messages/messages.module.js"></script>
+        <script src="/app/myApp/managers/chat/board/profile/profile.module.js"></script>
+        <script src="/app/myApp/managers/chat/board/messages/textBox/textBox.module.js"></script>
+        <script src="/app/myApp/app.js"></script>
+        <script src="/app/myApp/auth/auth.route.js"></script>
+        <script src="/app/myApp/auth/auth.svc.js"></script>
+        <script src="/app/myApp/auth/token.svc.js"></script>
+        <script src="/app/myApp/core/common.svc.js"></script>
+        <script src="/app/myApp/core/config.js"></script>
+        <script src="/app/myApp/dashboard/dashboard.ctrl.js"></script>
+        <script src="/app/myApp/dashboard/dashboard.route.js"></script>
+        <script src="/app/myApp/data/datacontext.svc.js"></script>
+        <script src="/app/myApp/data/metaData.svc.js"></script>
+        <script src="/app/myApp/data/model.svc.js"></script>
+        <script src="/app/myApp/data/resources.model.js"></script>
+        <script src="/app/myApp/data/resources.svc.js"></script>
+        <script src="/app/myApp/data/serverMessage.svc.js"></script>
+        <script src="/app/myApp/data/serverSpeaker.svc.js"></script>
+        <script src="/app/myApp/auth/login/login.controller.js"></script>
+        <script src="/app/myApp/auth/settings/settings.controller.js"></script>
+        <script src="/app/myApp/auth/signup/signup.controller.js"></script>
+        <script src="/app/myApp/blocks/stateManager/stateManager.svc.js"></script>
+        <script src="/app/myApp/data/repositories/repository.abstract.js"></script>
+        <script src="/app/myApp/data/repositories/repository.chats.js"></script>
+        <script src="/app/myApp/data/repositories/repository.contacts.js"></script>
+        <script src="/app/myApp/data/repositories/repository.groups.js"></script>
+        <script src="/app/myApp/data/repositories/repository.memberships.js"></script>
+        <script src="/app/myApp/data/repositories/repository.pages.js"></script>
+        <script src="/app/myApp/data/repositories/repository.users.js"></script>
+        <script src="/app/myApp/layout/footer/footer.ctrl.js"></script>
+        <script src="/app/myApp/layout/navbar/navbar.ctrl.js"></script>
+        <script src="/app/myApp/managers/chat/chat.ctrl.js"></script>
+        <script src="/app/myApp/managers/chat/chat.route.js"></script>
+        <script src="/app/myApp/managers/chat/chat.svc.js"></script>
+        <script src="/app/myApp/managers/chat/board/board.ctrl.js"></script>
+        <script src="/app/myApp/managers/chat/board/board.route.js"></script>
+        <script src="/app/myApp/managers/chat/contactbar/contactbar.ctrl.js"></script>
+        <script src="/app/myApp/managers/chat/sidebar/sidebar.ctrl.js"></script>
+        <script src="/app/myApp/managers/chat/board/addContact/addContact.ctrl.js"></script>
+        <script src="/app/myApp/managers/chat/board/addContact/addContact.route.js"></script>
+        <script src="/app/myApp/managers/chat/board/addGroup/addGroup.ctrl.js"></script>
+        <script src="/app/myApp/managers/chat/board/addGroup/addGroup.route.js"></script>
+        <script src="/app/myApp/managers/chat/board/messages/messages.ctrl.js"></script>
+        <script src="/app/myApp/managers/chat/board/messages/messages.route.js"></script>
+        <script src="/app/myApp/managers/chat/board/profile/profile.ctrl.js"></script>
+        <script src="/app/myApp/managers/chat/board/profile/profile.route.js"></script>
+        <script src="/app/myApp/managers/chat/board/messages/textBox/textBox.ctrl.js"></script>
+        <!-- endinject -->
+
+        <!-- inject:template:js -->
+        <!-- endinject -->
+    <!-- endbuild -->
 </body>
 </html>
