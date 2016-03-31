@@ -29,6 +29,7 @@
             <tr ng-repeat="row in $data">
                 <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
                 <td ng-show="row['idForo']"><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VForo0(row['idForo'])">Seleccionar</a></td>
+                <td ng-show="row['esAutor']"><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="eliminarForo(row['idForo'])">Eliminar</a></td>
             </tr>
         </table>
 
