@@ -70,18 +70,107 @@
                     <!-- DROPDOWN            -->
                     <!--*********************-->  
                       <ul class="dropdown-menu">
-                        <li><a ng-click="VMiPagina(idUsuario)">Pagina</a></li>
-                        <li><a ng-click="VPagina1(idUsuario)">Editor</a></li>
-                        <li><a ng-click="VContactos2(idUsuario)" ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">Contactos</a></li>
+                        <li><a  ng-click="VMiPagina(idUsuario)">
+                          Pagina
+                        </a></li>
+                        <li><a  ng-click="VPagina1(idUsuario)">
+                          Editor
+                        </a></li>
+                        <li><a  ng-click="VContactos2(idUsuario)" 
+                                ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+                          Contactos
+                        </a></li>
+                        <li><a  ng-click="VForos3(idUsuario)" 
+                                ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+                          Foros
+                        </a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a ng-click="VLogin0()">Salir</a></li>
+                        <li><a  ng-click="VLogin0()">
+                          Salir
+                        </a></li>
                       </ul>
                   </li>
+                  <!--*********************-->
+                  <!--     Links extra     -->
+                  <!--*********************-->
+                  <li><a  ng-click="VComentariosPagina4(idPaginaSitio)">
+                    Comentarios
+                  </a></li>                                  
                 </ul>
               </div> <!-- /.navbar-collapse -->  
           </div> <!-- /.container-fluid -->
         </nav>
     </header>
+<!-- ||||||| merged common ancestors
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Hola {{nombre}}</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+<li><a ng-click="APagina1(idPagina)">
+  Página de usuario</a></li>
+
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+
+<li><a ng-click="VContactos2(idUsuario)"
+       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+    Contactos</a></li>
+<li><a ng-click="VLogin0()">
+    Salir</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+=======
+<nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" 
+                    data-toggle="collapse" 
+                    data-target="#contenido-plegable">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <span class="navbar-brand" >Hola {{nombre}}</span>
+        </div>
+        <div class="collapse navbar-collapse" id="contenido-plegable">
+            <ul class="nav navbar-nav navbar-left">
+                <li><a ng-click="VComentariosPagina4(idPaginaSitio)">Comentarios</a></li>
+            </ul>
+            
+            <ul class="nav navbar-nav navbar-right">
+                <li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+                <li><a ng-click="VLogin0()">Salir</a></li>
+                <li><a ng-click="APagina1(idPagina)">Página de usuario</a></li>
+                <li>
+                    <a ng-click="VContactos2(idUsuario)" ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+                        Contactos
+                    </a>
+                </li>
+                <li>
+                    <a ng-click="VForos3(idUsuario)" ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+                        Foros
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+>>>>>>> entrega3 -->
 
 
 <div id="right"></div>
