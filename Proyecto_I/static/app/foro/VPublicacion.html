@@ -98,33 +98,34 @@
         </nav>
     </header>
 
-<!--********************************************* *********************************************-->    <nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" 
-                    data-toggle="collapse" 
-                    data-target="#contenido-plegable">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <span class="navbar-brand" >Publicación en el Hilo</span>
-        </div>
-        <div class="collapse navbar-collapse" id="contenido-plegable">
-            <ul class="nav navbar-nav navbar-left">
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
+<!--********************************************* *********************************************-->
+<!--     <nav class="navbar navbar-inverse">
+<div class="container-fluid">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle" 
+                data-toggle="collapse" 
+                data-target="#contenido-plegable">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <span class="navbar-brand" >Publicación en el Hilo</span>
+    </div>
+    <div class="collapse navbar-collapse" id="contenido-plegable">
+        <ul class="nav navbar-nav navbar-left">
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
 <li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
 <li><a ng-click="__ayuda()"><span class="glyphicon glyphicon-info-sign"></span></a></li>
 <li><a ng-click="VForo1(idForo)"
-       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
-    Regresar</a></li>
+   ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+Regresar</a></li>
 
-            </ul>
-        </div>
+        </ul>
     </div>
+</div>
 </nav>
-
+ -->
     <form name="fPublicacionForm" ng-submit="APublicar0(fPublicacionForm.$valid)" novalidate>
             <input id="fPublicacion_idForo" type="hidden" name="idForo" ng-model="fPublicacion.idForo" />
             <div class="form-group" ng-class="{ 'has-error' :  fPublicacionSubmitted && fPublicacionForm.fecha.$invalid && fPublicacionForm.fecha.$pristine && fPublicacionSubmitted}"><label for="fPublicacion_fecha">Fecha</label><input id="fPublicacion_fecha" type="date" name="fecha" class="form-control" ng-model="fPublicacion.fecha" placeholder="Fecha" required/><p ng-show="fPublicacionSubmitted && fPublicacionForm.fecha.$invalid" class="help-block">Error en campo Fecha.</p></div>
