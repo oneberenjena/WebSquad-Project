@@ -135,7 +135,7 @@ class Hilo(db.Model):
     # Para identificar si es un hilo de foro o uno de una pagina comentable si es 1 es de foro y 0 de pag
     tipo = db.Column(db.Integer, nullable = False)
     foro_id = db.Column(db.Integer, db.ForeignKey('foro.idForo'), nullable=True)
-    pag_id = db.Column(db.Integer, db.ForeignKey('paginaSitio.idPagSitio'), nullable = True)
+    pag_id = db.Column(db.String(80), db.ForeignKey('paginaSitio.url'), nullable = True)
     
     
     
@@ -164,8 +164,7 @@ class Foro (db.Model):
         
 class PaginaSitio(db.Model):
     __tablename__ = 'paginaSitio'
-    idPagSitio = db.Column(db.Integer, primary_key = True)
-    url = db.Column(db.String(80), unique = True, nullable = False)
+    url = db.Column(db.String(80), unique = True, nullable = False, primary_key = True)
     
     # Relacion con hilos
     hilos = db.relationship('Hilo', backref='pagSitio', cascade="all, delete-orphan", lazy='dynamic')

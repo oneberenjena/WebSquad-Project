@@ -11,6 +11,9 @@ socialModule.config(['$routeProvider', function ($routeProvider) {
             }).when('/VPublicacion/:tipo/:id/:idPadre?', {
                 controller: 'VPublicacionController',
                 templateUrl: 'app/foro/VPublicacion.html'
+            }).when('/p/:nombrePagina', {
+                controller: 'PaginaSitioController',
+                templateUrl: 'app/paginasSitio/TPaginaSitio.html'
             });
 }]);
 
@@ -210,6 +213,59 @@ socialModule.controller('VPublicacionController',
 
 $scope.__ayuda = function() {
 ngDialog.open({ template: 'ayuda_VPublicacion.html',
+        showClose: true, closeByDocument: true, closeByEscape: true});
+}
+    }]);
+
+socialModule.controller('PaginaSitioController', 
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'ngTableParams', 'foroService', 'identService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, ngDialog, ngTableParams, foroService, identService) {
+      $scope.nombrePagina = $routeParams.nombrePagina;
+      $scope.getUrl = function() {
+        return "paginasSitio/" + $scope.nombrePagina + ".html";
+      }
+    }]);
+
+
+
+socialModule.controller('ComentariosController', 
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'ngTableParams', 'foroService', 'identService',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, ngDialog, ngTableParams, foroService, identService) {
+      $scope.msg = '';
+      foroService.AObtenerComentarios({"url":$scope.nombrePagina}).then(function (object) {
+        $scope.res = object.data;
+        for (var key in object.data) {
+            $scope[key] = object.data[key];
+        }
+        if ($scope.logout) {
+            $location.path('/');
+        }
+        
+
+
+      });
+      $scope.crearComentario = function() {
+        $location.path('/VPublicacion/pagina/'+$scope.nombrePagina);
+      };
+      $scope.responderComentario = function(idComentario) {
+        $location.path('/VPublicacion/pagina/'+$scope.nombrePagina+"/"+idComentario);
+      };
+      $scope.AElimForo3 = function(idForo) {
+          
+        foroService.AElimForo({"idForo":((typeof idForo === 'object')?JSON.stringify(idForo):idForo)}).then(function (object) {
+          var msg = object.data["msg"];
+          if (msg) flash(msg);
+          var label = object.data["label"];
+          $location.path(label);
+          $route.reload();
+        });};
+
+      $scope.VPublicacion0 = function(tipo,idPublicacion) {
+        $location.path('/VPublicacion/'+tipo+"/"+$routeParams.idForo+"/"+idPublicacion);
+      };
+
+$scope.__ayuda = function() {
+ngDialog.open({ template: 'ayuda_VForo.html',
         showClose: true, closeByDocument: true, closeByEscape: true});
 }
     }]);
