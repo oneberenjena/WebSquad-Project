@@ -1,5 +1,57 @@
 socialModule.service('foroService', ['$q', '$http', function($q, $http) {
 
+    this.AComentar = function(fPublicacion) {
+        return  $http({
+          url: "foro/AComentar",
+          data: fPublicacion,
+          method: 'POST',
+        });
+    //    var labels = ["/VPrincipal", "/VComentariosPagina", ];
+    //    var res = labels[0];
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
+    this.AElimForo = function(args) {
+        if(typeof args == 'undefined') args={};
+        return $http({
+          url: 'foro/AElimForo',
+          method: 'GET',
+          params: args
+        });
+    //    var labels = ["/VForos", "/VForo", ];
+    //    var res = labels[0];
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+    this.APublicar = function(fPublicacion) {
+        return  $http({
+          url: "foro/APublicar",
+          data: fPublicacion,
+          method: 'POST',
+        });
+    //    var labels = ["/VForo", "/VPublicacion", ];
+    //    var res = labels[0];
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
+    this.AgregForo = function(fForo) {
+        return  $http({
+          url: "foro/AgregForo",
+          data: fForo,
+          method: 'POST',
+        });
+    //    var labels = ["/VForos", "/VForos", ];
+    //    var res = labels[0];
+    //    var deferred = $q.defer();
+    //    deferred.resolve(res);
+    //    return deferred.promise;
+    };
+
     this.VComentariosPagina = function(args) {
         if(typeof args == 'undefined') args={};
         return $http({

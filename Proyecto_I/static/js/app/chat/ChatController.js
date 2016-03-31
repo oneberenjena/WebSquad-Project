@@ -1,5 +1,5 @@
 socialModule.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/VAdminContactos/:idUsuario', {
+    $routeProvider.when('/VAdminContactos/', {
                 controller: 'VAdminContactosController',
                 templateUrl: 'app/chat/VAdminContactos.html'
             }).when('/VChat/:idChat', {
@@ -31,7 +31,11 @@ socialModule.controller('VAdminContactosController',
       $scope.msg = '';
       $scope.fContacto = {};
       
-      chatService.VAdminContactos({"idUsuario":$routeParams.idUsuario}).then(function (object) {
+      //ESTA ERA LA LINEA DE ASCANDER
+      //
+      //chatService.VAdminContactos({"idUsuario":$routeParams.idUsuario}).then(function (object) {
+      //
+      chatService.VAdminContactos().then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
             $scope[key] = object.data[key];
@@ -72,12 +76,17 @@ socialModule.controller('VAdminContactosController',
       };
 
       $scope.AgregGrupo4 = function(idUsuario) {
-          
+
+        //ESTO ERA LO QUE TENIA ASCANDER
+        // 
+        // chatService.AgregGrupo({"idUsuario":((typeof idUsuario === 'object')?JSON.stringify(idUsuario):idUsuario)}).then(function (object) {
+        //
         chatService.AgregGrupo({nombre:"grupo_"+ Math.floor(Math.random() * 600000) + 1  }).then(function (object) {
           var msg = object.data["msg"];
           if (msg) flash(msg);
           var label = object.data["label"];
-          $location.path(label);
+          if (label.indexOf("/VAdminContactos") != 0)
+            $location.path(label);
           $route.reload();
         });};
 
@@ -89,8 +98,8 @@ socialModule.controller('VAdminContactosController',
           chatService.AgregContacto($scope.fContacto).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);
-              var label = object.data["label"];
-              $location.path(label);
+              //var label = object.data["label"];
+              //$location.path(label);
               $route.reload();
           });
         }
@@ -103,8 +112,8 @@ socialModule.controller('VAdminContactosController',
           chatService.AElimContacto(arg).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);
-              var label = object.data["label"];
-              $location.path(label);
+              //var label = object.data["label"];
+              //$location.path(label);
               $route.reload();
           });
       };
@@ -122,21 +131,35 @@ socialModule.controller('VChatController',
     function ($scope, $localStorage, $location, $route, $timeout, flash, $routeParams, ngDialog, chatService, identService, chatSocket) {
       $scope.msg = '';
       $scope.fChat = {};
-      
+      $scope.idChat = $routeParams.idChat;
+
+      console.log("ID CHAT", $scope.idChat);
       if ($scope.$storage.mensajes === undefined)
-        $scope.$storage.mensajes = [];
+        $scope.$storage.mensajes = {};
+      if ($scope.$storage.mensajes[$scope.idChat] === undefined) {
+        $scope.$storage.mensajes[$scope.idChat] = [];
+      }  
+        
       // Recibir mensajes
       chatSocket.on('message', function(mensaje,data) {
-        mensaje_obj = {
-          mensaje: mensaje,
-          de: $routeParams.idChat,
-          fecha: new Date()
+        room = mensaje.room;
+        if (room.indexOf("usuario_") == 0) {
+          room = "usuario_"+mensaje.idUsuario;
         }
-        $scope.$storage.mensajes.push(mensaje_obj);
-        console.log($localStorage);
+        if ($scope.$storage.mensajes[room] === undefined) {
+          $scope.$storage.mensajes[room] = [];
+        }
+        if (mensaje.idUsuario != $scope.$storage.idUsuario) {
+          mensaje_obj = {
+            mensaje: mensaje.msg,
+            de: mensaje.idUsuario,
+            fecha: new Date()
+          }
+          $scope.$storage.mensajes[room].push(mensaje_obj);
+        }
       })
 
-      chatService.VChat({"idChat":$routeParams.idChat}).then(function (object) {
+      chatService.VChat({"idChat":$scope.idChat}).then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
             $scope[key] = object.data[key];
@@ -154,13 +177,16 @@ socialModule.controller('VChatController',
       $scope.fChatSubmitted = false;
       $scope.AEscribir1 = function(isValid) {
         if (isValid) {
-          chatSocket.emit("message",{msg:$scope.fChat.texto,idUsuario:$routeParams.idChat,tipo:'usuario'});
+          chatSocket.emit("message",{msg:$scope.fChat.texto,idChat:$scope.idChat});
           mensaje_obj = {
             mensaje: $scope.fChat.texto,
             de: 'Yo',
             fecha: new Date()
           }
-          $scope.$storage.mensajes.push(mensaje_obj);
+          if ($scope.$storage.mensajes[$scope.idChat] === undefined) {
+            $scope.$storage.mensajes[$scope.idChat] = [];
+          }
+          $scope.$storage.mensajes[$scope.idChat].push(mensaje_obj);
         }
         $scope.fChatSubmitted = true;
         
@@ -202,12 +228,22 @@ socialModule.controller('VContactosController',
       $scope.VPrincipal0 = function() {
         $location.path('/VPrincipal');
       };
-      $scope.VAdminContactos2 = function(idUsuario) {
-        $location.path('/VAdminContactos/'+idUsuario);
+      
+      // ESTA ERA LA FUUNCION DE ASCANDER
+      //
+      // $scope.VAdminContactos2 = function(idUsuario) {
+      //   $location.path('/VAdminContactos/'+idUsuario);
+      // };
+      //
+      
+      $scope.VAdminContactos2 = function() {
+        $location.path('/VAdminContactos/');
       };
 
-      $scope.VChat1 = function(idChat) {
-        $location.path('/VChat/'+((typeof idChat === 'object')?JSON.stringify(idChat):idChat));
+      $scope.VChat1 = function(row) {
+        tipo = row['tipo']
+        idChat = row['idContacto']
+        $location.path('/VChat/'+tipo+'_'+((typeof idChat === 'object')?JSON.stringify(idChat):idChat));
       };
 
 $scope.__ayuda = function() {
@@ -254,8 +290,15 @@ socialModule.controller('VGrupoController',
           $location.path(label);
           $route.reload();
         });};
-      $scope.VAdminContactos2 = function(idUsuario) {
-        $location.path('/VAdminContactos/'+idUsuario);
+      
+      // ESTO ERA LO QUE TENIA ASCANDER
+      //
+      // $scope.VAdminContactos2 = function(idUsuario) {
+      //   $location.path('/VAdminContactos/'+idUsuario);
+      // };
+      //
+      $scope.VAdminContactos2 = function() {
+        $location.path('/VAdminContactos/');
       };
 
       $scope.fMiembroSubmitted = false;
@@ -274,6 +317,13 @@ socialModule.controller('VGrupoController',
       };
 
       $scope.AElimMiembro3 = function(id) {
+          // LA DE ASCANDER ES
+          //
+          //var tableFields = [["idContacto","id"],["nombre","Nombre"]];
+          //var arg = {};
+          //arg[tableFields[0][1]] = ((typeof id === 'object')?JSON.stringify(id):id);
+          //chatService.AElimMiembro(arg).then(function (object) {
+          //
           chatService.AElimMiembro({idUsuario: id, idGrupo: $routeParams.idGrupo}).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);
