@@ -33,6 +33,7 @@
 <div class="hilos">
     <div class="hilo" ng-repeat="hilo in hilos">
         <h3 ng-bind="hilo['titulo']"></h3>
+        <p><i>Escrito por <b>{{hilo.autor}}</b> el {{hilo.fecha | date:"dd/MM/yyyy 'a las' h:mma"  }}</i></p>
         <p ng-bind="hilo['contenido']"></p>
         <a ng-click="VPublicacion0('foro',hilo['idPublicacion'])">Responder</a>
         <div class="respuesta" ng-repeat="publicacion in hilo.respuestas" ng-include="'field_renderer.html'"></div>
@@ -43,11 +44,13 @@
 
 
 <div id="right"></div><script type="text/ng-template" id="ayuda_VForo.html">
-Doc de foro
+-Nueva publicacion- para agregar un nuevo comentario al foro
+-Eliminar Foro- para suprimir el mismo.
 </script>
 
 <script type="text/ng-template" id="field_renderer.html">
     <h4>{{publicacion.titulo}}</h4>
+    <p><i>Escrito por <b>{{publicacion.autor}}</b> el {{publicacion.fecha | date:"dd/MM/yyyy 'a las' h:mma"  }}</i></p>
     <p>{{publicacion.contenido}}</p>
     <a ng-click="VPublicacion0('foro',publicacion['idPublicacion'])">Responder</a>
     <div class="respuesta" ng-repeat="publicacion in publicacion.respuestas" ng-include="'field_renderer.html'"></div>

@@ -4,6 +4,7 @@
     <div class="hilos">
         <div class="hilo" ng-repeat="comentario in comentarios">
             <h3 ng-bind="comentario['titulo']"></h3>
+            <p><i>Escrito por <b>{{comentario.autor}}</b> el {{comentario.fecha | date:"dd/MM/yyyy 'a las' h:mma" }}</i></p>
             <p ng-bind="comentario['contenido']"></p>
             <a ng-click="responderComentario(comentario['idPublicacion'])">Responder</a>
             <div class="respuesta" ng-repeat="comentario in comentario.respuestas" ng-include="'field_renderer.html'"></div>
@@ -12,6 +13,7 @@
     
     <script type="text/ng-template" id="field_renderer.html">
         <h4>{{comentario.titulo}}</h4>
+        <p><i>Escrito por <b>{{comentario.autor}}</b> el {{comentario.fecha | date:"dd/MM/yyyy 'a las' h:mma" }}</i></p>
         <p>{{comentario.contenido}}</p>
         <a ng-click="responderComentario(comentario['idPublicacion'])">Responder</a>
         <div class="respuesta" ng-repeat="comentario in comentario.respuestas" ng-include="'field_renderer.html'"></div>

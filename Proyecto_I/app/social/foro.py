@@ -6,29 +6,45 @@ import sqlalchemy
 foro = Blueprint('foro', __name__)
 
 def parsearPublicaciones(hilo):
-    publicacion = hilo.publicaciones[0]
-    print(publicacion)
+    publicaciones_db = Publicacion.query.join(
+        Usuario, Publicacion.autor_id == Usuario.idUsuario
+    ).add_columns(
+        Usuario.nombre
+    ).filter(Publicacion.hilo_id == hilo.idHilo).all()
+    
+    publicacion = publicaciones_db[0][0]
+    autor = publicaciones_db[0][1]
     pubRaiz = {
         'idPublicacion': publicacion.idPublicacion,
         'titulo': publicacion.titulo,
         'contenido': publicacion.contenido,
-        'fecha': publicacion.fecha,
+        'fecha': publicacion.fecha.isoformat(),
         'padre_id': publicacion.padre_id,
         'autor_id': publicacion.autor_id,
+        'autor': autor,
         'respuestas': []
     }
     publicaciones = pubRaiz
     publicaciones_raw = {pubRaiz['idPublicacion']: pubRaiz}
     # Toda publicación hija está hecha despúes que su padre, luego, si ordenamos por fecha
     # las publicaciones padre siempre van a estar agregadas antes que las hijas
-    for publicacion in hilo.publicaciones[1:]:
+    i = 0
+    for p in publicaciones_db:
+        if i == 0:
+            i += 1
+            continue
+        print(p)
+        publicacion = p[0]
+        autor = p[1]
+        
         publicacion = {
             'idPublicacion': publicacion.idPublicacion,
             'titulo': publicacion.titulo,
             'contenido': publicacion.contenido,
-            'fecha': publicacion.fecha,
+            'fecha': publicacion.fecha.isoformat(),
             'padre_id': publicacion.padre_id,
             'autor_id': publicacion.autor_id,
+            'autor': autor,
             'respuestas': []
         }
         if publicacion['padre_id'] is None:
@@ -42,8 +58,11 @@ def parsearPublicaciones(hilo):
                 publicacions_raw[publicacion['padre_id']]['respuestas'] = [publicacion]
 
         publicaciones_raw[publicacion['idPublicacion']] = publicacion
-    return publicaciones
         
+    return publicaciones
+
+
+
 @foro.route('/foro/AComentar', methods=['POST'])
 def AComentar():
     #POST/PUT parameters
@@ -225,6 +244,8 @@ def VForo():
     #res['idMensaje'] = 0 #Nueva publicación
     
     hilos = Hilo.query.filter(Hilo.foro_id==idForo).all()
+    
+    
     res['hilos'] = [parsearPublicaciones(hilo) for hilo in hilos]
 
     #Action code ends here
