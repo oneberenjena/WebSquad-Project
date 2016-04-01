@@ -1,36 +1,106 @@
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" 
-                    data-toggle="collapse" 
-                    data-target="#contenido-plegable">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <span class="navbar-brand" >APMWSC</span>
+  <!--************************************************-->
+  <!--                                                -->
+  <!-- HEADER                                         -->
+  <!--                                                -->
+  <!--************************************************-->
+        <header>
+          <!--************************************************-->
+          <!--BARRA DE NAVEGACION                             -->
+          <!--************************************************-->  
+            <nav class="navbar-2 navbar-default navbar-fixed-top cbp-af-header" role="navigation">
+              <div  class="container-fluid">
+                <!--************************************************-->
+                <!--EN MOVILES                                      -->
+                <!--************************************************-->
+                  <!--Brand and toggle get grouped for better mobile display-->
+                  <div class="navbar-header">
+                    <!--*********************-->
+                    <!--BOTON DE MENU        -->
+                    <!--*********************-->
+                      <button 
+                      type="button" 
+                      class="navbar-toggle collapsed" 
+                      data-toggle="collapse" 
+                      data-target="#bs-example-navbar-collapse-1" 
+                      aria-expanded="false">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                      </button>
+                    <!--*********************-->
+                    <!--ICONO SFL            -->
+                    <!--*********************-->
+                      <a href="#top">
+                        <img style="margin-top:1em;margin-bottom:0.6em;" src="img/SFL_logo-01.svg" />
+                      </a>
+                  </div>
+                <!--************************************************-->
+                <!--EN DESKTOP                                      -->
+                <!--************************************************-->
+                  <!--Collect the nav links, forms, and other content for toggling-->
+                  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <!--*********************-->
+                    <!--LINKS                -->
+                    <!--*********************-->
+                      <ul class="nav navbar-nav navbar-right">
+                            <li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
+                            <li><a ng-click="VLogin1()">INGRESA</a></li>
+                            <li><a ng-click="VRegistro1()" class="resaltado">REGISTRATE</a></li>
+                      </ul>
+                  </div><!-- /.navbar-collapse  -->
+              </div> <!--/.container-fluid-->
+            </nav>
+        </header>
+  <!--************************************************-->
+  <!--                                                -->
+  <!-- CUERPO                                         -->
+  <!--                                                -->
+  <!--************************************************-->
+        <div class="container-fluid container-sm-height fill-screen">
+          <div class="row row-sm-height">
+          <!--************************************************-->
+          <!-- FORMULARIO                                     -->
+          <!--************************************************-->
+            <div class="col-sm-5" id="contenido-registro">
+                <!--************************************************-->
+                <!-- TITULO                                         -->
+                <!--************************************************-->
+                    <h1>INICIO SESION</h1>
+                <!--************************************************-->
+                <!-- CAMPOS                                         -->
+                <!--************************************************-->
+                    <form name="fLoginForm" ng-submit="AIdentificar0(fLoginForm.$valid)" novalidate>
+                        <div class="form-group" ng-class="{ 'has-error' :  fLoginSubmitted && fLoginForm.usuario.$invalid && fLoginForm.usuario.$pristine && fLoginSubmitted}">
+                            <!-- <label for="fLogin_usuario">Usuario</label> -->
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon3">Usuario</span>
+                                        <input id="fLogin_usuario" type="text" name="usuario" class="form-control" ng-model="fLogin.usuario" placeholder="Usuario" required ng-minlength="1"/>
+                                    </div>
+                                        <p ng-show="fLoginSubmitted && fLoginForm.usuario.$invalid" class="help-block">Error en campo Usuario.</p>
+                                    
+                        </div>
+                        <div class="form-group" ng-class="{ 'has-error' :  fLoginSubmitted && fLoginForm.clave.$invalid && fLoginForm.clave.$pristine && fLoginSubmitted}">
+                            <!-- <label for="fLogin_clave">Clave</label> -->
+
+                                    <div class="input-group">
+                                        <span class="input-group-addon" id="basic-addon3">Contrasena</span>
+                                        <input id="fLogin_usuario" type="password" name="clave" class="form-control" ng-model="fLogin.clave" placeholder="Contrasena" required ng-minlength="1"/>
+                                    </div>                            
+                                        <p ng-show="fLoginSubmitted && fLoginForm.clave.$invalid" class="help-block">Error en campo Clave.</p>
+                        </div>
+                        <button type="submit" class="btn btn-perso btn-lg btn-block">
+                            Conectarse
+                        </button>
+                    </form>
+            </div>
+        <!--************************************************-->
+        <!-- IMAGEN                                         -->
+        <!--************************************************-->
+              <div class="col-sm-5 hidden-xs col-sm-offset-1">
+                <img id="img-registro" src="img/conversacion.png" alt="">
+              </div>
+          </div>
         </div>
-        <div class="collapse navbar-collapse" id="contenido-plegable">
-            <ul class="nav navbar-nav navbar-left">
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
-<li><a ng-click="VRegistro1()">
-    VRegistro</a></li>
-
-            </ul>
-        </div>
-    </div>
-</nav>
-
-    <form name="fLoginForm" ng-submit="AIdentificar0(fLoginForm.$valid)" novalidate>
-            <div class="form-group" ng-class="{ 'has-error' :  fLoginSubmitted && fLoginForm.usuario.$invalid && fLoginForm.usuario.$pristine && fLoginSubmitted}"><label for="fLogin_usuario">Usuario</label><input id="fLogin_usuario" type="text" name="usuario" class="form-control" ng-model="fLogin.usuario" placeholder="Usuario" required ng-minlength="1"/><p ng-show="fLoginSubmitted && fLoginForm.usuario.$invalid" class="help-block">Error en campo Usuario.</p></div>
-            <div class="form-group" ng-class="{ 'has-error' :  fLoginSubmitted && fLoginForm.clave.$invalid && fLoginForm.clave.$pristine && fLoginSubmitted}"><label for="fLogin_clave">Clave</label><input id="fLogin_clave" type="password" name="clave" class="form-control" ng-model="fLogin.clave" placeholder="Clave" required ng-minlength="1"/><p ng-show="fLoginSubmitted && fLoginForm.clave.$invalid" class="help-block">Error en campo Clave.</p></div>
-        <button type="submit" class="btn btn-perso btn-lg btn-block">
-            <span class="glyphicon glyphicon-flash"></span>Conectarse
-        </button>
-    </form>
-    <hr />
-
 
 <div id="right"></div>

@@ -73,6 +73,9 @@ socialModule.controller('VPrincipalController',
 
 
       });
+      $scope.VMiPagina = function(idUsuario) {
+        $location.path('/VMiPagina/'+idUsuario);
+      };
       $scope.VLogin0 = function() {
         $location.path('/VLogin');
       };

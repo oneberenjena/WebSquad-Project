@@ -1,0 +1,436 @@
+/************************************************/
+/*                                              */
+/* BODY - AGREGANDO FUENTE                      */
+/*                                              */
+/************************************************/
+	body{
+		font-family: Muli;
+		margin-top: 5em;
+	}
+/************************************************/
+/*                                              */
+/* Haciendo todas las columnas del mismo tamano */
+/*                                              */
+/************************************************/
+	.container-xs-height {
+	    display:table;
+	    padding-left:0px;
+	    padding-right:0px;
+	}
+	.row-xs-height {
+	    display:table-row;
+	}
+
+	.col-xs-height {
+	    display:table-cell;
+	    float:none;
+	}
+
+	@media (min-width: 768px) {
+	    .container-sm-height {
+	        display:table;
+	        padding-left:0px;
+	        padding-right:0px;
+	    }
+	    .row-sm-height {
+	        display:table-row;
+	    }
+	    .col-sm-height {
+	        display:table-cell;
+	        float:none;
+	    }
+	}
+
+	@media (min-width: 992px) {
+	    .container-md-height {
+	        display:table;
+	        padding-left:0px;
+	        padding-right:0px;
+	    }
+	    .row-md-height {
+	        display:table-row;
+	    }
+	    .col-md-height {
+	        display:table-cell;
+	        float:none;
+	    }
+	}
+
+	@media (min-width: 1200px) {
+	    .container-lg-height {
+	        display:table;
+	        padding-left:0px;
+	        padding-right:0px;
+	    }
+	    .row-lg-height {
+	        display:table-row;
+	    }
+	    .col-lg-height {
+	        display:table-cell;
+	        float:none;
+	    }
+	}
+/************************************************/
+/*                                              */
+/* Barra de navegacion                          */
+/*                                              */
+/************************************************/
+	.navbar{
+		border: none;
+		margin-bottom: 0;
+		padding: 2em 1em;	
+		transition: all 0.5s;
+		web-kit-transition: all 0.5s;
+		background: rgba(0,151,167,0.2);
+	}
+
+	.navbar-2{
+		border: none;
+		margin-bottom: 0;
+		padding: 0.1em 1em;	
+		transition: all 0.5s;
+		web-kit-transition: all 0.5s;
+		background: rgba(0,151,167,1);
+	}
+
+	footer .navbar-2{
+		background: rgba(0,151,167,1);
+	}
+
+	.navbar-default .navbar-nav>li>a{
+		color: white;
+	}
+
+	.navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover{
+		color: #bcbcbc;	
+	}
+
+	@media (max-width: 767px){
+
+		#contenido-registro{
+			top:5em;
+		}
+
+		.right-divider{
+			border-right: none;
+		}
+
+		.narbar-header{
+			position: relative;
+		}
+
+		.navbar img{
+			position: absolute;
+			top: auto;
+			/* margin-top: 1em; */
+			margin: auto;
+			width: 15em;
+			max-height: 90%;
+		}
+
+		.navbar-2 img{
+			/* position: absolute */;
+			top: auto;
+			margin: auto;
+			width: 15em;
+			max-height: 90%;
+		}
+
+		#contenido{
+			width: 100%;
+			margin: auto;
+			text-align: center;
+		}
+	}
+/************************************************/
+/*                                              */
+/* CONTENIDO INDEX 		                        */
+/*                                              */
+/************************************************/
+	/******************************/
+	/*                            */
+	/* BOTON DE FLECHA HACIA ABAJO*/
+	/*                            */
+	/******************************/
+		.down-button{
+			position: absolute;
+			bottom: 40px;
+			width: 100%;
+			text-align: center;
+		}
+
+		.down-button i{
+			color: white;
+		}
+	/******************************/
+	/*                            */
+	/*    HEADER  INDEX			  */
+	/*                            */
+	/******************************/
+		.sublink{
+			width: 100%;
+			text-align: center;
+		}
+
+		.overlay{
+			background-color: #0e4088;
+			background: 
+			linear-gradient(
+		      rgba(14,64,136,0.6), 
+		      rgba(11,45,93,0.6)
+		    ),url(../img/bg_1.jpg);
+		}
+
+		.fill-screen{
+			background-size: cover;
+			background-position: center;
+		}
+
+		.tittle-row{
+			position: relative;
+			min-height: 300px;
+		}
+
+		.tittle-text{
+			position: absolute;
+			padding: 20px;
+			top:50%;
+			left: 50%;
+			margin-right: -50%;
+			transform: translate(-50%,-50%);
+			-webkit-transform: translate(-50%,-50%);
+			color: white;
+			text-align: center;
+		}
+
+		.content-filler{
+			padding: 2em 2em;
+			margin: 2em 2em;
+		}
+
+		.fixed-attachment{
+			background-attachment: fixed;
+		}
+
+		@media(max-width: 1024px){
+			.fixed-attachment{
+			background-attachment: scroll;
+
+			}
+		}
+	/******************************/
+	/*                            */
+	/*    CUERPO INDEX			  */
+	/*                            */
+	/******************************/
+		#contenido{
+			line-height:2;
+		}
+
+		div img{
+			max-width: 100%;
+		}
+
+		.cbp-af-header-shrink{
+			padding-top: 1em;
+			padding-bottom: 0.5em;
+			background: rgba(14,64,136,0.9);
+		}
+/************************************************/
+/*                                              */
+/* FOOTER 										*/
+/*                                              */
+/************************************************/
+	footer{
+		background: rgba(14,64,136,1);	
+		padding: 0.5em;	
+		color: white;
+		bottom: 0;
+	}
+
+	#f-base{
+		height: 2em;
+		padding: 1em 1em;
+	}
+
+	#f-base img{
+		height: 70%;
+		width: 70%;
+	}
+
+	footer img{
+		max-height: 90%;
+	}
+
+	@media (max-width: 767px){
+		#imagen-f{
+			width: auto;
+		}
+
+		footer{
+			background: rgba(14,64,136,1);	
+			width: 100%;
+			margin: auto;
+			text-align: center;
+		}
+	}
+/************************************************/
+/*                                              */
+/* FORM 										*/
+/*                                              */
+/************************************************/
+	form{
+		text-align: left;
+	}
+
+	form > [type="submit"]{
+		border-style: none;
+	}
+
+	form > [type="text"]{
+		border: none;
+		border-bottom-style: solid;
+		border-width: 0.1em;
+		width: 100%;
+	}
+
+	form > [type="password"]{
+		border: none;
+		border-bottom-style: solid;
+		border-width: 0.1em;
+		width: 100%;
+	}
+
+	@media (max-width: 767px){
+		form{
+			width: 100%;
+			position: relative;
+		}
+
+		form>[type="submit"]{
+			position: absolute;
+			width: 50%;
+			margin-right: auto;
+			margin-left: auto;
+		}
+	}
+/************************************************/
+/*                                              */
+/* SCROL FIXED AL TAMANO DE LA PAGINA 			*/
+/*                                              */
+/************************************************/
+	div.scroll {
+	    width: 100%;
+	    height: 100%;
+	    overflow: scroll;
+	}
+
+	div.hidden {
+	    width: 100%;
+	    height: 100%;
+	    overflow: hidden;
+	}
+/************************************************/
+/*                                              */
+/* BOTONES										*/
+/*                                              */
+/************************************************/
+	/******************************/
+	/*                            */
+	/* CALL TO ACTION 		      */
+	/*                            */
+	/******************************/
+		.cta {
+		  	background-color: rgb(15, 180, 186);
+			margin-left: auto;
+			margin-right: auto;
+			padding: 2em;
+			color: white; 
+			width: 100%;
+			text-align: center;
+		}
+
+		.cta:hover{
+			color: #bcbcbc;	
+		  text-decoration: none;
+		}
+	/******************************/
+	/*                            */
+	/* RESALTADO EN HEADER	      */
+	/*                            */
+	/******************************/
+		.resaltado{
+		  	border-width: 0.02em;
+		  	border-color: rgb(255, 255, 255);
+		  	border-style: solid;
+		}
+	/******************************/
+	/*                            */
+	/* BOTONES DE ASCANDER	      */
+	/*                            */
+	/******************************/
+		.btn-perso{
+			background: #CDDC39;
+		}
+
+		.btn-perso:hover{
+			
+			background: #98A51F;
+		}
+
+		.btn-perso:focus{
+			background: #CDDC39;
+
+		}
+/************************************************/
+/*                                              */
+/* LISTA DE CONTACTOS 							*/
+/*                                              */
+/************************************************/
+	.contacto{
+		border-bottom-style: solid;
+		border-width: 0.1em;
+		width: 100%;
+	}
+
+	#contenido-contactos ul{
+		list-style: none;
+	}
+/************************************************/
+/*                                              */
+/* OTROS										*/
+/*                                              */
+/************************************************/
+	.right-divider{
+		box-shadow: 0em 0em 0.7em;
+	}
+
+	.foto_perfil{
+		margin-right: 1em;
+	}
+
+	.centrado{
+		text-align: center;
+	}
+	
+
+.alert-perso{
+	background-color: #E91E63;
+}
+
+.alert-perso{
+	color:white;
+}
+
+
+.navbar-default .navbar-toggle .icon-bar{
+	background-color:white;
+}
+
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+	background-color: #CDDC39;
+    }
+
+.mi_mensaje{
+	background-color: yellow;
+}
