@@ -31,7 +31,7 @@
                 <!--*********************-->
                 <!-- ICONO SFL           -->
                 <!--*********************-->
-                  <a ng-click="APagina1(idPagina)" href="#">
+                  <a href="#/VPrincipal">
                     <img style="margin-top:1em;margin-bottom:0.6em;" src="img/SFL_logo-01.svg" />
                   </a>
               </div>
@@ -99,41 +99,17 @@
     </header>
 
 <!--********************************************* *********************************************-->    
-    <nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" 
-                    data-toggle="collapse" 
-                    data-target="#contenido-plegable">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <span class="navbar-brand" >Foro</span>
-        </div>
-        <div class="collapse navbar-collapse" id="contenido-plegable">
-            <ul class="nav navbar-nav navbar-left">
-<li><a ng-click="VPublicacion1('foro')">
-  Nueva publicación</a></li>
-<li><a ng-click="AElimForo3(idForo)">
-  Eliminar foro</a></li>
 
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-<li class="navbar-text" ng-show="usuario.nombre" ng-bind="usuario.nombre"></li>
-<li><a ng-click="__ayuda()"><span class="glyphicon glyphicon-info-sign"></span></a></li>
-<li><a ng-click="VForos2(idUsuario)"
-       ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
-    Regresar</a></li>
+<div>
+  <h2>Foro: <b>{{tituloForo}} <a class="pull-right" ng-click="VPublicacion1('foro')">
+    <i class="fa fa-plus"> Nuevo Hilo</i>
+  </a></h2>
 
-            </ul>
-        </div>
-    </div>
-</nav>
-
+</div>
 <div class="hilos">
     <div class="hilo" ng-repeat="hilo in hilos">
         <h3 ng-bind="hilo['titulo']"></h3>
+        <hr />
         <p><i>Escrito por <b>{{hilo.autor}}</b> el {{hilo.fecha | date:"dd/MM/yyyy 'a las' h:mma"  }}</i></p>
         <p ng-bind="hilo['contenido']"></p>
         <a ng-click="VPublicacion0('foro',hilo['idPublicacion'])">Responder</a>
@@ -145,8 +121,10 @@
 
 
 <div id="right"></div><script type="text/ng-template" id="ayuda_VForo.html">
--Nueva publicacion- para agregar un nuevo comentario al foro
--Eliminar Foro- para suprimir el mismo.
+  <ul>
+    <li>Nueva publicacion- para agregar un nuevo comentario al foro</li>
+    <li>Eliminar Foro- para suprimir el mismo.</li>
+  </ul>
 </script>
 
 <script type="text/ng-template" id="field_renderer.html">

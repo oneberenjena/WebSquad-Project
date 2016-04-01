@@ -31,7 +31,7 @@
                     <!--*********************-->
                     <!-- ICONO SFL           -->
                     <!--*********************-->
-                      <a ng-click="VPrincipal()">
+                      <a href="#/VPrincipal">
                         <img style="margin-top:1em;margin-bottom:0.6em;" src="img/SFL_logo-01.svg" />
                       </a>
                   </div>
@@ -86,35 +86,25 @@
               </div> <!-- /.container-fluid -->
             </nav>
         </header>
-  <!--************************************************-->
-  <!--                                                -->
-  <!-- CUERPO                                         -->
-  <!--                                                -->
-  <!--************************************************-->
-    <div class="container-fluid container-sm-height fill-screen">
-      <div class="row row-sm-height">
-        <!--************************************************-->
-        <!-- ASIDE                                          -->
-        <!--************************************************-->
-          <aside class="col-sm-4 right-divider hidden-xs col-sm-height centrado">
-            <!--************************************************-->
-            <!-- NOMBRE DE USUARIO                              -->
-            <!--************************************************-->
-              <p>
-              <h1>Grupo</h1>
-              </p>
-              <br>
-            <!--************************************************-->
-            <!-- BOTON                                          -->
-            <!--************************************************-->
-              <p>
-                <a style="border-style:none;background:#FF5252" ng-click="ASalirGrupo1()" class="btn btn-perso">Salir del grupo</a>
-              </p>
-          </aside>
+
         <!--************************************************-->
         <!-- CONTENIDO                                      -->
         <!--************************************************-->
-          <section class="col-sm-8 col-sm-height" id="contenido-registro">
+          <div layout="column">
+            <div flex="25" layout="row"  layout-align="center center">
+              <div flex>
+                <p>
+                  <h1>Administrar grupo</h1>
+                </p>
+              </div>
+              <div  flex="30">
+                <md-button style="border-style:none;background:#FF5252" ng-click="ASalirGrupo1()" layout="column" layout-align="center center" style="border-style:none" class="btn btn-perso btn-lg btn-block">
+                  Salir del grupo
+                </md-button>
+              </div>
+            </div>
+            <hr />
+            <div flex>
             <form name="fMiembroForm" ng-submit="AgregMiembro0(fMiembroForm.$valid)" novalidate>
               <div class="form-group" ng-class="{ 'has-error' :  fMiembroSubmitted && fMiembroForm.nombre.$invalid && fMiembroForm.nombre.$pristine && fMiembroSubmitted}">
                   <label for="fMiembro_nombre">Nombre</label>:&nbsp;
@@ -133,11 +123,16 @@
                 <td ng-show="row['idContacto'] != $storage.idUsuario"><a ng-click="AElimMiembro3(row['idContacto'])">Eliminar</a></td>
             </tr>
         </table>
-          </section>
-      </div>
-    </div>
+            </div>
+          </div>
+          
 
 <div id="right"></div><script type="text/ng-template" id="ayuda_VGrupo.html">
-Selecciona y agrega los amigos que quieres que pertenezcan al grupo.
--Presiona -Salirse del grupo- para abandonar el mismo.<br>
+  <ul>
+    <li>
+      Selecciona y agrega los amigos que quieres que pertenezcan al grupo.
+    </li>
+    <li>Presiona -Salirse del grupo- para abandonar el mismo.</li>
+  </ul>
+  <br>
 </script>

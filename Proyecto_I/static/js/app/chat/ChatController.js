@@ -65,8 +65,6 @@ socialModule.controller('VAdminContactosController',
                       $defer.resolve(VGrupo2Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
               });            
-
-
       });
       $scope.VPrincipal0 = function() {
         $location.path('/VPrincipal');
@@ -203,9 +201,11 @@ socialModule.controller('VChatController',
         if ($scope.logout) {
             $location.path('/');
         }
-
-
       });
+      
+      $scope.replaceEmojis = function(text) {
+        return emoji.replace_colons(text);
+      }
       $scope.VContactos2 = function(idUsuario) {
         $location.path('/VContactos/'+idUsuario);
       };

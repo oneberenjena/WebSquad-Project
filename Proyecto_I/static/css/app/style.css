@@ -174,6 +174,28 @@ form[role="search"] {
     display:none;
 }
 
-.brn-crear-grupo {
+.btn-crear-grupo {
     margin-bottom:60px;
+}
+
+.text-right {
+    text-align:right;
+}
+
+.link-pagSitio {
+    color: #FFF;
+    padding: 25px 25px;
+}
+
+.link-pagSitio:hover {
+    text-decoration: none !important;
+    background-color: rgba(250,250,250,0.5);
+    font-weight: bold; 
+}
+.logo {
+    margin-right: 50px;   
+}
+
+.navbar-brand {
+    padding: 25px 15px !important;
 }

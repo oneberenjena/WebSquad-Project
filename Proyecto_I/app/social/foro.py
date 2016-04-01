@@ -238,6 +238,7 @@ def VForo():
     #Action code goes here, res should be a JSON structure
 
     res['idForo'] = idForo
+    res['tituloForo'] = Foro.query.filter_by(idForo = idForo).first().titulo
     res['idUsuario'] = session['usuario']['idUsuario']
     
     # ASCANDER LO PUSO
