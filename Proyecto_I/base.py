@@ -5,6 +5,9 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_socketio import SocketIO, emit, send, join_room
 from random import SystemRandom
 from datetime import timedelta
+from datetime import datetime
+import time
+import hashlib
 
 app = Flask(__name__, static_url_path='')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
@@ -36,7 +39,9 @@ class Usuario(db.Model):
     username = db.Column(db.String(15), index = True, unique = True, nullable = False)
     contrasena = db.Column(db.String(16), nullable = False)
     correo = db.Column(db.String(80), unique = True, nullable = False)
-    #pagina_id = db.Column(db.Integer, db.ForeignKey('Pagina.id_Pagina'), nullable = True)
+
+    #Relacionando con las publicaciones
+    publicaciones = db.relationship('Publicacion', backref="usuario", cascade="all, delete-orphan" , lazy='dynamic')
     
     def __init__(self, nombre, username, contrasena, correo):
         self.nombre = nombre
@@ -58,6 +63,7 @@ class Pagina(db.Model):
     def __rep__(self):
         return '<Pagina %r>' % self.titulo
 
+
 class Contacto(db.Model):
     __tablename__ = 'contacto'
     idContacto = db.Column(db.Integer, primary_key=True)
@@ -78,6 +84,93 @@ class Membresia(db.Model):
     idGrupo = db.Column(db.Integer, db.ForeignKey('grupo.idGrupo'), primary_key=True)
     es_admin = db.Column(db.Boolean)
     usuario = db.relationship("Usuario")
+
+
+# para la relacion recursiva
+# http://stackoverflow.com/questions/20830147/unable-to-create-self-referencing-foreign-key-in-flask-sqlalchemy
+class Publicacion(db.Model):
+    __tablename__ = 'publicacion'
+    idPublicacion = db.Column(db.Integer, primary_key = True)
+    titulo = db.Column(db.String(50), nullable = False)
+    contenido = db.Column(db.Text, nullable = False)
+    fecha = db.Column(db.DateTime, nullable = False)
+    
+    # Relacion con el usuario
+    autor_id = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'), nullable = False)
+    # autor = db.relationship('Usuario', backref = db.backref('publicacion', lazy = 'dynamic'))
+    
+    # Relacion recursiva publicacion raiz
+    padre_id = db.Column(db.Integer, db.ForeignKey('publicacion.idPublicacion'), nullable=True)
+    
+    hilo_id = db.Column(db.Integer, db.ForeignKey('hilo.idHilo'), nullable=True)
+    
+    # SIENTO QUE FALTA ALGO AQUI PARA LA RELACION RECURSIVA
+
+    def __init__(self, titulo, contenido, autor_id, tipo, padre_id = None, foro_id = None, pag_id = None, fecha = None):
+        self.titulo = titulo
+        self.contenido = contenido
+        
+        if fecha is None:
+            fecha = datetime.utcnow()
+        self.fecha = fecha
+        
+        self.autor_id = autor_id
+        self.padre_id = padre_id
+
+
+    def __rep__(self):
+        return '<titulo de la publicacion: {} \ncontenido: {} son amigos'.format(self.titulo, self.contenido)
+        
+        
+#http://stackoverflow.com/questions/22976445/flask-sqlalchemy-how-do-i-declare-a-base-class
+#http://techarena51.com/index.php/one-to-many-relationships-with-flask-sqlalchemy/
+class Hilo(db.Model):
+    __tablename__ = 'hilo'
+    idHilo = db.Column(db.Integer, primary_key = True)
+    titulo = db.Column(db.String(50), nullable = False)
+    
+    # Relacion con la publicacion raiz
+    pubRaiz_id = db.Column(db.Integer, db.ForeignKey('publicacion.idPublicacion'), nullable = False)
+    pubRaiz = db.relationship('Publicacion', backref = db.backref('publicacion_Raiz', uselist=False), foreign_keys = [pubRaiz_id])
+    
+    publicaciones = db.relationship('Publicacion', backref=db.backref('hilo'), foreign_keys=[Publicacion.hilo_id])
+    # Para identificar si es un hilo de foro o uno de una pagina comentable si es 1 es de foro y 0 de pag
+    tipo = db.Column(db.Integer, nullable = False)
+    foro_id = db.Column(db.Integer, db.ForeignKey('foro.idForo'), nullable=True)
+    pag_id = db.Column(db.String(80), db.ForeignKey('paginaSitio.url'), nullable = True)
+    
+    
+    
+        
+class Foro (db.Model):
+    idForo = db.Column(db.Integer, primary_key = True)
+    titulo = db.Column(db.String(50), nullable = False, unique = True)
+    fecha_creacion = db.Column(db.DateTime, nullable = False)
+    
+    # relacion con el usuario
+    autor_id = db.Column(db.Integer, db.ForeignKey('usuario.idUsuario'), nullable = False)
+    autor = db.relationship('Usuario', backref = db.backref('foro', lazy = 'dynamic'))
+    
+    # Relacion con los hilos
+    hilos = db.relationship('Hilo', backref='foro', cascade="all, delete-orphan")
+    
+    def __init__(self, titulo, autor, fecha = None):
+        self.titulo = titulo
+        self.autor_id = autor
+        if fecha is None:
+            fecha = datetime.utcnow()
+        self.fecha_creacion = fecha
+        
+    def __rep__(self):
+        return '<Foro %r>' % self.titulo
+        
+class PaginaSitio(db.Model):
+    __tablename__ = 'paginaSitio'
+    url = db.Column(db.String(80), unique = True, nullable = False, primary_key = True)
+    
+    # Relacion con hilos
+    hilos = db.relationship('Hilo', backref='pagSitio', cascade="all, delete-orphan", lazy='dynamic')
+    
 
 
 def sonAmigos(id1,id2):
@@ -112,17 +205,22 @@ from app.social.paginas import paginas
 app.register_blueprint(paginas)
 from app.social.chat import chat
 app.register_blueprint(chat)
+from app.social.foro import foro
+app.register_blueprint(foro)
 
 @socketio.on('message')
 def message_handler(data):
     message = {
+        # Creo una clave alfanumerica para el mensaje
+        'idMensaje': hashlib.sha224((str(int(time.time()))+data['msg']).encode('utf-8')).hexdigest(),
         'msg':data['msg'], 
         'room': data['idChat'],
-        'idUsuario': session['usuario']['idUsuario'] if 'usuario' in session else 0
+        'idUsuario': session['usuario']['idUsuario'] if 'usuario' in session else 0,
+        'nombreUsuario': session['usuario']['nombre'] if 'usuario' in session else 'Unknown'
     }
     send(message=message, room=data['idChat'])
     print(data['msg'])
-    return room
+    return data['idChat']
 
 @socketio.on('connect')
 def connect_handler():
@@ -139,9 +237,8 @@ def connect_handler():
 
 @socketio.on('join')
 def join_room_handler(data):
-    print("Joining")
-    room = "{}_{}".format(data['tipo'],data['room'])
-    join_room(room)
+    print("Joining",data['room'])
+    join_room(data['room'])
 
 @socketio.on_error_default
 def chat_error_handler(e):

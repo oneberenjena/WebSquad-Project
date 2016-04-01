@@ -34,3 +34,165 @@
   font-family: inherit;
   font-size: 100%;
 }
+
+.respuesta {
+    /*padding: 1em 0 0.5em 3em;*/
+    background-color: rgba(255,255,255,0.25);
+    border-radius: 5px;
+    padding: 2% 5%;
+    margin-bottom: 2%;
+    margin-top: 2%; 
+}
+
+.hilo {
+    border-radius: 15px;
+    background-color: #81BEF7;
+    padding: 2% 5%;
+    margin-bottom: 2%;
+}
+
+.imagen_peq{
+  width: 25%;
+}
+
+.imagen{
+  width: 80%;
+}
+
+/* Chat bubbles */
+
+span.chat
+{
+    display: inline-block;
+    max-width: 400px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 4px;
+    position: relative;
+    border-width: 1px;
+    border-style: solid;
+    border-color: grey;
+}
+
+span.chat.left:after
+{
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: -8.5px;
+    top: 7px;
+    height: 0px;
+    width: 0px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid white;
+}
+
+span.chat.left:before
+{
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: -9px;
+    top: 7px;
+    height: 0px;
+    width: 0px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid black;
+}
+
+span.chat.right:after
+{
+    content: "";
+    display: inline-block;
+    position: absolute;
+    right: -8px;
+    top: 6px;
+    height: 0px;
+    width: 0px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid #dbedfe;
+}
+
+span.chat.right:before
+{
+    content: "";
+    display: inline-block;
+    position: absolute;
+    right: -9px;
+    top: 6px;
+    height: 0px;
+    width: 0px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid black;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+span.chat.right
+{
+    background-color: #dbedfe;
+}
+
+span.chat.left
+{
+    
+}
+.clear
+{
+    clear: both;
+    margin: 0;
+}
+
+.mensaje {
+    margin-bottom:1.5em;
+}
+
+.msg-de, .msg-mensaje, .msg-fecha {
+    margin-bottom: 0 !important;
+}
+
+.msg-fecha {
+    color: #AAA;
+    margin-left: 1em;
+}
+
+/* Search no está implementado */
+form[role="search"] {
+    display:none;
+}
+
+.btn-crear-grupo {
+    margin-bottom:60px;
+}
+
+.text-right {
+    text-align:right;
+}
+
+.link-pagSitio {
+    color: #FFF;
+    padding: 25px 25px;
+}
+
+.link-pagSitio:hover {
+    text-decoration: none !important;
+    background-color: rgba(250,250,250,0.5);
+    font-weight: bold; 
+}
+.logo {
+    margin-right: 50px;   
+}
+
+.navbar-brand {
+    padding: 25px 15px !important;
+}

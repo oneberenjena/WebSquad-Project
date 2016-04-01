@@ -1,5 +1,5 @@
 socialModule.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/VAdminContactos/', {
+    $routeProvider.when('/VAdminContactos/:id?', {
                 controller: 'VAdminContactosController',
                 templateUrl: 'app/chat/VAdminContactos.html'
             }).when('/VChat/:idChat', {
@@ -31,6 +31,7 @@ socialModule.controller('VAdminContactosController',
       $scope.msg = '';
       $scope.fContacto = {};
       
+   
       chatService.VAdminContactos().then(function (object) {
         $scope.res = object.data;
         for (var key in object.data) {
@@ -64,8 +65,6 @@ socialModule.controller('VAdminContactosController',
                       $defer.resolve(VGrupo2Data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
                   }
               });            
-
-
       });
       $scope.VPrincipal0 = function() {
         $location.path('/VPrincipal');
@@ -79,19 +78,38 @@ socialModule.controller('VAdminContactosController',
       $scope.VMiPagina = function(idUsuario) {
         $location.path('/VMiPagina/'+idUsuario);
       };
+/*      $scope.VContactos2 = function(idUsuario) {
+        $location.path('/VContactos/'+idUsuario);
+      };*/
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
       $scope.VContactos2 = function(idUsuario) {
         $location.path('/VContactos/'+idUsuario);
       };
+      $scope.VAdminContactos2 = function() {
+        $location.path('/VAdminContactos/');
+      };
       $scope.AgregGrupo4 = function(idUsuario) {
-          
-        chatService.AgregGrupo({nombre:"grupo_"+ Math.floor(Math.random() * 600000) + 1  }).then(function (object) {
+
+        //ESTO ERA LO QUE TENIA ASCANDER
+        // 
+        // chatService.AgregGrupo({"idUsuario":((typeof idUsuario === 'object')?JSON.stringify(idUsuario):idUsuario)}).then(function (object) {
+        //
+        if (!$scope.nombreGrupo)
+          $scope.nombreGrupo = "grupo_"+ Math.floor(Math.random() * 600000) + 1
+        chatService.AgregGrupo({nombre: $scope.nombreGrupo }).then(function (object) {
+
           var msg = object.data["msg"];
           if (msg) flash(msg);
           var label = object.data["label"];
-          if (label.indexOf("/VAdminContactos") != 0)
-            $location.path(label);
+          if (object.data.idGrupo) {
+            chatSocket.emit("join",{room: "grupo_"+object.data["idGrupo"]});
+          }
           $route.reload();
-        });};
+        });
+        
+      };
 
       $scope.fContactoSubmitted = false;
       $scope.AgregContacto3 = function(isValid) {
@@ -132,19 +150,29 @@ ngDialog.open({ template: 'ayuda_VAdminContactos.html',
 socialModule.controller('VChatController', 
    ['$scope', '$localStorage', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'chatService', 'identService', 'chatSocket',
     function ($scope, $localStorage, $location, $route, $timeout, flash, $routeParams, ngDialog, chatService, identService, chatSocket) {
+      // Desconecto el socket para reconectar
+
+      chatSocket.emit("join", {room:$routeParams.idChat});
+      
       $scope.msg = '';
       $scope.fChat = {};
       $scope.idChat = $routeParams.idChat;
-
+      
       console.log("ID CHAT", $scope.idChat);
       if ($scope.$storage.mensajes === undefined)
         $scope.$storage.mensajes = {};
+      if ($scope.$storage.mensajesID === undefined)
+        $scope.$storage.mensajesID = {};
       if ($scope.$storage.mensajes[$scope.idChat] === undefined) {
         $scope.$storage.mensajes[$scope.idChat] = [];
+      }
+      if ($scope.$storage.mensajesID[$scope.idChat] === undefined) {
+        $scope.$storage.mensajesID[$scope.idChat] = [];
       }  
         
       // Recibir mensajes
       chatSocket.on('message', function(mensaje,data) {
+        console.log("Mensaje recibido", mensaje);
         room = mensaje.room;
         if (room.indexOf("usuario_") == 0) {
           room = "usuario_"+mensaje.idUsuario;
@@ -155,10 +183,13 @@ socialModule.controller('VChatController',
         if (mensaje.idUsuario != $scope.$storage.idUsuario) {
           mensaje_obj = {
             mensaje: mensaje.msg,
-            de: mensaje.idUsuario,
+            de: mensaje.nombreUsuario,
             fecha: new Date()
           }
-          $scope.$storage.mensajes[room].push(mensaje_obj);
+          if ($scope.$storage.mensajesID[room].indexOf(mensaje.idMensaje) < 0) {
+            $scope.$storage.mensajes[room].push(mensaje_obj);
+            $scope.$storage.mensajesID[room].push(mensaje.idMensaje);
+          }
         }
       })
 
@@ -170,11 +201,16 @@ socialModule.controller('VChatController',
         if ($scope.logout) {
             $location.path('/');
         }
-
-
       });
+      
+      $scope.replaceEmojis = function(text) {
+        return emoji.replace_colons(text);
+      }
       $scope.VContactos2 = function(idUsuario) {
         $location.path('/VContactos/'+idUsuario);
+      };
+      $scope.VPrincipal0 = function() {
+        $location.path('/VPrincipal');
       };
       $scope.VMiPagina = function(idUsuario) {
         $location.path('/VMiPagina/'+idUsuario);
@@ -185,6 +221,10 @@ socialModule.controller('VChatController',
 
       $scope.VPagina1 = function(idUsuario) {
         $location.path('/VPagina/'+idUsuario);
+      };
+
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
       };
 
       $scope.fChatSubmitted = false;
@@ -200,9 +240,12 @@ socialModule.controller('VChatController',
             $scope.$storage.mensajes[$scope.idChat] = [];
           }
           $scope.$storage.mensajes[$scope.idChat].push(mensaje_obj);
+          $scope.fChatSubmitted = false;
         }
-        $scope.fChatSubmitted = true;
-        
+        else {
+          $scope.fChatSubmitted = true;
+        }
+        $scope.fChat.texto = ""; // Limpiar campo
       };
 
 $scope.__ayuda = function() {
@@ -211,8 +254,9 @@ ngDialog.open({ template: 'ayuda_VChat.html',
 }
     }]);
 socialModule.controller('VContactosController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'ngTableParams', 'chatService', 'identService',
-    function ($scope, $location, $route, $timeout, flash, $routeParams, ngDialog, ngTableParams, chatService, identService) {
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'ngTableParams', 'chatService', 'identService', 'chatSocket',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, ngDialog, ngTableParams, chatService, identService, chatSocket) {
+
       $scope.msg = '';
       chatService.VContactos({"idUsuario":$routeParams.idUsuario}).then(function (object) {
         $scope.res = object.data;
@@ -241,6 +285,7 @@ socialModule.controller('VContactosController',
       $scope.VPrincipal0 = function() {
         $location.path('/VPrincipal');
       };
+
       $scope.VMiPagina = function(idUsuario) {
         $location.path('/VMiPagina/'+idUsuario);
       };
@@ -251,6 +296,12 @@ socialModule.controller('VContactosController',
       $scope.VPagina1 = function(idUsuario) {
         $location.path('/VPagina/'+idUsuario);
       };
+
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
+      
+
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
       };
@@ -305,6 +356,7 @@ socialModule.controller('VGrupoController',
           $location.path(label);
           $route.reload();
         });};
+
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
       };
@@ -324,7 +376,12 @@ socialModule.controller('VGrupoController',
         }
       };
 
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
+
       $scope.AElimMiembro3 = function(id) {
+          
           chatService.AElimMiembro({idUsuario: id, idGrupo: $routeParams.idGrupo}).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);

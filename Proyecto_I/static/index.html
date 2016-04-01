@@ -3,7 +3,8 @@
     <head>
       <meta charset="UTF-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
-      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
       <!--************************************************-->
       <!--                                                -->
       <!-- TITULO  /  ICO                                 -->
@@ -34,6 +35,7 @@
             <link rel="stylesheet" href="css/bootstrap.min.css">
             <link rel="stylesheet" type="text/css" href="css/bsPerso.css">
             <link rel="stylesheet" type="text/css" href="css/custom.css">
+            <link href="css/emoji.min.css" rel="stylesheet" type="text/css" />
 
             <link rel="stylesheet" href="css/custom.css">
 
@@ -107,16 +109,16 @@
   <!-- SCRIPTS                                        -->
   <!--                                                -->
   <!--************************************************-->
-     <script src="js/interfaz/bootstrap.min.js"></script>
-    <script src="js/interfaz/classie.js"></script>
-    <script src="js/interfaz/cbpAnimatedHeader.js"></script>
-    <script src="js/interfaz/scrolling.js"></script>
-    <script src="js/interfaz/jquery.easing.1.3.js"></script>
+     <script src="js/bootstrap.min.js"></script>
+    <script src="js/classie.js"></script>
+    <script src="js/cbpAnimatedHeader.js"></script>
+    <script src="js/scrolling.js"></script>
+    <script src="js/jquery.easing.1.3.js"></script>
 
     <!-- LOAD JQUERY -->
-    <script src="js/jquery-1.11.2.min.js"></script>
+   <!-- <script src="js/jquery-1.11.2.min.js"></script>-->
     <script src="js/d3.v3.min.js"></script>
-    <script src="js/interfaz/jquery-2.1.1.min.js"></script>
+    <script src="js/jquery-2.1.1.min.js"></script>
 
     <!-- LOAD ANGULAR -->
     <script src="js/bootstrap.min.js"></script>
@@ -132,10 +134,12 @@
     <script src="js/jquery-ui.min.js"></script>
     <script src="js/angular/ng-flash.js"></script>
     
+    <script src="js/emoji.min.js" type="text/javascript"></script>
     
-        <script type="text/javascript" src="js/socket.io.min.js"></script>
-        <script type="text/javascript" src="bower_components/angular-socket-io/socket.min.js"></script>
-        <script type="text/javascript" src="bower_components/ngstorage/ngStorage.min.js"></script>
+    
+    <script type="text/javascript" src="js/socket.io.min.js"></script>
+    <script type="text/javascript" src="bower_components/angular-socket-io/socket.min.js"></script>
+    <script type="text/javascript" src="bower_components/ngstorage/ngStorage.min.js"></script>
         
     <!-- LOAD APP -->
     <script src="js/app/app.js"></script>
@@ -145,6 +149,8 @@
     <script src="js/app/paginas/PaginasController.js"></script>
     <script src="js/app/chat/ChatService.js"></script>
     <script src="js/app/chat/ChatController.js"></script>
+    <script src="js/app/foro/ForoService.js"></script>
+    <script src="js/app/foro/ForoController.js"></script>
 
     <!-- LOAD NGTABLE -->
     <script src="js/angular/ng-table.min.js"></script>
@@ -166,5 +172,8 @@
           </li>
       </ul>
     </script>
+    <script src="/bower_components/angular-aria/angular-aria.js"></script>
+    <script src="/bower_components/angular-animate/angular-animate.js"></script>
+    <script src="/bower_components/angular-material/angular-material.js"></script>
 </body>
 </html>

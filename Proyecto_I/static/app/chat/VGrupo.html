@@ -31,7 +31,7 @@
                     <!--*********************-->
                     <!-- ICONO SFL           -->
                     <!--*********************-->
-                      <a ng-click="VPrincipal()">
+                      <a href="#/VPrincipal">
                         <img style="margin-top:1em;margin-bottom:0.6em;" src="img/SFL_logo-01.svg" />
                       </a>
                   </div>
@@ -64,7 +64,7 @@
                       <!--*********************-->
                       <li class="dropdown">
                         <a ng-click="VPrincipal()" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                          {{nombre}}huhu
+                          {{$storage.nombre}}
                           <span class="caret "></span>
                         </a>
                         <!--*********************-->
@@ -72,54 +72,43 @@
                         <!--*********************-->  
                           <ul class="dropdown-menu">
                             <li><a ng-click="VPrincipal1()">Perfil</a></li>
-                            <li><a ng-click="VPagina1(idUsuario)">Editor</a></li>
-                            <li><a ng-click="VAdminContactos2(idUsuario)"
-           ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">Contactos</a></li>
+                            <li><a ng-click="VPagina1($storage.idUsuario)">Editor</a></li>
+                            <li><a ng-click="VContactos2($storage.idUsuario)"
+                              ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">Contactos</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a ng-click="VLogin0()">Salir</a></li>
                           </ul>
                       </li>
                     <li><a ng-click="__ayuda()"><span class="glyphicon glyphicon-info-sign"></span></a></li>
 
-<<<<<<< HEAD
                     </ul>
                   </div> <!-- /.navbar-collapse -->  
               </div> <!-- /.container-fluid -->
             </nav>
         </header>
-  <!--************************************************-->
-  <!--                                                -->
-  <!-- CUERPO                                         -->
-  <!--                                                -->
-  <!--************************************************-->
-    <div class="container-fluid container-sm-height fill-screen">
-      <div class="row row-sm-height">
-        <!--************************************************-->
-        <!-- ASIDE                                          -->
-        <!--************************************************-->
-          <aside class="col-sm-4 right-divider hidden-xs col-sm-height centrado">
-            <!--************************************************-->
-            <!-- NOMBRE DE USUARIO                              -->
-            <!--************************************************-->
-              <p>
-              <h1>Grupo</h1>
-              </p>
-              <br>
-            <!--************************************************-->
-            <!-- BOTON                                          -->
-            <!--************************************************-->
-              <p>
-                <a style="border-style:none;background:#FF5252" ng-click="ASalirGrupo1()" class="btn btn-perso">Salir del grupo</a>
-              </p>
-          </aside>
+
         <!--************************************************-->
         <!-- CONTENIDO                                      -->
         <!--************************************************-->
-          <section class="col-sm-8 col-sm-height" id="contenido-registro">
+          <div layout="column">
+            <div flex="25" layout="row"  layout-align="center center">
+              <div flex>
+                <p>
+                  <h1>Administrar grupo</h1>
+                </p>
+              </div>
+              <div  flex="30">
+                <md-button style="border-style:none;background:#FF5252" ng-click="ASalirGrupo1()" layout="column" layout-align="center center" style="border-style:none" class="btn btn-perso btn-lg btn-block">
+                  Salir del grupo
+                </md-button>
+              </div>
+            </div>
+            <hr />
+            <div flex>
             <form name="fMiembroForm" ng-submit="AgregMiembro0(fMiembroForm.$valid)" novalidate>
               <div class="form-group" ng-class="{ 'has-error' :  fMiembroSubmitted && fMiembroForm.nombre.$invalid && fMiembroForm.nombre.$pristine && fMiembroSubmitted}">
                   <label for="fMiembro_nombre">Nombre</label>:&nbsp;
-                  <select id="fMiembro_nombre" ng-model="fMiembro.nombre" required ng-options="item.key as item.value for item in fMiembro_opcionesNombre"> 
+                  <select id="fMiembro_nombre" ng-model="fMiembro.idUsuario" required ng-options="item.key as item.value for item in fMiembro_opcionesNombre"> 
                   </select>
                   <p ng-show="fMiembroSubmitted && fMiembroForm.nombre.$invalid" class="help-block">Error en campo Nombre.</p>
               </div>
@@ -128,50 +117,22 @@
               </button>
             </form>
     <table ng-table="tableParams3" template-pagination="pager.html" class="table">
-||||||| merged common ancestors
-            </ul>
-        </div>
-    </div>
-</nav>
 
-    <form name="fMiembroForm" ng-submit="AgregMiembro0(fMiembroForm.$valid)" novalidate>
-            <div class="form-group" ng-class="{ 'has-error' :  fMiembroSubmitted && fMiembroForm.nombre.$invalid && fMiembroForm.nombre.$pristine && fMiembroSubmitted}"><label for="fMiembro_nombre">Nombre</label>:&nbsp;<select id="fMiembro_nombre" ng-model="fMiembro.nombre" required ng-options="item.key as item.value for item in fMiembro_opcionesNombre"></select><p ng-show="fMiembroSubmitted && fMiembroForm.nombre.$invalid" class="help-block">Error en campo Nombre.</p></div>
-        <button type="submit" class="btn btn-perso btn-lg btn-block">
-            <span class="glyphicon glyphicon-flash"></span>Agregar
-        </button>
-    </form>
-    <hr />        <table ng-table="tableParams3" template-pagination="pager.html" class="table">
-=======
-            </ul>
-        </div>
-    </div>
-</nav>
-
-    <form name="fMiembroForm" ng-submit="AgregMiembro0(fMiembroForm.$valid)" novalidate>
-            <div class="form-group" ng-class="{ 'has-error' :  fMiembroSubmitted && fMiembroForm.nombre.$invalid && fMiembroForm.nombre.$pristine && fMiembroSubmitted}"><label for="fMiembro_nombre">Nombre</label>:&nbsp;<select id="fMiembro_nombre" ng-model="fMiembro.idUsuario" required ng-options="item.key as item.value for item in fMiembro_opcionesNombre"></select><p ng-show="fMiembroSubmitted && fMiembroForm.nombre.$invalid" class="help-block">Error en campo Nombre.</p></div>
-        <button type="submit" class="btn btn-perso btn-lg btn-block">
-            <span class="glyphicon glyphicon-flash"></span>Agregar
-        </button>
-    </form>
-    <hr />        <table ng-table="tableParams3" template-pagination="pager.html" class="table">
->>>>>>> backend
             <tr ng-repeat="row in $data">
-<<<<<<< HEAD
-                <td data-title="'Miembros '" ng-bind="row['nombre']"></td>
-                <td ng-show="row['idContacto']"><a ng-click="AElimMiembro3(row['idContacto'])">Eliminar</a></td>
-||||||| merged common ancestors
-                <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
-                <td ng-show="row['idContacto']"><a ng-click="AElimMiembro3(row['idContacto'])">Eliminar</a></td>
-=======
                 <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
                 <td ng-show="row['idContacto'] != $storage.idUsuario"><a ng-click="AElimMiembro3(row['idContacto'])">Eliminar</a></td>
->>>>>>> backend
             </tr>
         </table>
-          </section>
-      </div>
-    </div>
+            </div>
+          </div>
+          
 
 <div id="right"></div><script type="text/ng-template" id="ayuda_VGrupo.html">
-Manual...<br>
+  <ul>
+    <li>
+      Selecciona y agrega los amigos que quieres que pertenezcan al grupo.
+    </li>
+    <li>Presiona -Salirse del grupo- para abandonar el mismo.</li>
+  </ul>
+  <br>
 </script>
