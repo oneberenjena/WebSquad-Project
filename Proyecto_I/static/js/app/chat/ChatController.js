@@ -1,5 +1,5 @@
 socialModule.config(['$routeProvider', function ($routeProvider) {
-    $routeProvider.when('/VAdminContactos/', {
+    $routeProvider.when('/VAdminContactos/:id?', {
                 controller: 'VAdminContactosController',
                 templateUrl: 'app/chat/VAdminContactos.html'
             }).when('/VChat/:idChat', {

@@ -102,17 +102,19 @@ def ASalirGrupo():
     #Action code goes here, res should be a list with a label and a message
     membresia = Membresia.query.filter_by(idUsuario=idUsuario, idGrupo=idGrupo).first()
     if membresia:
-        db.session.delete(membresia)
         if membresia.es_admin:
-            nuevoAdmin = Membresia.query.filter_by(idGrupo = idGrupo).first()
+            nuevoAdmin = Membresia.query.filter(Membresia.idGrupo == idGrupo, Membresia.idUsuario != idUsuario).first()
             if nuevoAdmin:
+                db.session.delete(membresia)
                 nuevoAdmin.es_admin = True
                 db.session.add(nuevoAdmin)
-                res['label'] = res['label'] + '/' + idGrupo
+                res['label'] = res['label'] + '/' + str(idUsuario)
             else:
                 res = results[1]
+                res['label'] = res['label'] + '/' + str(idGrupo)
         else:
-            res['label'] = res['label'] + '/' + idGrupo
+            db.session.delete(membresia)
+            res['label'] = res['label'] + '/' + str(idUsuario)
         db.session.commit()
 
 

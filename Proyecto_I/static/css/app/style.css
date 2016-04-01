@@ -153,3 +153,7 @@ span.chat.left
 form[role="search"] {
     display:none;
 }
+
+.brn-crear-grupo {
+    margin-bottom:60px;
+}
