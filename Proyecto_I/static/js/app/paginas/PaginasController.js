@@ -50,6 +50,10 @@ socialModule.controller('VMiPaginaController',
         $location.path('/VLogin');
       };
 
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
+      
       $scope.fPaginaSubmitted = false;
       $scope.AModificarPagina0 = function(isValid) {
         $scope.fPaginaSubmitted = true;
@@ -90,6 +94,10 @@ socialModule.controller('VPaginaDetalleController',
 
       $scope.VPrincipal1 = function() {
         $location.path('/VPrincipal');
+      };
+
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
       };
 
       $scope.fPaginaSubmitted = false;
@@ -151,6 +159,10 @@ socialModule.controller('VPaginaController',
         $location.path('/VPrincipal');
       };
 
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
+      
       $scope.fPaginaSubmitted = false;
       $scope.AModificarPagina0 = function(isValid) {
         $scope.fPaginaSubmitted = true;

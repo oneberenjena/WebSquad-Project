@@ -102,6 +102,7 @@
   <!-- CUERPO                                         -->
   <!--                                                -->
   <!--************************************************-->
+<<<<<<< HEAD
     <div class="container-fluid container-sm-height fill-screen">
       <div class="row row-sm-height">
         <!--************************************************-->
@@ -125,9 +126,22 @@
         <!--************************************************-->
         <!-- CONTENIDO                                      -->
         <!--************************************************-->
-          <section class="col-sm-8 col-sm-height" id="contenido-registro">
 
-            <!--************************************************-->
+    <div layout="column">
+      <div flex="25" layout="row"  layout-align="center center">
+        <div flex>
+          <p>
+            <h1>Mis contactos y grupos</h1>
+          </p>
+        </div>
+        <div  flex="30">
+          <md-button ng-click="VAdminContactos2(idUsuario)" layout="column" layout-align="center center" style="border-style:none" class="btn btn-perso btn-lg btn-block">
+            Administrar
+          </md-button>
+        </div>
+      </div>
+      <div flex>
+        <!--************************************************-->
             <!-- LISTA CONTACTOS                                -->
             <!--************************************************-->
             <div class="list-group scroll">
@@ -172,11 +186,9 @@
               
               <div class="panel-footer"></div>
             </div>
-            <a style="border-style:none" ng-click="VAdminContactos2()" class="btn btn-perso btn-lg btn-block hidden-lg hidden-md hidden-sm">Administrar contactos</a>
-
-          </section>
       </div>
     </div>
+
 
 
 <div id="right"></div><script type="text/ng-template" id="ayuda_VContactos.html">

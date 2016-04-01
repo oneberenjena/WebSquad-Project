@@ -130,6 +130,7 @@ def ASalirGrupo():
 def AgregContacto():
     #POST/PUT parameters
     params = request.get_json()
+
     idAmigo = params['id']
     idUsuario = session['usuario']['idUsuario']
     
@@ -237,6 +238,7 @@ def AgregMiembro():
 @chat.route('/chat/VAdminContactos')
 def VAdminContactos():
     #GET parameter
+
     idUsuario = session['usuario']['idUsuario']
     res = {}
     if "actor" in session:
@@ -291,6 +293,7 @@ def VChat():
 @chat.route('/chat/VContactos')
 def VContactos():
     #GET parameter
+
     idUsuario = session['usuario']['idUsuario']
     res = {}
     if "actor" in session:
@@ -321,6 +324,7 @@ def VContactos():
 def VGrupo():
     #GET parameter
     idGrupo = request.args['idGrupo']
+
     idUsuario = session['usuario']['idUsuario']
     res = {}
     if "actor" in session:

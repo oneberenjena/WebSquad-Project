@@ -144,6 +144,30 @@ socialModule.controller('VForosController',
           $route.reload();
         })
       }
+  
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
+      $scope.VMiPagina = function(idUsuario) {
+        $location.path('/VMiPagina/'+idUsuario);
+      };
+
+      $scope.VPagina1 = function(idUsuario) {
+        $location.path('/VPagina/'+idUsuario);
+      };
+
+      $scope.VContactos2 = function(idUsuario) {
+        $location.path('/VContactos/'+idUsuario);
+      };
+
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
+
+      $scope.VLogin0 = function() {
+        $location.path('/VLogin');
+      };
+      
       $scope.fForoSubmitted = false;
       $scope.AgregForo2 = function(isValid) {
         $scope.fForoSubmitted = true;
@@ -188,6 +212,32 @@ socialModule.controller('VPublicacionController',
         }
 
       });
+      
+      $scope.VMiPagina = function(idUsuario) {
+        $location.path('/VMiPagina/'+idUsuario);
+      };
+
+      $scope.VPagina1 = function(idUsuario) {
+        $location.path('/VPagina/'+idUsuario);
+      };
+
+      $scope.VContactos2 = function(idUsuario) {
+        $location.path('/VContactos/'+idUsuario);
+      };
+
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
+
+      $scope.VLogin0 = function() {
+        $location.path('/VLogin');
+      };
+
+      $scope.VPrincipal0 = function() {
+        $location.path('/VPrincipal');
+      };
+      
+
       $scope.VForo1 = function(idForo) {
         $location.path('/VForo/'+idForo);
       };

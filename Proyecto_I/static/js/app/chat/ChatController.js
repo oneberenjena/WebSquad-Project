@@ -68,8 +68,27 @@ socialModule.controller('VAdminContactosController',
 
 
       });
-
-
+      $scope.VPrincipal0 = function() {
+        $location.path('/VPrincipal');
+      };
+      $scope.VLogin0 = function() {
+        $location.path('/VLogin');
+      };
+      $scope.VPagina1 = function(idUsuario) {
+        $location.path('/VPagina/'+idUsuario);
+      };
+      $scope.VMiPagina = function(idUsuario) {
+        $location.path('/VMiPagina/'+idUsuario);
+      };
+/*      $scope.VContactos2 = function(idUsuario) {
+        $location.path('/VContactos/'+idUsuario);
+      };*/
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
+      $scope.VContactos2 = function(idUsuario) {
+        $location.path('/VContactos/'+idUsuario);
+      };
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
       };
@@ -82,6 +101,7 @@ socialModule.controller('VAdminContactosController',
         if (!$scope.nombreGrupo)
           $scope.nombreGrupo = "grupo_"+ Math.floor(Math.random() * 600000) + 1
         chatService.AgregGrupo({nombre: $scope.nombreGrupo }).then(function (object) {
+
           var msg = object.data["msg"];
           if (msg) flash(msg);
           var label = object.data["label"];
@@ -203,6 +223,10 @@ socialModule.controller('VChatController',
         $location.path('/VPagina/'+idUsuario);
       };
 
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
+
       $scope.fChatSubmitted = false;
       $scope.AEscribir1 = function(isValid) {
         if (isValid) {
@@ -273,13 +297,10 @@ socialModule.controller('VContactosController',
         $location.path('/VPagina/'+idUsuario);
       };
 
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
       
-      // ESTA ERA LA FUUNCION DE ASCANDER
-      //
-      // $scope.VAdminContactos2 = function(idUsuario) {
-      //   $location.path('/VAdminContactos/'+idUsuario);
-      // };
-      //
 
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
@@ -355,14 +376,12 @@ socialModule.controller('VGrupoController',
         }
       };
 
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
+
       $scope.AElimMiembro3 = function(id) {
-          // LA DE ASCANDER ES
-          //
-          //var tableFields = [["idContacto","id"],["nombre","Nombre"]];
-          //var arg = {};
-          //arg[tableFields[0][1]] = ((typeof id === 'object')?JSON.stringify(id):id);
-          //chatService.AElimMiembro(arg).then(function (object) {
-          //
+          
           chatService.AElimMiembro({idUsuario: id, idGrupo: $routeParams.idGrupo}).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);

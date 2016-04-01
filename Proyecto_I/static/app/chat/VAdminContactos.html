@@ -103,33 +103,22 @@
   <!-- CUERPO                                         -->
   <!--                                                -->
   <!--************************************************-->
-    <div class="container-fluid container-sm-height fill-screen">
-      <div class="row row-sm-height">
-        <!--************************************************-->
-        <!-- ASIDE                                          -->
-        <!--************************************************-->
-          <aside class="col-sm-4 right-divider hidden-xs col-sm-height centrado">
-            <!--************************************************-->
-            <!-- NOMBRE DE USUARIO                              -->
-            <!--************************************************-->
-              <p>
-              <h1>Administración de  contactos y grupos</h1>
-              </p>
-              <br>
-            <!--************************************************-->
-            <!-- BOTON                                          -->
-            <!--************************************************-->
-              <p>
-                <a style="border-style:none" ng-click="VContactos2(idUsuario)" class="btn btn-perso btn-lg btn-block">Ver contactos</a>
-              </p>
-          </aside>
-        <!--************************************************-->
-        <!-- CONTENIDO                                      -->
-        <!--************************************************-->
-          <section class="col-sm-8 col-sm-height" id="contenido-registro">
 
-              
-              <h3>Contactos</h3>
+    <div layout="column">
+    <div flex="25" layout="row"  layout-align="center center">
+      <div flex>
+        <p>
+        <h1>Administracion de contactos</h1>
+        </p>
+      </div>
+      <div  flex="30">
+        <md-button ng-click="VContactos2($storage.idUsuario)" layout="column" layout-align="center center" style="border-style:none" class="btn btn-perso btn-lg btn-block">
+          Ver contactos
+        </md-button>
+      </div>
+    </div>
+    <div flex>
+       <h3>Contactos</h3>
               
               <table class="table">
                   <tr ng-repeat="row in contactos">
@@ -171,10 +160,17 @@
               <button ng-click="AgregGrupo4($storage.idUsuario)" class="btn btn-perso btn-lg btn-block">
                     <span class="glyphicon glyphicon-flash"></span>Crear grupo
                 </button>
-          </section>
-      </div>
     </div>
+  </div>
 
 <div id="right"></div><script type="text/ng-template" id="ayuda_VAdminContactos.html">
-Manual...
+A continuacion se enlistas los amigos que tienes agregados.
+-Selecciona -Eliminar- para quitarlos de la lista.
+-Despliega la lista de la parte inferior y selecciona un 
+nombre para agregarlo a tu lista de amigos.
+-Seleccion -Agregar Grupo- para crear un nuevo grupo.
+-Puede modificar cualquier grupo que cree en -Modificar Grupo-.
 </script>
+</script>
+
+>>>>>>> 3e8c8bc998d5544c84b80447344ef54a4434e24d
