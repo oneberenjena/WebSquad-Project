@@ -270,9 +270,7 @@ socialModule.controller('VContactosController',
         $location.path('/VPagina/'+idUsuario);
       };
 
-<<<<<<< HEAD
- 
-=======
+
       $scope.VForos3 = function(idUsuario) {
         $location.path('/VForos/'+idUsuario);
       };
@@ -283,7 +281,7 @@ socialModule.controller('VContactosController',
       //   $location.path('/VAdminContactos/'+idUsuario);
       // };
       //
->>>>>>> a4f90b205357ed5d7d1267cf36bcaca738a5bf96
+
 
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');

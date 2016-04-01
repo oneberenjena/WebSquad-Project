@@ -99,7 +99,7 @@
     </header>
 
 <ul>
-  <li ng-repeat="msg in $storage.mensajes[idChat]">De {{msg.de}}, el {{msg.fecha | date: 'HH:mm' }}: {{msg.mensaje}}</li>
+  <li ng-repeat="msg in $storage.mensajes[idChat]">{{msg.de}}, el {{msg.fecha | date: 'HH:mm' }}: {{msg.mensaje}}</li>
 </ul>    
 </div>
 <form name="fChatForm" ng-submit="AEscribir1(fChatForm.$valid)" novalidate>
@@ -117,5 +117,5 @@
 
 <div id="right"></div>
 <script type="text/ng-template" id="ayuda_VChat.html">
-    Manual...
+    Ingresa el mensaje que deseas enviar a tu amigo.
 </script>

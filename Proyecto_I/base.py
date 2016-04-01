@@ -211,7 +211,8 @@ def message_handler(data):
     message = {
         'msg':data['msg'], 
         'room': data['idChat'],
-        'idUsuario': session['usuario']['idUsuario'] if 'usuario' in session else 0
+        'idUsuario': session['usuario']['idUsuario'] if 'usuario' in session else 0,
+        'nombreUsuario': session['usuario']['nombre'] if 'usuario' in session else 'Unknown'
     }
     send(message=message, room=data['idChat'])
     print(data['msg'])
