@@ -83,7 +83,12 @@ socialModule.controller('VAdminContactosController',
 /*      $scope.VContactos2 = function(idUsuario) {
         $location.path('/VContactos/'+idUsuario);
       };*/
-
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
+      $scope.VContactos2 = function(idUsuario) {
+        $location.path('/VContactos/'+idUsuario);
+      };
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
       };
@@ -195,6 +200,10 @@ socialModule.controller('VChatController',
         $location.path('/VPagina/'+idUsuario);
       };
 
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
+
       $scope.fChatSubmitted = false;
       $scope.AEscribir1 = function(isValid) {
         if (isValid) {
@@ -261,7 +270,10 @@ socialModule.controller('VContactosController',
         $location.path('/VPagina/'+idUsuario);
       };
 
- 
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+      };
+      
 
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
@@ -335,6 +347,10 @@ socialModule.controller('VGrupoController',
               $route.reload();
           });
         }
+      };
+
+      $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
       };
 
       $scope.AElimMiembro3 = function(id) {
