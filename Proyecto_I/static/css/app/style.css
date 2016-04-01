@@ -150,17 +150,14 @@ span.chat.left
 .clear
 {
     clear: both;
+    margin: 0;
 }
 
 .mensaje {
     margin-bottom:1.5em;
 }
 
-.msg-de {
-    margin-bottom: 5px !important;
-}
-
-.msg-mensaje, .msg-fecha {
+.msg-de, .msg-mensaje, .msg-fecha {
     margin-bottom: 0 !important;
 }
 
