@@ -18,7 +18,7 @@ def parsearPublicaciones(hilo):
         'idPublicacion': publicacion.idPublicacion,
         'titulo': publicacion.titulo,
         'contenido': publicacion.contenido,
-        'fecha': publicacion.fecha.isoformat(),
+        'fecha': publicacion.fecha.isoformat()+'+00:00', # Indicar que fecha esta en UTC
         'padre_id': publicacion.padre_id,
         'autor_id': publicacion.autor_id,
         'autor': autor,
@@ -41,7 +41,7 @@ def parsearPublicaciones(hilo):
             'idPublicacion': publicacion.idPublicacion,
             'titulo': publicacion.titulo,
             'contenido': publicacion.contenido,
-            'fecha': publicacion.fecha.isoformat(),
+            'fecha': publicacion.fecha.isoformat()+'+00:00', # Indicar que fecha esta en UTC
             'padre_id': publicacion.padre_id,
             'autor_id': publicacion.autor_id,
             'autor': autor,
