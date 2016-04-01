@@ -27,7 +27,6 @@
 
     <form name="fPublicacionForm" ng-submit="APublicar0(fPublicacionForm.$valid)" novalidate>
             <input id="fPublicacion_idForo" type="hidden" name="idForo" ng-model="fPublicacion.idForo" />
-            <div class="form-group" ng-class="{ 'has-error' :  fPublicacionSubmitted && fPublicacionForm.fecha.$invalid && fPublicacionForm.fecha.$pristine && fPublicacionSubmitted}"><label for="fPublicacion_fecha">Fecha</label><input id="fPublicacion_fecha" type="date" name="fecha" class="form-control" ng-model="fPublicacion.fecha" placeholder="Fecha" required/><p ng-show="fPublicacionSubmitted && fPublicacionForm.fecha.$invalid" class="help-block">Error en campo Fecha.</p></div>
             <div class="form-group" ng-class="{ 'has-error' :  fPublicacionSubmitted && fPublicacionForm.titulo.$invalid && fPublicacionForm.titulo.$pristine && fPublicacionSubmitted}"><label for="fPublicacion_titulo">Título</label><input id="fPublicacion_titulo" type="text" name="titulo" class="form-control" ng-model="fPublicacion.titulo" placeholder="Título" required/><p ng-show="fPublicacionSubmitted && fPublicacionForm.titulo.$invalid" class="help-block">Error en campo Título.</p></div>
             <div class="form-group" ng-class="{ 'has-error' :  fPublicacionSubmitted && fPublicacionForm.contenido.$invalid && fPublicacionForm.contenido.$pristine && fPublicacionSubmitted}"><label for="fPublicacion_contenido">Contenido</label><textarea id="fPublicacion_contenido" name="contenido" class="form-control" ng-model="fPublicacion.contenido" placeholder="Contenido" ></textarea><p ng-show="fPublicacionSubmitted && fPublicacionForm.contenido.$invalid" class="help-block">Error en campo Contenido.</p></div>
         <button type="submit" class="btn btn-perso btn-lg btn-block">
@@ -38,5 +37,5 @@
 
 
 <div id="right"></div><script type="text/ng-template" id="ayuda_VPublicacion.html">
-Doc de publicación
+Rellena los campos y agrega la publicacion al foro.
 </script>

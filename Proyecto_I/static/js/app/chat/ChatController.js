@@ -164,7 +164,7 @@ socialModule.controller('VChatController',
         if (mensaje.idUsuario != $scope.$storage.idUsuario) {
           mensaje_obj = {
             mensaje: mensaje.msg,
-            de: mensaje.idUsuario,
+            de: mensaje.nombreUsuario,
             fecha: new Date()
           }
           $scope.$storage.mensajes[room].push(mensaje_obj);

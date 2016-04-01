@@ -61,6 +61,7 @@ class Pagina(db.Model):
     def __rep__(self):
         return '<Pagina %r>' % self.titulo
 
+
 class Contacto(db.Model):
     __tablename__ = 'contacto'
     idContacto = db.Column(db.Integer, primary_key=True)
@@ -134,7 +135,7 @@ class Hilo(db.Model):
     # Para identificar si es un hilo de foro o uno de una pagina comentable si es 1 es de foro y 0 de pag
     tipo = db.Column(db.Integer, nullable = False)
     foro_id = db.Column(db.Integer, db.ForeignKey('foro.idForo'), nullable=True)
-    pag_id = db.Column(db.Integer, db.ForeignKey('paginaSitio.idPagSitio'), nullable = True)
+    pag_id = db.Column(db.String(80), db.ForeignKey('paginaSitio.url'), nullable = True)
     
     
     
@@ -163,12 +164,12 @@ class Foro (db.Model):
         
 class PaginaSitio(db.Model):
     __tablename__ = 'paginaSitio'
-    idPagSitio = db.Column(db.Integer, primary_key = True)
-    url = db.Column(db.String(80), unique = True, nullable = False)
+    url = db.Column(db.String(80), unique = True, nullable = False, primary_key = True)
     
     # Relacion con hilos
     hilos = db.relationship('Hilo', backref='pagSitio', cascade="all, delete-orphan", lazy='dynamic')
     
+
 
 def sonAmigos(id1,id2):
     relacion1 = Contacto.query.filter_by(usuario1=id1,usuario2=id2).first()
@@ -210,7 +211,8 @@ def message_handler(data):
     message = {
         'msg':data['msg'], 
         'room': data['idChat'],
-        'idUsuario': session['usuario']['idUsuario'] if 'usuario' in session else 0
+        'idUsuario': session['usuario']['idUsuario'] if 'usuario' in session else 0,
+        'nombreUsuario': session['usuario']['nombre'] if 'usuario' in session else 'Unknown'
     }
     send(message=message, room=data['idChat'])
     print(data['msg'])
