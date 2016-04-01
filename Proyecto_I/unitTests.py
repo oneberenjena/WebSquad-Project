@@ -1,12 +1,12 @@
 import unittest, time, re
-from base import db, Usuario, Pagina, Contacto, Grupo, Membresia
+from base import db, Usuario, Pagina, Contacto, Grupo, Membresia, Publicacion, Hilo, Foro, PaginaSitio
 
 class WebSquadUnittest(unittest.TestCase):
 	def setUp(self):
 		pass
 
 	def test_registro(self):
-		db.create_all()
+		# db.create_all()
 		# userTest = Usuario(nombre="benjaPrueba", username="benjaUser", contrasena="benjaPasswd", correo="benja@mail.com")
 		db.session.add(Usuario(nombre="benjaPrueba", username="benjaUserNew222", contrasena="benjaPasswd", correo="benja222@mail.com"))
 		# db.session.commit()
@@ -227,6 +227,201 @@ class WebSquadUnittest(unittest.TestCase):
 		db.session.delete(group)
 		db.session.commit()
 
+
+	def test_newPublicacion(self):
+		db.session.add(Usuario(nombre="benjaPrueba", username="benjaOP", contrasena="benjaPasswd", correo="benjaop@mail.com"))
+		# db.session.commit()
+		failed=False
+		try:
+			db.session.commit()
+		except Exception as e:
+			db.session.rollback()
+			db.session.flush() 
+			failed=True
+
+		userQuery = Usuario.query.filter_by(username = "benjaOP").first()
+
+		# Probando que se agrego el usuario correctamente
+		if (userQuery.nombre == "benjaPrueba"):
+			testResult = True
+		elif (not userQuery or userQuery.nombre != "benjaPrueba"):
+			testResult = False
+			print("Failed at testing for register")
+		
+		self.assertTrue(testResult)
+
+		# Probando la publicacion
+		db.session.add(Publicacion(titulo='miPublicacion', contenido='blablablablabla',autor_id = userQuery.idUsuario, tipo='nueva'))
+
+		failed=False
+		try:
+			db.session.commit()
+		except Exception as e:
+			db.session.rollback()
+			db.session.flush() 
+			failed=True
+
+		# Verificacion de su agregacion:
+		
+		newPubl = Publicacion.query.filter_by(titulo='miPublicacion').first()
+
+		if (newPubl.autor_id == userQuery.idUsuario and newPubl.titulo == 'miPublicacion' and
+			newPubl.contenido == 'blablablablabla'):
+			testResult = True
+		elif(not newPubl or (newPubl.autor_id != userQuery.idUsuario or newPubl.titulo != 'miPublicacion' or
+			newPubl.contenido != 'blablablablabla')):
+			testResult = False
+			print("Failed to test publication")
+		self.assertTrue(testResult)
+
+		db.session.delete(userQuery)
+		db.session.delete(newPubl)
+		db.session.commit()
+
+	def test_newHilo(self):
+		db.session.add(Usuario(nombre="benjaPrueba", username="benjaOP", contrasena="benjaPasswd", correo="benjaop@mail.com"))
+		# db.session.commit()
+		failed=False
+		try:
+			db.session.commit()
+		except Exception as e:
+			db.session.rollback()
+			db.session.flush() 
+			failed=True
+
+		userQuery = Usuario.query.filter_by(username = "benjaOP").first()
+
+		# Probando que se agrego el usuario correctamente
+		if (userQuery.nombre == "benjaPrueba"):
+			testResult = True
+		elif (not userQuery or userQuery.nombre != "benjaPrueba"):
+			testResult = False
+			print("Failed at testing for register")
+		
+		self.assertTrue(testResult)
+
+		# Probando la publicacion
+		db.session.add(Publicacion(titulo='miPublicacion', contenido='blablablablabla',autor_id = userQuery.idUsuario, tipo='nueva'))
+
+		failed=False
+		try:
+			db.session.commit()
+		except Exception as e:
+			db.session.rollback()
+			db.session.flush() 
+			failed=True
+
+		# Verificacion de su agregacion:
+		
+		newPubl = Publicacion.query.filter_by(titulo='miPublicacion').first()
+
+		if (newPubl.autor_id == userQuery.idUsuario and newPubl.titulo == 'miPublicacion' and
+			newPubl.contenido == 'blablablablabla'):
+			testResult = True
+		elif(not newPubl or (newPubl.autor_id != userQuery.idUsuario or newPubl.titulo != 'miPublicacion' or
+			newPubl.contenido != 'blablablablabla')):
+			testResult = False
+			print("Failed to test publication")
+		self.assertTrue(testResult)
+
+		# Crear el hilo
+		
+		db.session.add(Hilo(titulo='nuevoHilo', pubRaiz_id = newPubl.idPublicacion,pubRaiz = newPubl,tipo = 1))
+
+		failed=False
+		try:
+			db.session.commit()
+		except Exception as e:
+			db.session.rollback()
+			db.session.flush() 
+			failed=True
+
+		# Verificar
+		newHilo = Hilo.query.filter_by(pubRaiz = newPubl).first()
+		
+		if (newHilo.titulo == 'nuevoHilo' and newHilo.pubRaiz_id == newPubl.idPublicacion):
+			testResult = True
+		elif (not newHilo or (newHilo.titulo != 'nuevoHilo' or newHilo.pubRaiz_id != newPubl.idPublicacion)):
+			testResult = False
+			print("Failed to test thread of publication")
+		self.assertTrue(testResult) 
+
+		db.session.delete(userQuery)
+		db.session.delete(newPubl)
+		db.session.delete(newHilo)
+		db.session.commit()
+
+	# def test_newForo(self):
+	# 	db.session.add(Usuario(nombre="benjaPrueba", username="benjaOP1", contrasena="benjaPasswd", correo="benjaop1@mail.com"))
+	# 	# db.session.commit()
+	# 	failed=False
+	# 	try:
+	# 		db.session.commit()
+	# 	except Exception as e:
+	# 		db.session.rollback()
+	# 		db.session.flush() 
+	# 		failed=True
+
+	# 	userQuery = Usuario.query.filter_by(username = "benjaOP1").first()
+
+	# 	# Probando que se agrego el usuario correctamente
+	# 	if (userQuery.nombre == "benjaPrueba"):
+	# 		testResult = True
+	# 	elif (not userQuery or userQuery.nombre != "benjaPrueba"):
+	# 		testResult = False
+	# 		print("Failed at testing for register")
+		
+	# 	self.assertTrue(testResult)
+
+	# 	# CREACION DEL FORO
+	# 	db.session.add(db.Foro(titulo='foroWebSquad', autor_id = userQuery.idUsuario))
+
+	# 	failed=False
+	# 	try:
+	# 		db.session.commit()
+	# 	except Exception as e:
+	# 		db.session.rollback()
+	# 		db.session.flush() 
+	# 		failed=True
+
+	# 	# VERIFICACION
+		
+	# 	newForum = Foro.query.filter_by(titulo = 'foroWebSquad').first()
+
+	# 	if (not newForum):
+	# 		testResult = False
+	# 		print("Failed to test forum")
+	# 	elif (newForum.autor_id == userQuery.idUsuario):
+	# 		testResult = True
+	# 	self.assertTrue(testResult)
+
+	# 	db.session.delete(userQuery)
+	# 	db.session.delete(newForum)
+	# 	db.commit()
+	
+	def test_newSitePage(self):
+		db.session.add(PaginaSitio(url='http://webSquad.com'))
+		failed=False
+		try:
+			db.session.commit()
+		except Exception as e:
+			db.session.rollback()
+			db.session.flush() 
+			failed=True
+
+		# VERIFICACION
+		
+		newSite = PaginaSitio.query.filter_by(url= 'http://webSquad.com').first()
+
+		if (newSite):
+			testResult = True
+		else:
+			testResult = False
+			print("Failed to test site")
+		self.assertTrue(testResult)
+
+		db.session.delete(newSite)
+		db.session.commit()
 
 	def tearDown(self):
 		pass
