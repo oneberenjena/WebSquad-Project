@@ -64,7 +64,7 @@
                       <!--*********************-->
                       <li class="dropdown">
                         <a ng-click="VPrincipal()" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                          {{nombre}}huhu
+                          {{$storage.nombre}}
                           <span class="caret "></span>
                         </a>
                         <!--*********************-->
@@ -72,16 +72,15 @@
                         <!--*********************-->  
                           <ul class="dropdown-menu">
                             <li><a ng-click="VPrincipal1()">Perfil</a></li>
-                            <li><a ng-click="VPagina1(idUsuario)">Editor</a></li>
-                            <li><a ng-click="VAdminContactos2(idUsuario)"
-           ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">Contactos</a></li>
+                            <li><a ng-click="VPagina1($storage.idUsuario)">Editor</a></li>
+                            <li><a ng-click="VContactos2($storage.idUsuario)"
+                              ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">Contactos</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a ng-click="VLogin0()">Salir</a></li>
                           </ul>
                       </li>
                     <li><a ng-click="__ayuda()"><span class="glyphicon glyphicon-info-sign"></span></a></li>
 
-<<<<<<< HEAD
                     </ul>
                   </div> <!-- /.navbar-collapse -->  
               </div> <!-- /.container-fluid -->
@@ -119,7 +118,7 @@
             <form name="fMiembroForm" ng-submit="AgregMiembro0(fMiembroForm.$valid)" novalidate>
               <div class="form-group" ng-class="{ 'has-error' :  fMiembroSubmitted && fMiembroForm.nombre.$invalid && fMiembroForm.nombre.$pristine && fMiembroSubmitted}">
                   <label for="fMiembro_nombre">Nombre</label>:&nbsp;
-                  <select id="fMiembro_nombre" ng-model="fMiembro.nombre" required ng-options="item.key as item.value for item in fMiembro_opcionesNombre"> 
+                  <select id="fMiembro_nombre" ng-model="fMiembro.idUsuario" required ng-options="item.key as item.value for item in fMiembro_opcionesNombre"> 
                   </select>
                   <p ng-show="fMiembroSubmitted && fMiembroForm.nombre.$invalid" class="help-block">Error en campo Nombre.</p>
               </div>

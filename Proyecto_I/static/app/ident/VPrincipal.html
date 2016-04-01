@@ -46,9 +46,9 @@
                   <form class="navbar-form navbar-right" role="search">
                   <div class="form-group">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Buscar Contacto">
+                        <input type="text" class="form-control" placeholder="Buscar Contacto" ng-model="buscarText">
                         <span class="input-group-btn">
-                            <button class="btn  btn-perso" type="button">Ir</button>
+                            <button class="btn btn-perso" type="button" ng-click="buscarContacto()">Ir</button>
                         </span>
                     </div>
                   </div>
@@ -93,9 +93,9 @@
                   <!--*********************-->
                   <!--     Links extra     -->
                   <!--*********************-->
-                  <li><a  ng-click="VComentariosPagina4(idPaginaSitio)">
+                  <!--<li><a  ng-click="VComentariosPagina4(idPaginaSitio)">
                     Comentarios
-                  </a></li>                                  
+                  </a></li>!-->                                  
                 </ul>
               </div> <!-- /.navbar-collapse -->  
           </div> <!-- /.container-fluid -->

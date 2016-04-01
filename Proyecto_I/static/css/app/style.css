@@ -38,3 +38,118 @@
 .respuesta {
     padding: 1em 0 0.5em 3em;
 }
+
+/* Chat bubbles */
+
+span.chat
+{
+    display: inline-block;
+    max-width: 400px;
+    background-color: white;
+    padding: 5px;
+    border-radius: 4px;
+    position: relative;
+    border-width: 1px;
+    border-style: solid;
+    border-color: grey;
+}
+
+span.chat.left:after
+{
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: -8.5px;
+    top: 7px;
+    height: 0px;
+    width: 0px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid white;
+}
+
+span.chat.left:before
+{
+    content: "";
+    display: inline-block;
+    position: absolute;
+    left: -9px;
+    top: 7px;
+    height: 0px;
+    width: 0px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-right: 8px solid black;
+}
+
+span.chat.right:after
+{
+    content: "";
+    display: inline-block;
+    position: absolute;
+    right: -8px;
+    top: 6px;
+    height: 0px;
+    width: 0px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid #dbedfe;
+}
+
+span.chat.right:before
+{
+    content: "";
+    display: inline-block;
+    position: absolute;
+    right: -9px;
+    top: 6px;
+    height: 0px;
+    width: 0px;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid transparent;
+    border-left: 8px solid black;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+span.chat.right
+{
+    background-color: #dbedfe;
+}
+
+span.chat.left
+{
+    
+}
+.clear
+{
+    clear: both;
+}
+
+.mensaje {
+    margin-bottom:1.5em;
+}
+
+.msg-de {
+    margin-bottom: 5px !important;
+}
+
+.msg-mensaje, .msg-fecha {
+    margin-bottom: 0 !important;
+}
+
+.msg-fecha {
+    color: #AAA;
+    margin-left: 1em;
+}
+
+/* Search no está implementado */
+form[role="search"] {
+    display:none;
+}

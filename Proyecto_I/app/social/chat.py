@@ -167,7 +167,6 @@ def AgregContacto():
 
 @chat.route('/chat/AgregGrupo', methods=['POST'])
 def AgregGrupo():
-    #GET parameter
     params = request.get_json()
     print(params)
     nombreGrupo = params['nombre']
@@ -178,7 +177,7 @@ def AgregGrupo():
         grupo = Grupo(nombre=nombreGrupo)
         db.session.add(grupo)
         db.session.commit()
-        
+        res['idGrupo'] = grupo.idGrupo
         membresia = Membresia(
             idUsuario=session['usuario']['idUsuario'],
             idGrupo=grupo.idGrupo,
@@ -244,7 +243,7 @@ def VAdminContactos():
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
     contactos = obtenerAmigos(idUsuario)
-    res['data1'] = [
+    res['contactos'] = [
         {
           'idContacto':contacto.idUsuario, 
           'nombre':contacto.nombre, 
@@ -252,7 +251,7 @@ def VAdminContactos():
         } for contacto in contactos
     ]
     grupos = obtenerGrupos(idUsuario)
-    res['data2'] = [
+    res['grupos'] = [
         {
           'idContacto':grupo.idGrupo, 
           'nombre':grupo.nombre, 
@@ -298,14 +297,14 @@ def VContactos():
         res['actor']=session['actor']
     #Action code goes here, res should be a JSON structure
 
-    res['data1'] = [
+    res['contactos'] = [
         {
           'idContacto':contacto.idUsuario,
           'nombre':contacto.nombre, 
           'tipo':'usuario'
         } for contacto in obtenerAmigos(idUsuario)
     ]
-    res['data1'] += [
+    res['grupos'] = [
         {
             'idContacto': grupo.idGrupo,
             'nombre': grupo.nombre,

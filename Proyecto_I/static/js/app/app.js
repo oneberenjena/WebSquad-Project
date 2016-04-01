@@ -11,7 +11,24 @@ socialModule.controller('socialController_',  ['$scope', '$localStorage', '$http
 function($scope, $localStorage, $http, $location) {
     $scope.title = "Social";
     $scope.$storage = $localStorage;
-    
+    $scope.VForos3 = function(idUsuario) {
+        $location.path('/VForos/'+idUsuario);
+    };
+    $scope.VPrincipal0 = function() {
+        $location.path('/VPrincipal');
+      };
+    $scope.VLogin0 = function() {
+        $location.path('/VLogin');
+    };
+    $scope.VPagina1 = function(idUsuario) {
+        $location.path('/VPagina/'+idUsuario);
+    };
+    $scope.VMiPagina = function(idUsuario) {
+        $location.path('/VMiPagina/'+idUsuario);
+    };
+    $scope.VContactos2 = function(idUsuario) {
+        $location.path('/VContactos/'+idUsuario);
+    };
 }]);
 socialModule.directive('sameAs', [function () {
     return {

@@ -71,9 +71,11 @@ socialModule.controller('VPrincipalController',
         if ($scope.logout) {
             $location.path('/');
         }
-
-
       });
+      
+      $scope.buscarContacto = function () {
+        
+      }
       $scope.VMiPagina = function(idUsuario) {
         $location.path('/VMiPagina/'+idUsuario);
       };

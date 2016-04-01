@@ -68,21 +68,7 @@ socialModule.controller('VAdminContactosController',
 
 
       });
-      $scope.VPrincipal0 = function() {
-        $location.path('/VPrincipal');
-      };
-      $scope.VLogin0 = function() {
-        $location.path('/VLogin');
-      };
-      $scope.VPagina1 = function(idUsuario) {
-        $location.path('/VPagina/'+idUsuario);
-      };
-      $scope.VMiPagina = function(idUsuario) {
-        $location.path('/VMiPagina/'+idUsuario);
-      };
-/*      $scope.VContactos2 = function(idUsuario) {
-        $location.path('/VContactos/'+idUsuario);
-      };*/
+
 
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
@@ -93,14 +79,19 @@ socialModule.controller('VAdminContactosController',
         // 
         // chatService.AgregGrupo({"idUsuario":((typeof idUsuario === 'object')?JSON.stringify(idUsuario):idUsuario)}).then(function (object) {
         //
-        chatService.AgregGrupo({nombre:"grupo_"+ Math.floor(Math.random() * 600000) + 1  }).then(function (object) {
+        if (!$scope.nombreGrupo)
+          $scope.nombreGrupo = "grupo_"+ Math.floor(Math.random() * 600000) + 1
+        chatService.AgregGrupo({nombre: $scope.nombreGrupo }).then(function (object) {
           var msg = object.data["msg"];
           if (msg) flash(msg);
           var label = object.data["label"];
-          if (label.indexOf("/VAdminContactos") != 0)
-            $location.path(label);
+          if (object.data.idGrupo) {
+            chatSocket.emit("join",{room: "grupo_"+object.data["idGrupo"]});
+          }
           $route.reload();
-        });};
+        });
+        
+      };
 
       $scope.fContactoSubmitted = false;
       $scope.AgregContacto3 = function(isValid) {
@@ -141,19 +132,29 @@ ngDialog.open({ template: 'ayuda_VAdminContactos.html',
 socialModule.controller('VChatController', 
    ['$scope', '$localStorage', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'chatService', 'identService', 'chatSocket',
     function ($scope, $localStorage, $location, $route, $timeout, flash, $routeParams, ngDialog, chatService, identService, chatSocket) {
+      // Desconecto el socket para reconectar
+
+      chatSocket.emit("join", {room:$routeParams.idChat});
+      
       $scope.msg = '';
       $scope.fChat = {};
       $scope.idChat = $routeParams.idChat;
-
+      
       console.log("ID CHAT", $scope.idChat);
       if ($scope.$storage.mensajes === undefined)
         $scope.$storage.mensajes = {};
+      if ($scope.$storage.mensajesID === undefined)
+        $scope.$storage.mensajesID = {};
       if ($scope.$storage.mensajes[$scope.idChat] === undefined) {
         $scope.$storage.mensajes[$scope.idChat] = [];
+      }
+      if ($scope.$storage.mensajesID[$scope.idChat] === undefined) {
+        $scope.$storage.mensajesID[$scope.idChat] = [];
       }  
         
       // Recibir mensajes
       chatSocket.on('message', function(mensaje,data) {
+        console.log("Mensaje recibido", mensaje);
         room = mensaje.room;
         if (room.indexOf("usuario_") == 0) {
           room = "usuario_"+mensaje.idUsuario;
@@ -167,7 +168,10 @@ socialModule.controller('VChatController',
             de: mensaje.nombreUsuario,
             fecha: new Date()
           }
-          $scope.$storage.mensajes[room].push(mensaje_obj);
+          if ($scope.$storage.mensajesID[room].indexOf(mensaje.idMensaje) < 0) {
+            $scope.$storage.mensajes[room].push(mensaje_obj);
+            $scope.$storage.mensajesID[room].push(mensaje.idMensaje);
+          }
         }
       })
 
@@ -183,7 +187,7 @@ socialModule.controller('VChatController',
 
       });
       $scope.VContactos2 = function(idUsuario) {
-        $location.path('/VContactos/');
+        $location.path('/VContactos/'+idUsuario);
       };
       $scope.VPrincipal0 = function() {
         $location.path('/VPrincipal');
@@ -212,9 +216,12 @@ socialModule.controller('VChatController',
             $scope.$storage.mensajes[$scope.idChat] = [];
           }
           $scope.$storage.mensajes[$scope.idChat].push(mensaje_obj);
+          $scope.fChatSubmitted = false;
         }
-        $scope.fChatSubmitted = true;
-        
+        else {
+          $scope.fChatSubmitted = true;
+        }
+        $scope.fChat.texto = ""; // Limpiar campo
       };
 
 $scope.__ayuda = function() {
@@ -223,8 +230,9 @@ ngDialog.open({ template: 'ayuda_VChat.html',
 }
     }]);
 socialModule.controller('VContactosController', 
-   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'ngTableParams', 'chatService', 'identService',
-    function ($scope, $location, $route, $timeout, flash, $routeParams, ngDialog, ngTableParams, chatService, identService) {
+   ['$scope', '$location', '$route', '$timeout', 'flash', '$routeParams', 'ngDialog', 'ngTableParams', 'chatService', 'identService', 'chatSocket',
+    function ($scope, $location, $route, $timeout, flash, $routeParams, ngDialog, ngTableParams, chatService, identService, chatSocket) {
+
       $scope.msg = '';
       chatService.VContactos({"idUsuario":$routeParams.idUsuario}).then(function (object) {
         $scope.res = object.data;
