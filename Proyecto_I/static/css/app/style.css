@@ -36,5 +36,25 @@
 }
 
 .respuesta {
-    padding: 1em 0 0.5em 3em;
+    /*padding: 1em 0 0.5em 3em;*/
+    background-color: rgba(255,255,255,0.25);
+    border-radius: 5px;
+    padding: 2% 5%;
+    margin-bottom: 2%;
+    margin-top: 2%; 
+}
+
+.hilo {
+    border-radius: 15px;
+    background-color: #81BEF7;
+    padding: 2% 5%;
+    margin-bottom: 2%;
+}
+
+.imagen_peq{
+  width: 25%;
+}
+
+.imagen{
+  width: 80%;
 }
