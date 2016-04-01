@@ -80,9 +80,9 @@ socialModule.controller('VAdminContactosController',
       $scope.VMiPagina = function(idUsuario) {
         $location.path('/VMiPagina/'+idUsuario);
       };
-/*      $scope.VContactos2 = function(idUsuario) {
+      $scope.VContactos2 = function(idUsuario) {
         $location.path('/VContactos/'+idUsuario);
-      };*/
+      };
 
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
