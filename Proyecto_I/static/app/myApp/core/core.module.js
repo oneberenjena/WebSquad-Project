@@ -9,7 +9,7 @@
         'blocks.stateManager',
         // 3rd party dependencies
         'ui.router', 'ngAnimate', 'textAngular',
-        'LocalStorageModule'
+        'LocalStorageModule', 'ngMdIcons'
     ]);
 
 })());

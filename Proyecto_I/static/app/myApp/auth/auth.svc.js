@@ -12,8 +12,12 @@
             var promise = datacontext.users.login(user);
 
             datacontext.users.login(user).then(function(res){
-                currentUser = JSON.stringify(res);
-                $cookies.put("user",currentUser);
+                if (res.idUsuario) {
+                    currentUser = JSON.stringify(res);
+                    $cookies.put("user",currentUser);
+                } else {
+                    alert("Ese usuario no existe");
+                }
             });
 
             return promise;

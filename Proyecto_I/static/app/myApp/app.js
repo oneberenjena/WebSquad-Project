@@ -71,18 +71,23 @@
     }
 
     app.config(function($mdThemingProvider, $mdIconProvider){
+            var bower = "../bower_components/material-design-icons/";
             $mdIconProvider
-                .defaultIconSet("./assets/images/svg/avatars.svg", 128)
-                .icon("menu"       , "./assets/images/svg/menu.svg"        , 24)
-                .icon("share"      , "./assets/images/svg/share.svg"       , 24)
-                .icon("google_plus", "./assets/images/svg/google_plus.svg" , 512)
-                .icon("hangouts"   , "./assets/images/svg/hangouts.svg"    , 512)
-                .icon("twitter"    , "./assets/images/svg/twitter.svg"     , 512)
-                .icon("phone"      , "./assets/images/svg/phone.svg"       , 512);
+                .defaultIconSet("../img/svg/avatars.svg", 128)
+                .icon("menu"       , "../img/svg/menu.svg"        , 24)
+                .icon("contact"       , bower + "action/svg/design/ic_account_circle_24px.svg", 24)
+                .icon("home"       , bower + "action/svg/design/ic_home_24px.svg", 24)
+                .icon("group"       , bower + "social/svg/design/ic_group_24px.svg", 24)
+                .icon("person"       , bower + "social/svg/design/ic_person_24px.svg", 24)
+                .icon("email"      , bower + "communication/svg/design/ic_email_24px.svg", 24)
+                .icon("google_plus", "../img/svg/google_plus.svg" , 512)
+                .icon("hangouts"   , "../img/svg/hangouts.svg"    , 512)
+                .icon("twitter"    , "../img/svg/twitter.svg"     , 512)
+                .icon("phone"      , "../img/svg/phone.svg"       , 512);
 
             $mdThemingProvider.theme('default')
-                .primaryPalette('brown')
-                .accentPalette('red');
+                .primaryPalette('blue')
+                .accentPalette('light-blue');
 
         });
 

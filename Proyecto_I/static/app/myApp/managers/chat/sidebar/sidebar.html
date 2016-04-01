@@ -11,24 +11,24 @@
 	<div layout="row" layout-align="center center" flex>
 		<md-menu>
 			<md-button aria-label="Open phone interactions menu" class="md-icon-button" ng-click="vm.openMenu($mdOpenMenu, $event)">
-				<md-icon md-menu-origin md-svg-src="../img/svg/ic_more_vert_white_24px.svg"></md-icon>
+				<md-icon md-svg-src="../img/svg/ic_more_vert_white_24px.svg" style="color: blue"></md-icon>
 			</md-button>
 			<md-menu-content width="4">
 				<md-menu-item>
 					<md-button ui-sref="dashboard.chat.board.addContact">
-						<md-icon md-svg-src="../img/svg/ic_account_circle_black_24px.svg" md-menu-align-target></md-icon>
+						<md-icon md-svg-icon="contact" style="color:#2196F3" md-menu-align-target></md-icon>
 						Agregar contacto
 					</md-button>
 				</md-menu-item>
 				<md-menu-item>
 					<md-button ui-sref="dashboard.chat.board.addGroup">
-						<md-icon md-svg-src="../img/svg/ic_group_black_24px.svg"></md-icon>
+						<md-icon md-svg-icon="group" style="color:#2196F3"></md-icon>
 						Nuevo grupo
 					</md-button>
 				</md-menu-item>
 				<md-menu-item>
 					<md-button disabled="disabled" ng-click="vm.checkVoicemail()">
-						<md-icon md-svg-src="../img/svg/ic_home_black_24px.svg"></md-icon>
+						<md-icon md-svg-icon="home" style="color:#2196F3"></md-icon>
 						Mi pagina
 					</md-button>
 				</md-menu-item>

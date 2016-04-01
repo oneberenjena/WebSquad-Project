@@ -13,15 +13,15 @@
             <md-input-container class="md-icon-float md-block">
                 <!-- Use floating label instead of placeholder -->
                 <label>Name</label>
-                <md-icon md-svg-src="../img/svg/ic_person_black_24px.svg" class="name"></md-icon>
+                <md-icon md-svg-icon="person"  style="color:#2196F3" class="name"></md-icon>
                 <input ng-model="vm.group.nombre" type="text">
             </md-input-container>
 
             <md-subheader class="md-no-sticky">Miembros</md-subheader>
             <md-list-item ng-repeat="contact in vm.contacts">
                 <p>
-                    <md-icon md-svg-icon="{{contact.avatar}}" class="avatar"></md-icon>
-                    {{contact.idUsuario}},{{ contact.nombre }}
+                    <md-icon md-svg-icon="svg-{{($index%16) + 1}}" class="avatar"></md-icon>
+                    {{ contact.nombre }}
                 </p>
                 <md-checkbox class="md-secondary" ng-model="contact.wanted"></md-checkbox>
             </md-list-item>

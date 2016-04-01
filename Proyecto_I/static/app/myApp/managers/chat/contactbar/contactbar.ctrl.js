@@ -12,20 +12,23 @@
         function activate() {
             getContacts(false);
 
+            datacontext.groups.list({forceRemote:true,manager:"groups"}).then(function(res){
+                console.log(res);
+            });
+
+            datacontext.chats.list({forceRemote:true,manager:"groups"}).then(function(res){
+                console.log(res);
+            });
             //datacontext.memberships.remove("groups",2);
             //datacontext.groups.remove("groups",1);
 
-            datacontext.groups.getById(1).then(function(res){
-                console.log(res);
-            });
+            /*
 
-            datacontext.groups.list({forceRemote:false,manager:"groups"}).then(function(res){
-                console.log(res);
-            });
+             datacontext.groups.getById(1).then(function(res){
+             console.log(res);
+             });
 
-            datacontext.memberships.list({forceRemote:false,manager:"groups"}).then(function(res){
-                console.log(res.data1);
-            });
+             */
             /*datacontext.memberships.list({forceRemote:false,manager:"groups"}).then(function(res){
                 console.log(res.data1);
             });
@@ -74,6 +77,8 @@
         function selectContact(chat){
             ChatService.selectChat(chat);
             common.$state.go('dashboard.chat.board.messages');
+
+            datacontext.chats.create("chats",{id:1,type:"grupo"}).then()
         }
 
         function toggleMenu(){
