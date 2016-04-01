@@ -80,8 +80,12 @@ socialModule.controller('VAdminContactosController',
       $scope.VMiPagina = function(idUsuario) {
         $location.path('/VMiPagina/'+idUsuario);
       };
-      $scope.VContactos2 = function(idUsuario) {
+/*      $scope.VContactos2 = function(idUsuario) {
         $location.path('/VContactos/'+idUsuario);
+      };*/
+
+      $scope.VAdminContactos2 = function() {
+        $location.path('/VAdminContactos/');
       };
       $scope.AgregGrupo4 = function(idUsuario) {
           
@@ -175,7 +179,10 @@ socialModule.controller('VChatController',
 
       });
       $scope.VContactos2 = function(idUsuario) {
-        $location.path('/VContactos/'+idUsuario);
+        $location.path('/VContactos/');
+      };
+      $scope.VPrincipal0 = function() {
+        $location.path('/VPrincipal');
       };
       $scope.VMiPagina = function(idUsuario) {
         $location.path('/VMiPagina/'+idUsuario);
@@ -242,6 +249,7 @@ socialModule.controller('VContactosController',
       $scope.VPrincipal0 = function() {
         $location.path('/VPrincipal');
       };
+
       $scope.VMiPagina = function(idUsuario) {
         $location.path('/VMiPagina/'+idUsuario);
       };
@@ -252,6 +260,9 @@ socialModule.controller('VContactosController',
       $scope.VPagina1 = function(idUsuario) {
         $location.path('/VPagina/'+idUsuario);
       };
+
+ 
+
       $scope.VAdminContactos2 = function() {
         $location.path('/VAdminContactos/');
       };
@@ -327,6 +338,7 @@ socialModule.controller('VGrupoController',
       };
 
       $scope.AElimMiembro3 = function(id) {
+          
           chatService.AElimMiembro({idUsuario: id, idGrupo: $routeParams.idGrupo}).then(function (object) {
               var msg = object.data["msg"];
               if (msg) flash(msg);

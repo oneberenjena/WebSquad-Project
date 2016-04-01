@@ -63,20 +63,39 @@
                   <!--*********************-->
                   <li class="dropdown">
                     <a ng-click="VPrincipal()" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                      {{nombre}}
+                      {{$storage.nombre}}
                       <span class="caret "></span>
                     </a>
                     <!--*********************-->
                     <!-- DROPDOWN            -->
                     <!--*********************-->  
                       <ul class="dropdown-menu">
-                        <li><a ng-click="VMiPagina(idUsuario)">Pagina</a></li>
-                        <li><a ng-click="VPagina1(idUsuario)">Editor</a></li>
-                        <li><a ng-click="VContactos2(idUsuario)" ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">Contactos</a></li>
+                        <li><a  ng-click="VMiPagina($storage.idUsuario)">
+                          Pagina
+                        </a></li>
+                        <li><a  ng-click="VPagina1($storage.idUsuario)">
+                          Editor
+                        </a></li>
+                        <li><a  ng-click="VContactos2($storage.idUsuario)" 
+                                ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+                          Contactos
+                        </a></li>
+                        <li><a  ng-click="VForos3($storage.idUsuario)" 
+                                ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false">
+                          Foros
+                        </a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a ng-click="VLogin0()">Salir</a></li>
+                        <li><a  ng-click="VLogin0()">
+                          Salir
+                        </a></li>
                       </ul>
                   </li>
+                  <!--*********************-->
+                  <!--     Links extra     -->
+                  <!--*********************-->
+                  <li><a  ng-click="VComentariosPagina4(idPaginaSitio)">
+                    Comentarios
+                  </a></li>                                  
                 </ul>
               </div> <!-- /.navbar-collapse -->  
           </div> <!-- /.container-fluid -->

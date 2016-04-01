@@ -84,6 +84,7 @@ def VMiPagina():
         res['label'] = '/VPagina/{usuario}'.format(usuario = idUsuario)
     else:
         print('PAgina',pagina)
+        res['nombre']=session['usuario']['nombre']
         res['titulo'] = pagina.titulo
         res['contenido'] = pagina.contenido
     
@@ -98,12 +99,14 @@ def VPagina():
     params = request.get_json()
     idUsuario = request.args['idUsuario']
     res = {
+        'nombre':'',
         'titulo': '',
         'contenido': '',
     }
     pagina = Pagina.query.join(Usuario).filter(Usuario.idUsuario==idUsuario).first()
     
     if session['usuario']['idUsuario'] == int(idUsuario):
+        res['nombre']=session['usuario']['nombre']
         if pagina:
             res['titulo'] = pagina.titulo
             res['contenido'] = pagina.contenido
