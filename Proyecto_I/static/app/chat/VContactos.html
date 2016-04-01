@@ -97,11 +97,11 @@
           </div> <!-- /.container-fluid -->
         </nav>
     </header>
-  <!--************************************************-->
-  <!--                                                -->
-  <!-- CUERPO                                         -->
-  <!--                                                -->
-  <!--************************************************-->
+
+        <!--************************************************-->
+        <!-- CONTENIDO                                      -->
+        <!--************************************************-->
+
     <div layout="column">
       <div flex="25" layout="row"  layout-align="center center">
         <div flex>
@@ -116,20 +116,51 @@
         </div>
       </div>
       <div flex>
-        <table ng-table="tableParams1" template-pagination="pager.html" class="table">
-          <tr ng-repeat="row in $data">
-            <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
-            <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
-            <td ng-show="row['idContacto']">
-              <a  style="border-style:none"
-                  ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false"
-                  ng-click="VChat1(row)"
-                  class="btn btn-perso">
-                charlar
-              </a>
-            </td>
-          </tr>
-        </table>
+        <!--************************************************-->
+            <!-- LISTA CONTACTOS                                -->
+            <!--************************************************-->
+            <div class="list-group scroll">
+              
+              <h3>Contactos</h3>
+              
+              <table class="table">
+                  <tr ng-repeat="row in contactos">
+                      <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
+                      <td ng-show="row['idContacto']">
+                          <a  style="border-style:none" 
+                              ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" 
+                              ng-click="VChat1(row)" 
+                              class="btn btn-perso">
+                                Charlar
+                          </a>
+                          <a  style="border-style:none" 
+                              ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" 
+                              ng-click="VMiPagina(row.idContacto)" 
+                              class="btn btn-perso-pag">
+                                Ver página
+                          </a>
+                      </td>
+                  </tr>
+              </table>
+              
+              <h3>Grupos</h3>
+              
+              <table class="table">
+                  <tr ng-repeat="row in grupos">
+                      <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
+                      <td ng-show="row['idContacto']">
+                          <a  style="border-style:none" 
+                              ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" 
+                              ng-click="VChat1(row)" 
+                              class="btn btn-perso">
+                                Charlar
+                          </a>
+                      </td>
+                  </tr>
+              </table>
+              
+              <div class="panel-footer"></div>
+            </div>
       </div>
     </div>
 

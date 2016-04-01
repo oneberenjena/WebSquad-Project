@@ -6,6 +6,8 @@ from flask_socketio import SocketIO, emit, send, join_room
 from random import SystemRandom
 from datetime import timedelta
 from datetime import datetime
+import time
+import hashlib
 
 app = Flask(__name__, static_url_path='')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///db.sqlite'
@@ -209,6 +211,8 @@ app.register_blueprint(foro)
 @socketio.on('message')
 def message_handler(data):
     message = {
+        # Creo una clave alfanumerica para el mensaje
+        'idMensaje': hashlib.sha224((str(int(time.time()))+data['msg']).encode('utf-8')).hexdigest(),
         'msg':data['msg'], 
         'room': data['idChat'],
         'idUsuario': session['usuario']['idUsuario'] if 'usuario' in session else 0,
@@ -216,7 +220,7 @@ def message_handler(data):
     }
     send(message=message, room=data['idChat'])
     print(data['msg'])
-    return room
+    return data['idChat']
 
 @socketio.on('connect')
 def connect_handler():
@@ -233,9 +237,8 @@ def connect_handler():
 
 @socketio.on('join')
 def join_room_handler(data):
-    print("Joining")
-    room = "{}_{}".format(data['tipo'],data['room'])
-    join_room(room)
+    print("Joining",data['room'])
+    join_room(data['room'])
 
 @socketio.on_error_default
 def chat_error_handler(e):

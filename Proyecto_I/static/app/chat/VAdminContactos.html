@@ -103,7 +103,7 @@
   <!-- CUERPO                                         -->
   <!--                                                -->
   <!--************************************************-->
-    
+
     <div layout="column">
     <div flex="25" layout="row"  layout-align="center center">
       <div flex>
@@ -113,42 +113,53 @@
       </div>
       <div  flex="30">
         <md-button ng-click="VContactos2($storage.idUsuario)" layout="column" layout-align="center center" style="border-style:none" class="btn btn-perso btn-lg btn-block">
-          Chat
+          Ver contactos
         </md-button>
       </div>
     </div>
     <div flex>
-      <table ng-table="tableParams1" template-pagination="pager.html" class="table">
-        <tr ng-repeat="row in $data">
-          <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
-          <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
-          <td ng-show="row['idContacto']"><a ng-click="AElimContacto1(row['idContacto'])">Eliminar</a></td>
-        </tr>
-      </table>
-
-     
-      <table ng-table="tableParams2" template-pagination="pager.html" class="table">
-        <tr ng-repeat="row in $data">
-          <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
-          <td data-title="'Tipo'" ng-bind="row['tipo']"></td>
-          <td ng-show="row['idContacto']"><a ng-show="actor=='desarrollador' || actor=='duenoProducto' || actor=='maestroScrum' || false" ng-click="VGrupo2(row['idContacto'])">Modificar grupo</a></td>
-        </tr>
-      </table>
-
-      <form name="fContactoForm" ng-submit="AgregContacto3(fContactoForm.$valid)" novalidate>
-        <div class="form-group" ng-class="{ 'has-error' :  fContactoSubmitted && fContactoForm.nombre.$invalid && fContactoForm.nombre.$pristine && fContactoSubmitted}">
-          <label for="fContacto_nombre">
-            Nombre
-          </label>:&nbsp;
-          <select id="fContacto_nombre" ng-model="fContacto.id" required ng-options="item.key as item.value for item in fContacto_opcionesNombre">
-
-          </select>
-          <p ng-show="fContactoSubmitted && fContactoForm.nombre.$invalid" class="help-block">Error en campo Nombre.</p>
-        </div>
-        <button type="submit" class="btn btn-perso btn-lg btn-block">
-          <span class="glyphicon glyphicon-flash"></span>Agregar contacto
-        </button>
-      </form>
+       <h3>Contactos</h3>
+              
+              <table class="table">
+                  <tr ng-repeat="row in contactos">
+                      <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
+                      <td ng-show="row['idContacto']">
+                          <a ng-click="AElimContacto1(row['idContacto'])">Eliminar</a>
+                      </td>
+                  </tr>
+              </table>
+              <form name="fContactoForm" ng-submit="AgregContacto3(fContactoForm.$valid)" novalidate>
+                    <div class="form-group" ng-class="{ 'has-error' :  fContactoSubmitted && fContactoForm.nombre.$invalid && fContactoForm.nombre.$pristine && fContactoSubmitted}">
+                      <label for="fContacto_nombre">
+                        Nombre
+                      </label>:&nbsp;
+                      <select id="fContacto_nombre" ng-model="fContacto.id" required ng-options="item.key as item.value for item in fContacto_opcionesNombre">
+                      
+                      </select>
+                      <p ng-show="fContactoSubmitted && fContactoForm.nombre.$invalid" class="help-block">Error en campo Nombre.</p>
+                    </div>
+                <button type="submit" class="btn btn-perso btn-lg btn-block">
+                    <span class="glyphicon glyphicon-flash"></span>Agregar contacto
+                </button>
+            </form>
+            
+              <h3>Grupos</h3>
+              
+              <table class="table">
+                  <tr ng-repeat="row in grupos">
+                      <td data-title="'Nombre'" ng-bind="row['nombre']"></td>
+                      <td ng-show="row['idContacto']">
+                          <a ng-click="VGrupo2(row['idContacto'])">Modificar grupo</a>
+                      </td>
+                  </tr>
+              </table>
+              <label for="fContacto_nombre">
+                Nombre del grupo
+              </label>:&nbsp;
+              <input type="text" ng-model="nombreGrupo" required>
+              <button ng-click="AgregGrupo4($storage.idUsuario)" class="btn btn-perso btn-crear-grupo btn-lg btn-block">
+                <span class="glyphicon glyphicon-flash"></span>Crear grupo
+              </button>
     </div>
   </div>
 
@@ -159,6 +170,6 @@ A continuacion se enlistas los amigos que tienes agregados.
 nombre para agregarlo a tu lista de amigos.
 -Seleccion -Agregar Grupo- para crear un nuevo grupo.
 -Puede modificar cualquier grupo que cree en -Modificar Grupo-.
-
+</script>
 </script>
 
